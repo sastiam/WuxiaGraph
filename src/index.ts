@@ -10,11 +10,13 @@ import { ContextInjectorService } from './domain/context/index.js';
 import { DreamingService } from './domain/dreaming/index.js';
 import { createContextRouter } from './api/context.router.js';
 import { createDreamingRouter } from './api/routes/dreaming.js';
+import { createMcpServer, McpServer } from './mcp/index.js';
 
 export interface AppOptions {
   db?: DatabaseSync;
   contextService?: ContextInjectorService;
   dreamingService?: DreamingService;
+  mcpServer?: McpServer;
 }
 
 export function createApp(options?: AppOptions): Hono {
@@ -27,6 +29,13 @@ export function createApp(options?: AppOptions): Hono {
   const dreamingRepo = new SqliteDreamingRepository(db);
   const govRepo = new SqliteWipGovernanceRepository(db);
   const dreamingService = options?.dreamingService ?? new DreamingService(dreamingRepo, govRepo);
+  const mcpServer =
+    options?.mcpServer ??
+    createMcpServer({
+      dreamingRepo,
+      govRepo,
+      contextRepo,
+    });
 
   // Health check endpoint
   app.get('/health', (c) => {
@@ -40,6 +49,32 @@ export function createApp(options?: AppOptions): Hono {
   // Montaje de rutas del Servicio Dreaming (WXG-014)
   const dreamingRouter = createDreamingRouter(dreamingService);
   app.route('/api/v1/dreaming', dreamingRouter);
+
+  // Montaje de endpoint JSON-RPC para MCP Server (WXG-016)
+  app.post('/api/v1/mcp', async (c) => {
+    let body: unknown;
+    try {
+      body = await c.req.json();
+    } catch {
+      return c.json(
+        {
+          jsonrpc: '2.0',
+          id: null,
+          error: {
+            code: -32700,
+            message: 'Error de parseo: JSON inválido.',
+          },
+        },
+        400
+      );
+    }
+
+    const response = await mcpServer.handleMessage(body);
+    if (!response) {
+      return c.body(null, 204);
+    }
+    return c.json(response, 200);
+  });
 
   return app;
 }
@@ -59,4 +94,5 @@ if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
   );
 }
 
+export { createMcpServer, McpServer };
 export default app;
