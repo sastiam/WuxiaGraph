@@ -1,21 +1,20 @@
 import process from 'node:process';
 import { serve } from '@hono/node-server';
-import { Hono } from 'hono';
+import { createApp } from './api/index.js';
 
-export const app = new Hono();
-
-app.get('/health', (c) => {
-  return c.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+export const app = createApp();
 
 if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
   const port = Number(process.env.PORT) || 3000;
-  serve({
-    fetch: app.fetch,
-    port
-  }, (info) => {
-    console.log(`Server running at http://localhost:${info.port}`);
-  });
+  serve(
+    {
+      fetch: app.fetch,
+      port,
+    },
+    (info) => {
+      console.log(`Server running at http://localhost:${info.port}`);
+    }
+  );
 }
 
 export default app;

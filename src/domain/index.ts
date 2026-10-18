@@ -1,2 +1,3 @@
 export * from './entities.js';
 export * from './governance/index.js';
+export * from './dreaming/index.js';
