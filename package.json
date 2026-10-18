@@ -1,0 +1,39 @@
+{
+  "name": "wuxiagraph",
+  "version": "0.1.0",
+  "description": "Motor de Memoria Canónica & Roadmap Ledger",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "audit": "pnpm audit"
+  },
+  "keywords": [
+    "wuxiagraph",
+    "lore",
+    "graph",
+    "mcp",
+    "hono",
+    "sqlite"
+  ],
+  "author": "Sebastian",
+  "license": "MIT",
+  "packageManager": "pnpm@12.14.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "@hono/node-server": "2.1.5",
+    "hono": "4.13.13",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}
