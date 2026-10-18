@@ -290,6 +290,11 @@ export function insertNarrativeFact(db: DatabaseSync, fact: NarrativeFact): void
   const stmt = db.prepare(`
     INSERT INTO narrative_facts (fact_id, entity_id, fact_statement, is_canon, chapter_source)
     VALUES (?, ?, ?, ?, ?)
+    ON CONFLICT(fact_id) DO UPDATE SET
+      entity_id = excluded.entity_id,
+      fact_statement = excluded.fact_statement,
+      is_canon = excluded.is_canon,
+      chapter_source = excluded.chapter_source
   `);
   stmt.run(row.fact_id, row.entity_id, row.fact_statement, row.is_canon, row.chapter_source);
 }
