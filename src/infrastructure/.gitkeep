@@ -1,0 +1,2 @@
+# src/infrastructure
+# Repositorios SQLite WAL (node:sqlite), mapeadores de persistencia y adaptadores externos.
