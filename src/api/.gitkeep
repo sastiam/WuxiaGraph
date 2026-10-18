@@ -1,0 +1,2 @@
+# src/api
+# Controladores HTTP Hono, middlewares, rutas y esquemas de validación Zod.

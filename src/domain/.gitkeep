@@ -1,0 +1,3 @@
+# src/domain
+# Entidades, tipos, interfaces de repositorios y excepciones puras de negocio.
+# Sin dependencias a frameworks externos ni infraestructura.
