@@ -2,6 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { LoreEntity, NarrativeFact, WipGovernanceLedger } from '../domain/entities.js';
+import type { CanonicalEntityContext } from '../domain/context/types.js';
 
 export const SCHEMA_SQL = `-- WuxiaGraph Relational Storage Schema (SQLite WAL)
 -- Invariable DDL conforme a OpenSpec WXG-001
@@ -63,6 +64,19 @@ export interface WipGovernanceLedgerRow {
   max_budget_hours: number;
   branches_opened_count: number;
   status: string;
+}
+
+export interface CanonicalContextRow {
+  entity_id: string;
+  domain: string;
+  canonical_name: string;
+  current_status: string;
+  attributes_json: string;
+  last_updated_timestamp?: string;
+  fact_id: string | null;
+  fact_statement: string | null;
+  is_canon: number | null;
+  chapter_source: string | null;
 }
 
 /**
@@ -348,4 +362,65 @@ export function getWipLedger(db: DatabaseSync, weekStartDate: string): WipGovern
     return null;
   }
   return mapRowToWipLedger(row);
+}
+
+/**
+ * Consulta optimizada en SQLite WAL que agrupa hechos canónicos (is_canon = 1) por entidad para un dominio dado.
+ * Descarta estrictamente borradores (is_canon = 0).
+ */
+export function getCanonicalEntitiesAndFactsByDomain(
+  db: DatabaseSync,
+  domain: string
+): CanonicalEntityContext[] {
+  const stmt = db.prepare(`
+    SELECT
+      e.entity_id,
+      e.domain,
+      e.canonical_name,
+      e.current_status,
+      e.attributes_json,
+      e.last_updated_timestamp,
+      f.fact_id,
+      f.fact_statement,
+      f.is_canon,
+      f.chapter_source
+    FROM lore_entities e
+    LEFT JOIN narrative_facts f
+      ON e.entity_id = f.entity_id AND f.is_canon = 1
+    WHERE e.domain = ?
+    ORDER BY e.canonical_name ASC, e.entity_id ASC, f.chapter_source ASC, f.fact_id ASC
+  `);
+
+  const rows = stmt.all(domain) as unknown as CanonicalContextRow[];
+  const entityMap = new Map<string, { entity: LoreEntity; facts: NarrativeFact[] }>();
+
+  for (const row of rows) {
+    let entry = entityMap.get(row.entity_id);
+    if (!entry) {
+      entry = {
+        entity: {
+          entityId: row.entity_id,
+          domain: row.domain,
+          canonicalName: row.canonical_name,
+          currentStatus: row.current_status,
+          attributes: parseAttributesJson(row.attributes_json),
+          lastUpdatedTimestamp: row.last_updated_timestamp,
+        },
+        facts: [],
+      };
+      entityMap.set(row.entity_id, entry);
+    }
+
+    if (row.fact_id !== null && row.fact_statement !== null && row.chapter_source !== null) {
+      entry.facts.push({
+        factId: row.fact_id,
+        entityId: row.entity_id,
+        factStatement: row.fact_statement,
+        isCanon: Number(row.is_canon) === 1,
+        chapterSource: row.chapter_source,
+      });
+    }
+  }
+
+  return Array.from(entityMap.values());
 }
