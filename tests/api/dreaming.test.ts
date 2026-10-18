@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import type { DatabaseSync } from 'node:sqlite';
-import { createApp } from '../../src/api/index.js';
+import { createApp } from '../../src/index.js';
 import { createDatabase, upsertWipLedger } from '../../src/infrastructure/database.js';
 import { SqliteDreamingRepository } from '../../src/infrastructure/repositories/dreamingRepository.js';
 import { SqliteWipGovernanceRepository } from '../../src/infrastructure/sqlite-wip-governance.repository.js';
