@@ -29,13 +29,53 @@ export class GraphService {
   constructor(private readonly graphRepo: IGraphRepository) {}
 
   /**
-   * Obtiene relaciones del grafo, opcionalmente filtradas por ID de entidad.
+   * Obtiene relaciones del grafo, opcionalmente filtradas por ID de entidad y profundidad (depth).
    */
-  async getRelationships(entityId?: string): Promise<LoreRelationship[]> {
-    if (entityId) {
-      return this.graphRepo.getRelationshipsByEntity(entityId);
+  async getRelationships(entityId?: string, depth?: number): Promise<LoreRelationship[]> {
+    if (!entityId) {
+      return this.graphRepo.getAllRelationships();
     }
-    return this.graphRepo.getAllRelationships();
+    const directRels = await this.graphRepo.getRelationshipsByEntity(entityId);
+    if (!depth || depth <= 1) {
+      return directRels;
+    }
+
+    const allRels = await this.graphRepo.getAllRelationships();
+    const visitedEntities = new Set<string>([entityId]);
+    const includedRelIds = new Set<string>();
+
+    let currentLevelEntities = new Set<string>([entityId]);
+
+    for (let currentDepth = 1; currentDepth <= depth; currentDepth++) {
+      const nextLevelEntities = new Set<string>();
+      for (const rel of allRels) {
+        const src = rel.source_entity_id ?? rel.sourceEntityId;
+        const tgt = rel.target_entity_id ?? rel.targetEntityId;
+        if (!src || !tgt) continue;
+
+        if (currentLevelEntities.has(src) || currentLevelEntities.has(tgt)) {
+          const relId = rel.relationship_id ?? rel.relationshipId ?? `${src}-${tgt}`;
+          includedRelIds.add(relId);
+          if (!visitedEntities.has(src)) {
+            nextLevelEntities.add(src);
+            visitedEntities.add(src);
+          }
+          if (!visitedEntities.has(tgt)) {
+            nextLevelEntities.add(tgt);
+            visitedEntities.add(tgt);
+          }
+        }
+      }
+      currentLevelEntities = nextLevelEntities;
+      if (currentLevelEntities.size === 0) break;
+    }
+
+    return allRels.filter((r) => {
+      const src = r.source_entity_id ?? r.sourceEntityId;
+      const tgt = r.target_entity_id ?? r.targetEntityId;
+      const relId = r.relationship_id ?? r.relationshipId ?? `${src}-${tgt}`;
+      return includedRelIds.has(relId);
+    });
   }
 
   /**

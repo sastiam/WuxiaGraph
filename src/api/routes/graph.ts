@@ -9,6 +9,12 @@ export const GetRelationshipsQuerySchema = z.object({
     .trim()
     .min(1, 'El parámetro "entityId" no puede estar vacío si se proporciona.')
     .optional(),
+  depth: z
+    .coerce
+    .number()
+    .int()
+    .min(1)
+    .optional(),
 });
 
 export const GetGraphPathQuerySchema = z
@@ -88,8 +94,8 @@ export function createGraphRouter(graphService: GraphService): Hono {
     }
 
     try {
-      const { entityId } = parseResult.data;
-      const relationships = await graphService.getRelationships(entityId);
+      const { entityId, depth } = parseResult.data;
+      const relationships = await graphService.getRelationships(entityId, depth);
       return c.json(relationships, 200);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Error interno inesperado';

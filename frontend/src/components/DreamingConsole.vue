@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 export interface DistilledFactItem {
   factId?: string;
@@ -51,10 +51,16 @@ const narrativeText = ref(
 const showAdvancedConfig = ref(false);
 const customEntitiesJson = ref('[\n  {\n    "entityId": "ent_han_li",\n    "canonicalName": "Han Li (韩立)",\n    "currentStatus": "ALIVE"\n  }\n]');
 
-// Execution state
+// Execution & Lock state
 const isDreaming = ref(false);
+const isLocked = ref(false);
+const lockedReason = ref<string | null>(null);
 const resultMessage = ref<{ type: 'success' | 'error' | 'warning'; text: string } | null>(null);
 const lastDistillResult = ref<DistillSuccessData | null>(null);
+
+// WIP Logging state
+const hoursToLog = ref(0.5);
+const wipStatusInfo = ref<string | null>(null);
 
 // Dreaming history logs
 const logs = ref<DreamingLogEntry[]>([
@@ -93,7 +99,106 @@ const filteredLogs = computed(() => {
   );
 });
 
+async function checkWipQuota(): Promise<void> {
+  try {
+    const res = await fetch('/api/v1/wip/status');
+    if (res.ok) {
+      const json = (await res.json()) as {
+        data?: {
+          totalHoursLogged?: number;
+          maxBudgetHours?: number;
+          status?: string;
+        };
+      };
+      if (json.data) {
+        const total = json.data.totalHoursLogged ?? 0;
+        const max = json.data.maxBudgetHours ?? 4.0;
+        const status = json.data.status;
+        if (status === 'LOCKED_BY_WIP' || total >= max) {
+          isLocked.value = true;
+          lockedReason.value = `Límite de cuota WIP alcanzado (${total.toFixed(2)}h / ${max.toFixed(1)}h). HTTP 423 Locked.`;
+        } else {
+          isLocked.value = false;
+          lockedReason.value = null;
+        }
+        wipStatusInfo.value = `${total.toFixed(2)}h / ${max.toFixed(1)}h registradas esta semana`;
+      }
+    }
+  } catch {
+    // Si falla la consulta backend, mantener estado
+  }
+}
+
+async function handleLogWipHours(): Promise<void> {
+  if (isLocked.value || hoursToLog.value <= 0) return;
+
+  try {
+    const res = await fetch('/api/v1/wip/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hours: Number(hoursToLog.value) }),
+    });
+
+    if (res.status === 423) {
+      isLocked.value = true;
+      lockedReason.value = 'Cuota de gobernanza WIP superada (HTTP 423 Locked).';
+      resultMessage.value = {
+        type: 'warning',
+        text: 'Cuota de gobernanza excedida (HTTP 423 Locked). Interacciones deshabilitadas.',
+      };
+      return;
+    }
+
+    if (!res.ok) {
+      const err = (await res.json().catch(() => ({}))) as { message?: string };
+      throw new Error(err.message || 'Error al registrar horas WIP');
+    }
+
+    const json = (await res.json()) as {
+      data?: {
+        totalHoursLogged: number;
+        maxBudgetHours?: number;
+        status?: string;
+      };
+    };
+
+    if (json.data) {
+      const total = json.data.totalHoursLogged;
+      const max = json.data.maxBudgetHours ?? 4.0;
+      wipStatusInfo.value = `${total.toFixed(2)}h / ${max.toFixed(1)}h registradas esta semana`;
+      if (json.data.status === 'LOCKED_BY_WIP' || total >= max) {
+        isLocked.value = true;
+        lockedReason.value = `Límite de cuota WIP alcanzado (${total.toFixed(2)}h / ${max.toFixed(1)}h). HTTP 423 Locked.`;
+      }
+    }
+
+    resultMessage.value = {
+      type: 'success',
+      text: `Registradas ${hoursToLog.value}h en /api/v1/wip/log exitosamente.`,
+    };
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Error al registrar horas WIP';
+    resultMessage.value = { type: 'error', text: msg };
+  }
+}
+
+function toggleFactCanon(factIndex: number): void {
+  if (isLocked.value || !lastDistillResult.value) return;
+  const fact = lastDistillResult.value.facts[factIndex];
+  if (fact) {
+    fact.isCanon = !fact.isCanon;
+  }
+}
+
 async function handleTriggerSynthesis(): Promise<void> {
+  if (isLocked.value) {
+    resultMessage.value = {
+      type: 'warning',
+      text: 'El sistema está bloqueado por cuota de gobernanza WIP (HTTP 423 Locked). Interacciones deshabilitadas.',
+    };
+    return;
+  }
+
   if (!chapterSource.value.trim()) {
     resultMessage.value = {
       type: 'error',
@@ -145,22 +250,26 @@ async function handleTriggerSynthesis(): Promise<void> {
     });
 
     if (response.status === 423) {
-      // Circuit Breaker Locked
+      // Circuit Breaker Locked: bloquear UI inmediatamente
+      isLocked.value = true;
       const errJson = (await response.json().catch(() => ({}))) as { message?: string };
+      lockedReason.value = errJson.message ?? 'Presupuesto semanal de 4.0h de gobernanza WIP excedido.';
+
       const failLog: DreamingLogEntry = {
         id: `log-${Date.now().toString().slice(-4)}`,
         timestamp: new Date().toISOString(),
         chapterSource: chapterSource.value.trim(),
         domain: domain.value.trim() || 'jianghu',
         status: 'LOCKED_BY_WIP',
-        summary: 'Bloqueado por Circuit Breaker: presupuesto semanal de 4.0h excedido.',
+        summary: 'Bloqueado por Circuit Breaker: presupuesto semanal de 4.0h excedido (HTTP 423 Locked).',
         entitiesCount: 0,
         factsCount: 0,
       };
       logs.value.unshift(failLog);
+
       resultMessage.value = {
         type: 'warning',
-        text: `Circuit Breaker Bloqueado (423 Locked): ${errJson.message ?? 'Límite WIP semanal superado.'}`,
+        text: `Circuit Breaker Bloqueado (HTTP 423 Locked): ${lockedReason.value}`,
       };
       return;
     }
@@ -197,6 +306,7 @@ async function handleTriggerSynthesis(): Promise<void> {
     };
 
     emit('dreamingCompleted', responseData.data);
+    await checkWipQuota();
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : 'Error inesperado durante la destilación';
     resultMessage.value = {
@@ -219,23 +329,79 @@ async function handleTriggerSynthesis(): Promise<void> {
     isDreaming.value = false;
   }
 }
+
+onMounted(() => {
+  void checkWipQuota();
+});
 </script>
 
 <template>
   <div class="space-y-6">
+    <!-- 423 Locked / Circuit Breaker Banner Alert -->
+    <div
+      v-if="isLocked"
+      class="p-5 bg-rose-950/90 border-2 border-rose-600 rounded-xl text-rose-200 text-sm shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-pulse"
+    >
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">⛔</span>
+        <div>
+          <h4 class="font-bold text-rose-100 text-base flex items-center gap-2">
+            <span>SISTEMA BLOQUEADO</span>
+            <span class="text-xs bg-rose-900 border border-rose-500 text-rose-200 font-mono px-2 py-0.5 rounded">HTTP 423 Locked</span>
+          </h4>
+          <p class="text-xs text-rose-300 mt-1">
+            {{ lockedReason || 'La cuota de gobernanza WIP ha alcanzado el límite de 4.0h. La entrada de texto e interacciones están completamente deshabilitadas.' }}
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        @click="checkWipQuota"
+        class="shrink-0 px-3 py-1.5 bg-rose-900 hover:bg-rose-800 text-rose-100 border border-rose-500 text-xs font-semibold rounded transition"
+      >
+        ⟳ Verificar Cuota
+      </button>
+    </div>
+
     <!-- Header info banner -->
     <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg space-y-2">
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse"></span>
-        <h2 class="text-2xl font-bold text-slate-100">
-          Consola Dreaming (Síntesis de Lore con IA)
-        </h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse"></span>
+          <h2 class="text-2xl font-bold text-slate-100">
+            Consola Dreaming (Síntesis de Lore con IA)
+          </h2>
+        </div>
+
+        <!-- Integration with /api/v1/wip/log -->
+        <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-lg border border-slate-800 text-xs">
+          <span class="text-slate-400 font-mono">{{ wipStatusInfo ?? 'WIP 4.0h' }}</span>
+          <form @submit.prevent="handleLogWipHours" class="flex items-center gap-1.5">
+            <input
+              v-model.number="hoursToLog"
+              type="number"
+              step="0.1"
+              min="0.1"
+              max="4.0"
+              :disabled="isLocked || isDreaming"
+              class="w-16 px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded text-[11px] text-slate-200 font-mono disabled:opacity-50"
+            />
+            <button
+              type="submit"
+              :disabled="isLocked || isDreaming"
+              class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 font-bold rounded transition text-[11px]"
+            >
+              + Log WIP
+            </button>
+          </form>
+        </div>
       </div>
+
       <p class="text-xs text-slate-400 max-w-3xl leading-relaxed">
         Ingresa prosa narrativa de capítulos de novelas wuxia/xianxia. El motor de destilación
-        extraerá automáticamente los hechos narrativos (<code class="text-amber-300 font-mono">narrative_facts</code>),
+        extraerá hechos narrativos (<code class="text-amber-300 font-mono">narrative_facts</code>),
         los asociará a las entidades canónicas (<code class="text-amber-300 font-mono">lore_entities</code>)
-        y respetará el Circuit Breaker de gobernanza WIP antes de persistir atómicamente en SQLite WAL.
+        y respetará el Circuit Breaker de gobernanza WIP en <code class="text-amber-300 font-mono">/api/v1/dreaming/distill</code>.
       </p>
     </section>
 
@@ -286,8 +452,9 @@ async function handleTriggerSynthesis(): Promise<void> {
                 v-model="chapterSource"
                 type="text"
                 required
+                :disabled="isLocked || isDreaming"
                 placeholder="Ej. Capítulo 1: El Reino Mortal"
-                class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs"
+                class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
             <div>
@@ -296,8 +463,9 @@ async function handleTriggerSynthesis(): Promise<void> {
                 v-model="domain"
                 type="text"
                 required
+                :disabled="isLocked || isDreaming"
                 placeholder="jianghu"
-                class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs"
+                class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono text-xs disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -314,8 +482,9 @@ async function handleTriggerSynthesis(): Promise<void> {
             <textarea
               v-model="narrativeText"
               rows="6"
+              :disabled="isLocked || isDreaming"
               placeholder="Pega aquí el texto del capítulo en español, inglés o caracteres chinos (ej. 韩立进入了黄枫谷)..."
-              class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-sans text-xs leading-relaxed"
+              class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-sans text-xs leading-relaxed disabled:opacity-50 disabled:cursor-not-allowed"
             ></textarea>
           </div>
 
@@ -323,8 +492,9 @@ async function handleTriggerSynthesis(): Promise<void> {
           <div class="border-t border-slate-800/80 pt-3">
             <button
               type="button"
+              :disabled="isLocked || isDreaming"
               @click="showAdvancedConfig = !showAdvancedConfig"
-              class="text-slate-400 hover:text-amber-400 flex items-center gap-1.5 transition text-xs font-semibold"
+              class="text-slate-400 hover:text-amber-400 flex items-center gap-1.5 transition text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span>{{ showAdvancedConfig ? '▼' : '▶' }}</span>
               <span>Inyección Avanzada de Entidades (Opcional)</span>
@@ -337,7 +507,8 @@ async function handleTriggerSynthesis(): Promise<void> {
               <textarea
                 v-model="customEntitiesJson"
                 rows="4"
-                class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg font-mono text-[11px] text-amber-200/90 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                :disabled="isLocked || isDreaming"
+                class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg font-mono text-[11px] text-amber-200/90 focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed"
               ></textarea>
             </div>
           </div>
@@ -349,7 +520,7 @@ async function handleTriggerSynthesis(): Promise<void> {
             </span>
             <button
               type="submit"
-              :disabled="isDreaming"
+              :disabled="isLocked || isDreaming"
               class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md text-xs"
             >
               <span v-if="isDreaming" class="animate-spin">⟳</span>
@@ -358,11 +529,11 @@ async function handleTriggerSynthesis(): Promise<void> {
           </div>
         </form>
 
-        <!-- Preview of Last Distillation Result -->
+        <!-- Preview of Extracted Narrative Facts & Canon Confirmation -->
         <div v-if="lastDistillResult" class="mt-6 border-t border-slate-800 pt-4 space-y-3">
           <div class="flex items-center justify-between">
             <h4 class="font-bold text-slate-200 text-xs">
-              Última Destilación Generada
+              Vista Previa de Hechos Narrativos Extraídos
             </h4>
             <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
               {{ lastDistillResult.chapterSource }}
@@ -371,24 +542,39 @@ async function handleTriggerSynthesis(): Promise<void> {
 
           <div class="grid grid-cols-2 gap-2 text-[11px] font-mono">
             <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
-              <span class="text-slate-400 block mb-0.5">Entidades:</span>
-              <strong class="text-amber-400">{{ lastDistillResult.entities.length }} actualizadas</strong>
+              <span class="text-slate-400 block mb-0.5">Entidades Extraídas:</span>
+              <strong class="text-amber-400">{{ lastDistillResult.entities.length }} entidades</strong>
             </div>
             <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
-              <span class="text-slate-400 block mb-0.5">Hechos:</span>
-              <strong class="text-sky-400">{{ lastDistillResult.facts.length }} destilados</strong>
+              <span class="text-slate-400 block mb-0.5">Hechos Extraídos:</span>
+              <strong class="text-sky-400">{{ lastDistillResult.facts.length }} hechos</strong>
             </div>
           </div>
 
-          <!-- Fact pills -->
-          <div class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+          <!-- Fact pills with Canon Confirmation Toggle -->
+          <div class="space-y-2 max-h-56 overflow-y-auto pr-1">
             <div
               v-for="(f, i) in lastDistillResult.facts"
               :key="i"
-              class="text-[11px] bg-slate-950/80 p-2 rounded border border-slate-800/80 text-slate-300 flex items-start gap-2"
+              class="text-[11px] bg-slate-950/80 p-2.5 rounded-lg border border-slate-800/80 text-slate-300 flex items-start justify-between gap-3 hover:border-slate-700 transition"
             >
-              <span class="text-amber-400 font-mono shrink-0">#{{ i + 1 }}</span>
-              <span class="leading-tight">{{ f.factStatement }}</span>
+              <div class="flex items-start gap-2">
+                <span class="text-amber-400 font-mono shrink-0">#{{ i + 1 }}</span>
+                <span class="leading-relaxed">{{ f.factStatement }}</span>
+              </div>
+
+              <!-- Canon Confirmation Button -->
+              <button
+                type="button"
+                :disabled="isLocked"
+                @click="toggleFactCanon(i)"
+                class="shrink-0 px-2 py-1 rounded text-[10px] font-mono font-bold transition border disabled:opacity-40 disabled:cursor-not-allowed"
+                :class="f.isCanon
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-700 hover:bg-emerald-900'
+                  : 'bg-amber-950/80 text-amber-300 border-amber-700 hover:bg-amber-900'"
+              >
+                {{ f.isCanon ? '✓ CANÓNICO' : '⚡ CONFIRMAR CANON' }}
+              </button>
             </div>
           </div>
         </div>

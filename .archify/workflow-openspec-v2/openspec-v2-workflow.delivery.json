@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "522eb73b-f632-4de5-84b2-8999fad46fff",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/candidate.json",
+  "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/openspec-v2-workflow.html",
+  "specification": {
+    "sha256": "26fed392dce15cd263f4c8a2e9aa741b756debf6adb7d5516136b1877204b050",
+    "bytes": 4449
+  },
+  "artifact": {
+    "sha256": "edce7b19773c10809d8507c88251fd5e8f0f898b8acac1739abfc68251e517ed",
+    "bytes": 828277
+  }
+}
