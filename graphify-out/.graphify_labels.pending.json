@@ -84,7 +84,7 @@
   "82": "2026-10-21-wxg-047-hitl-curation/tasks.md",
   "83": "Proposal: SaaS Mass PDF Chapter Ingestion Engine (WXG-004)",
   "84": "Proposal: Core Architecture, Graph Engine & E2E Integration Suite",
-  "85": "router.ts",
+  "85": "coreference.ts",
   "86": "Design: Mass PDF Ingestion Pipeline Architecture",
   "87": "Architecture & Data Schema",
   "88": "2026-10-21-wxg-004-pdf-mass-ingestion/tasks.md",
@@ -92,8 +92,13 @@
   "90": "Design: OpenSpec Engine v2 Architecture",
   "91": "2026-10-21-wxg-034-openspec-v2/tasks.md",
   "92": "btrfs-snapshot.sh",
+  "93": "Guía de Despliegue en Raspberry Pi 4 (ARM64) — WuxiaGraph",
   "94": "Requirements",
   "95": "scripts",
   "96": "ADDED Requirements",
-  "99": "Design: Bi-Temporal Knowledge Graph Architecture"
+  "97": "ADDED Requirements",
+  "98": "Proposal: Optimized Docker Deployment for Raspberry Pi 4 (ARM64)",
+  "99": "Design: Bi-Temporal Knowledge Graph Architecture",
+  "100": "Design: Docker RPi4 ARM64 Packaging",
+  "101": "2026-10-21-wxg-048-docker-rpi4/tasks.md"
 }

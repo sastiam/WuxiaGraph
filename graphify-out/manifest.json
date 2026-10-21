@@ -48,8 +48,8 @@
     "semantic_hash": "562d31619ae43c5d183d1fde156ee2b4"
   },
   "frontend/src/stores/lore.ts": {
-    "mtime": 1792614408.3875694,
-    "seen": 1792614564.1846375,
+    "mtime": 1792614632.2937655,
+    "seen": 1792615021.6915014,
     "ast_hash": "dbc86c37f1d71adb5d17fa8c212a5816",
     "semantic_hash": ""
   },
@@ -204,9 +204,9 @@
     "semantic_hash": "3505cf5dbd5f0e3926b261f2364fbafe"
   },
   "src/index.ts": {
-    "mtime": 1792614387.517458,
-    "seen": 1792614564.1846924,
-    "ast_hash": "92af2f239b2a95f397a13cdc246bd7c2",
+    "mtime": 1792614826.0278003,
+    "seen": 1792615021.6915543,
+    "ast_hash": "be86faa49b1c44f5011e4b26f123e74d",
     "semantic_hash": ""
   },
   "src/infrastructure/database.ts": {
@@ -618,9 +618,9 @@
     "semantic_hash": ""
   },
   "src/api/router.ts": {
-    "mtime": 1792614378.1104078,
-    "seen": 1792614564.1846492,
-    "ast_hash": "60cf12254f4ad27bc6231657bc955aaa",
+    "mtime": 1792614822.627782,
+    "seen": 1792615021.6915126,
+    "ast_hash": "c555a64d00815ebb5023687c4696ee71",
     "semantic_hash": ""
   },
   "src/api/routes/governance.ts": {
@@ -882,8 +882,8 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/index.ts": {
-    "mtime": 1792614212.9085212,
-    "seen": 1792614564.1846874,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.6915493,
     "ast_hash": "a2b1040d139479965620ee1913471c01",
     "semantic_hash": ""
   },
@@ -918,8 +918,8 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/coreference.ts": {
-    "mtime": 1792614201.2674587,
-    "seen": 1792614564.1846848,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.691547,
     "ast_hash": "7c3b4bf5dc41630adc3e2d08b6461d78",
     "semantic_hash": ""
   },
@@ -930,14 +930,14 @@
     "semantic_hash": ""
   },
   "frontend/src/components/HitLAliasQueue.test.ts": {
-    "mtime": 1792614469.9578984,
-    "seen": 1792614564.1846309,
+    "mtime": 1792614632.2937655,
+    "seen": 1792615021.6914947,
     "ast_hash": "b6910e0456f366088ee99a0b11e2d86e",
     "semantic_hash": ""
   },
   "frontend/src/components/HitLAliasQueue.vue": {
-    "mtime": 1792614547.04531,
-    "seen": 1792614564.1846325,
+    "mtime": 1792614632.2937655,
+    "seen": 1792615021.6914964,
     "ast_hash": "c2a923f819543d76dffbbe3c2cf30bb1",
     "semantic_hash": ""
   },
@@ -1260,63 +1260,111 @@
     "semantic_hash": ""
   },
   "src/api/routes/aliases.ts": {
-    "mtime": 1792614219.210555,
-    "seen": 1792614564.1846507,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.6915138,
     "ast_hash": "c4d7f00e196b85533cb92b3a1eec644f",
     "semantic_hash": ""
   },
   "src/domain/ingestion/hitlService.ts": {
-    "mtime": 1792614208.5404978,
-    "seen": 1792614564.1846862,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.6915479,
     "ast_hash": "1c7f4d81f4869d0bef27c82a34818441",
     "semantic_hash": ""
   },
   "tests/api/hitlCuration.test.ts": {
-    "mtime": 1792614524.9871924,
-    "seen": 1792614564.1847193,
+    "mtime": 1792614632.298508,
+    "seen": 1792615021.69158,
     "ast_hash": "fe1008f7da09179448d0e35e26015b80",
     "semantic_hash": ""
   },
   "tests/domain/ingestion/hitlService.test.ts": {
-    "mtime": 1792614260.3687766,
-    "seen": 1792614564.1847308,
+    "mtime": 1792614632.298508,
+    "seen": 1792615021.6915932,
     "ast_hash": "9c831f37b3da3a20ab83955821c6ae9f",
     "semantic_hash": ""
   },
   "openspec/changes/archive/2026-10-21-wxg-047-hitl-curation/.openspec.yaml": {
-    "mtime": 1792613861.4376295,
-    "seen": 1792614608.0777447,
+    "mtime": 1792614632.2967656,
+    "seen": 1792615021.6917071,
     "ast_hash": "8dc49b4fe381379a3a28d72313f76df6",
     "semantic_hash": ""
   },
   "openspec/changes/archive/2026-10-21-wxg-047-hitl-curation/design.md": {
-    "mtime": 1792613870.8466802,
-    "seen": 1792614608.0777466,
+    "mtime": 1792614632.2978468,
+    "seen": 1792615021.6917086,
     "ast_hash": "004e54f0524d5c785a9d2ff434e2e260",
     "semantic_hash": ""
   },
   "openspec/changes/archive/2026-10-21-wxg-047-hitl-curation/proposal.md": {
-    "mtime": 1792614600.8167486,
-    "seen": 1792614608.077748,
+    "mtime": 1792614632.2978468,
+    "seen": 1792615021.6917098,
     "ast_hash": "0730637ecbfa92d2f1e0346224849cd0",
     "semantic_hash": ""
   },
   "openspec/changes/archive/2026-10-21-wxg-047-hitl-curation/specs/hitl-curation/spec.md": {
-    "mtime": 1792613878.4357529,
-    "seen": 1792614608.0777493,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.691711,
     "ast_hash": "22863dcb7a056031b93f46f17332bf9a",
     "semantic_hash": ""
   },
   "openspec/changes/archive/2026-10-21-wxg-047-hitl-curation/tasks.md": {
-    "mtime": 1792614597.686074,
-    "seen": 1792614608.0777504,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.691712,
     "ast_hash": "28d03aa7a4912dcc0aba071e3aa083cd",
     "semantic_hash": ""
   },
   "openspec/specs/hitl-curation/spec.md": {
-    "mtime": 1792614603.4139762,
-    "seen": 1792614608.0777645,
+    "mtime": 1792614632.2979207,
+    "seen": 1792615021.6917257,
     "ast_hash": "9b68468fa8f3281405e4d2f7fc0c5f17",
+    "semantic_hash": ""
+  },
+  "tests/deployment/docker.test.ts": {
+    "mtime": 1792614964.5755403,
+    "seen": 1792615021.691583,
+    "ast_hash": "0dcdc078a04f6fdacba7ade59bb77a48",
+    "semantic_hash": ""
+  },
+  "docker-compose.yml": {
+    "mtime": 1792614856.8279648,
+    "seen": 1792615021.691652,
+    "ast_hash": "81481a0c4e099839a89591e4f524fe0b",
+    "semantic_hash": ""
+  },
+  "docs/deploy-rpi4.md": {
+    "mtime": 1792614889.3181384,
+    "seen": 1792615021.6916535,
+    "ast_hash": "d9d945296382aacd50ff6775e0514950",
+    "semantic_hash": ""
+  },
+  "openspec/changes/2026-10-21-wxg-048-docker-rpi4/.openspec.yaml": {
+    "mtime": 1792614645.295835,
+    "seen": 1792615021.6916595,
+    "ast_hash": "8dc49b4fe381379a3a28d72313f76df6",
+    "semantic_hash": ""
+  },
+  "openspec/changes/2026-10-21-wxg-048-docker-rpi4/design.md": {
+    "mtime": 1792614655.5278895,
+    "seen": 1792615021.6916606,
+    "ast_hash": "5a8e5d34c2b57b98ced934eba04d8890",
+    "semantic_hash": ""
+  },
+  "openspec/changes/2026-10-21-wxg-048-docker-rpi4/proposal.md": {
+    "mtime": 1792614995.6967068,
+    "seen": 1792615021.6916616,
+    "ast_hash": "a250606825d9f40fc6af27bfe4fe2d4a",
+    "semantic_hash": ""
+  },
+  "openspec/changes/2026-10-21-wxg-048-docker-rpi4/specs/docker-rpi4/spec.md": {
+    "mtime": 1792614662.5783544,
+    "seen": 1792615021.6916625,
+    "ast_hash": "93b36d59d20f4db4f8bb6371a708e512",
+    "semantic_hash": ""
+  },
+  "openspec/changes/2026-10-21-wxg-048-docker-rpi4/tasks.md": {
+    "mtime": 1792615000.1697307,
+    "seen": 1792615021.6916635,
+    "ast_hash": "549ffefe237ad85620c3b62ec636ac2d",
     "semantic_hash": ""
   }
 }
