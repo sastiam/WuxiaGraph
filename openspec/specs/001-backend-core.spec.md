@@ -50,6 +50,6 @@ CREATE TABLE IF NOT EXISTS wip_governance_ledger (
 
 ## 5. Pruebas de Casos Borde Exigidos
 - [x] Test de verificación de SQLite WAL e integridad de llaves foráneas.
-- [ ] Test del Circuit Breaker en el límite exacto (3.99h permite avance, 4.01h bloquea).
-- [ ] Test de inyección de contexto descartando borradores (`is_canon = 0`).
-- [ ] Test de ejecución de herramientas MCP retornando JSON válido.
+- [x] Test del Circuit Breaker en el límite exacto (3.99h permite avance, 4.01h bloquea).
+- [x] Test de inyección de contexto descartando borradores (`is_canon = 0`).
+- [x] Test de ejecución de herramientas MCP retornando JSON válido.

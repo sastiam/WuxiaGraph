@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "OpenSpec Engine v2: Next-Gen Orchestration Architecture",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": ".archify/workflow-openspec-v2/openspec-v2-workflow.html"
+  },
+  "lanes": [
+    { "id": "user", "label": "User / Product Manager" },
+    { "id": "hermes", "label": "Hermes Master Orchestrator" },
+    { "id": "safety", "label": "Btrfs CoW & Archify Gates", "variant": "exception" },
+    { "id": "subagent", "label": "Antigravity CLI Subagents" }
+  ],
+  "phases": [
+    { "id": "ingested", "label": "1. Ingestion & Contract", "fromCol": 0, "toCol": 1 },
+    { "id": "isolated", "label": "2. Isolation & Visuals", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
+    { "id": "building", "label": "3. Subagent Execution", "fromCol": 3, "toCol": 4, "variant": "dashed" },
+    { "id": "landing", "label": "4. Quality & PR Landing", "fromCol": 5, "toCol": 5 }
+  ],
+  "groups": [
+    { "id": "contract_phase", "label": "OpenSpec Contract Generation", "lane": "hermes", "fromCol": 0, "toCol": 1 },
+    { "id": "safety_phase", "label": "Zero-Risk Snapshot & Visuals", "lane": "safety", "fromCol": 1, "toCol": 2 },
+    { "id": "subagent_loop", "label": "Parallel Builder Execution", "lane": "subagent", "fromCol": 2, "toCol": 3 },
+    { "id": "landing_phase", "label": "Quality Verification & PR", "lane": "hermes", "fromCol": 4, "toCol": 5 }
+  ],
+  "mainPath": ["req", "epic", "openspec", "snapshot", "archify", "agy", "verify", "pr"],
+  "nodes": [
+    { "id": "req", "lane": "user", "col": 0, "type": "external", "label": "Requirement", "sublabel": "Issues / Features", "width": 140 },
+    { "id": "epic", "lane": "hermes", "col": 0, "type": "frontend", "label": "GitHub Epic", "sublabel": "mcp__github__create_issue", "width": 140 },
+    { "id": "openspec", "lane": "hermes", "col": 1, "type": "backend", "label": "OpenSpec Contract", "sublabel": "proposal, design, tasks, spec", "width": 140 },
+    { "id": "snapshot", "lane": "safety", "col": 1, "type": "security", "label": "Btrfs Snapshot", "sublabel": "100ms Rollback Buffer", "width": 140 },
+    { "id": "archify", "lane": "safety", "col": 2, "type": "database", "label": "Archify Diagrams", "sublabel": "Auto C4 / Workflow HTML", "width": 140 },
+    { "id": "agy", "lane": "subagent", "col": 2, "type": "messagebus", "label": "Antigravity CLI", "sublabel": "Isolated Builder Subagent", "tag": "accept-edits", "width": 140 },
+    { "id": "autohealing", "lane": "subagent", "col": 3, "type": "messagebus", "label": "Auto-Healing Pass", "sublabel": "Fix test errors (max 5 turns)", "width": 140 },
+    { "id": "rollback", "lane": "safety", "col": 4, "type": "security", "label": "Btrfs CoW Rollback", "sublabel": "Instant Clean Slate", "width": 140 },
+    { "id": "verify", "lane": "hermes", "col": 4, "type": "backend", "label": "Quality Gate", "sublabel": "pnpm build && pnpm test", "width": 140 },
+    { "id": "pr", "lane": "hermes", "col": 5, "type": "cloud", "label": "Archive & PR", "sublabel": "openspec archive + PR Closes #", "width": 140 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "req", "to": "epic", "variant": "default" },
+    { "id": "e2", "from": "epic", "to": "openspec", "variant": "emphasis" },
+    { "id": "e3", "from": "openspec", "to": "snapshot", "variant": "security" },
+    { "id": "e4", "from": "snapshot", "to": "archify", "variant": "default" },
+    { "id": "e5", "from": "archify", "to": "agy", "variant": "emphasis" },
+    { "id": "e6", "from": "agy", "to": "autohealing", "label": "tests fail?", "variant": "dashed" },
+    { "id": "e7", "from": "autohealing", "to": "rollback", "label": "unresolved?", "variant": "security", "role": "error" },
+    { "id": "e8", "from": "agy", "to": "verify", "variant": "default" },
+    { "id": "e9", "from": "verify", "to": "pr", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Core Orchestration",
+      "items": [
+        "Hermes acts exclusively as Master Orchestrator and Architect",
+        "OpenSpec CLI provides standardized contracts and specification deltas"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Safety & Resilience",
+      "items": [
+        "Btrfs CoW Snapshots guarantee instant rollback on build/test failures",
+        "Archify generates interactive HTML architecture diagrams automatically"
+      ]
+    }
+  ]
+}

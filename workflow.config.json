@@ -1,0 +1,38 @@
+{
+  "profile": "personal",
+  "taskProvider": {
+    "type": "github",
+    "githubProjectNumber": 2,
+    "githubOwner": "sastiam",
+    "githubRepo": "WuxiaGraph"
+  },
+  "cloudMock": {
+    "type": "floci",
+    "endpoint": "http://localhost:4566"
+  },
+  "tokenCompressor": {
+    "enabled": true,
+    "type": "rtk"
+  },
+  "memoryStore": {
+    "type": "obsidian",
+    "vaultPath": "/home/sastiam/Workspace/Vault"
+  },
+  "topology": {
+    "type": "graphify",
+    "useRepomix": true
+  },
+  "archChecker": {
+    "type": "archify",
+    "maxCognitiveComplexity": 10
+  },
+  "codeVerifier": {
+    "type": "justfile",
+    "preFlightCommand": "pnpm typecheck && pnpm test",
+    "landCommand": "pnpm build"
+  },
+  "agentRunner": {
+    "type": "antigravity",
+    "executablePath": "/home/sastiam/.local/bin/agy"
+  }
+}

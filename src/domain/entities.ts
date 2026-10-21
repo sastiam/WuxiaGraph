@@ -29,3 +29,26 @@ export interface WipGovernanceLedger {
   branchesOpenedCount: number;
   status: WipStatus;
 }
+
+export interface LoreRelationship {
+  relationship_id: string;
+  source_entity_id: string;
+  target_entity_id: string;
+  relationship_type: string;
+  affinity_weight: number;
+  description?: string | null;
+  last_updated_timestamp?: string;
+  relationshipId?: string;
+  sourceEntityId?: string;
+  targetEntityId?: string;
+  relationshipType?: string;
+  affinityWeight?: number;
+  lastUpdatedTimestamp?: string;
+}
+
+export interface GraphPath {
+  path: string[];
+  total_affinity: number;
+  relationships: LoreRelationship[];
+  totalAffinity?: number;
+}
