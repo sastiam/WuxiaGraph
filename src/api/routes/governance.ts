@@ -6,6 +6,28 @@ import { getStartOfWeek } from '../../domain/governance/utils.js';
 export function createGovernanceRouter(govRepo: IWipGovernanceRepository): Hono {
   const router = new Hono();
 
+  router.get('/status', async (c) => {
+    const ledger = await govRepo.getOrCreateCurrentWeekLedger();
+    return c.json(
+      {
+        success: true,
+        data: ledger,
+      },
+      200
+    );
+  });
+
+  router.get('/', async (c) => {
+    const ledger = await govRepo.getOrCreateCurrentWeekLedger();
+    return c.json(
+      {
+        success: true,
+        data: ledger,
+      },
+      200
+    );
+  });
+
   router.post('/log', async (c) => {
     let body: unknown;
     try {
