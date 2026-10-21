@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "standard",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "a219fa91c15235fc1a5ea04e46f7f64ed0e37d31141c6d6c140e2f6b3af73fb3",
+    "bytes": 4300
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "gates": {
+    "validate": "fail",
+    "deliver": "not-run",
+    "check": "not-run",
+    "browser-check": "not-run"
+  },
+  "failedStage": "validate",
+  "diagnostics": [
+    {
+      "code": "schema/required",
+      "severity": "error",
+      "message": "/flows/2 (id/label: \"flow-3\") must have required property 'label'",
+      "subject": {
+        "diagramType": "dataflow",
+        "path": "/flows/2",
+        "identity": "flow-3"
+      },
+      "evidence": {
+        "keyword": "required",
+        "missingProperty": "label"
+      },
+      "supportedFixes": [
+        "add required property \"label\""
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-3/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-3/dataflow.finalize-summary.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 179,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "nextAction": {
+    "action": "edit-in-place",
+    "candidate": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "constraint": "Preserve unaffected semantics and geometry; apply each diagnostic's supportedFixes, or the fix its message names, and do not replace the whole candidate.",
+    "then": "finalize-once"
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "standard",
+  "startedAt": "2026-10-21T18:40:24.456Z",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "a3e7db352fc2415f532c909ed063491180242bd79897e04f449345bac152a5fc",
+    "bytes": 4324
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "stages": {
+    "validate": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": null,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "deliver",
+        "dataflow",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "--quality",
+        "standard",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "deliver",
+        "receiptId": "32838c03-0f3f-48c5-bcec-e0f8264b62be",
+        "stage": "render",
+        "type": "dataflow",
+        "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "error": "Data-flow layout validation failed:\n- Label \"check quota\" overlaps node \"chapter_splitter\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [282, 221, 66, 27]\n  node \"chapter_splitter\" rect: [259, 242, 112, 58]\n  Suggested fix: set labelAt [315, 315] or set labelDy 83 (below); or set labelAt [315, 222] or set labelDy -10 (above)",
+        "diagnostics": [
+          {
+            "code": "layout/constraint",
+            "severity": "error",
+            "message": "Label \"check quota\" overlaps node \"chapter_splitter\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [282, 221, 66, 27]\n  node \"chapter_splitter\" rect: [259, 242, 112, 58]\n  Suggested fix: set labelAt [315, 315] or set labelDy 83 (below); or set labelAt [315, 222] or set labelDy -10 (above)",
+            "subject": {
+              "diagramType": "dataflow"
+            },
+            "evidence": {},
+            "supportedFixes": []
+          }
+        ],
+        "provenance": "absent",
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      },
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "not-run",
+      "execution": "blocked-by-validate"
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"check quota\" overlaps node \"chapter_splitter\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [282, 221, 66, 27]\n  node \"chapter_splitter\" rect: [259, 242, 112, 58]\n  Suggested fix: set labelAt [315, 315] or set labelDy 83 (below); or set labelAt [315, 222] or set labelDy -10 (above)",
+      "subject": {
+        "diagramType": "dataflow"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-2/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-2/dataflow.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "validate",
+  "finishedAt": "2026-10-21T18:40:24.648Z",
+  "durationMs": 192,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

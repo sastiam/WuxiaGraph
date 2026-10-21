@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "standard",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "a3e7db352fc2415f532c909ed063491180242bd79897e04f449345bac152a5fc",
+    "bytes": 4324
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "gates": {
+    "validate": "fail",
+    "deliver": "not-run",
+    "check": "not-run",
+    "browser-check": "not-run"
+  },
+  "failedStage": "validate",
+  "diagnostics": [
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"check quota\" overlaps node \"chapter_splitter\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [282, 221, 66, 27]\n  node \"chapter_splitter\" rect: [259, 242, 112, 58]\n  Suggested fix: set labelAt [315, 315] or set labelDy 83 (below); or set labelAt [315, 222] or set labelDy -10 (above)",
+      "subject": {
+        "diagramType": "dataflow"
+      }
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-2/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-2/dataflow.finalize-summary.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 192,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "nextAction": {
+    "action": "edit-in-place",
+    "candidate": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "constraint": "Preserve unaffected semantics and geometry; apply each diagnostic's supportedFixes, or the fix its message names, and do not replace the whole candidate.",
+    "then": "finalize-once"
+  }
+}

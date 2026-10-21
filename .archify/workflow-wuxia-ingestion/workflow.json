@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "WuxiaGraph Mass PDF Ingestion Pipeline",
+    "output": ".archify/workflow-wuxia-ingestion/workflow.html",
+    "animation": "trace",
+    "quality_profile": "standard"
+  },
+  "lanes": [
+    { "id": "user_ui", "label": "Frontend UI & SSE Progress" },
+    { "id": "parsing_service", "label": "PDF Layout & Chapter Segmentation" },
+    { "id": "dreaming_engine", "label": "Batch Extraction Worker Pool" },
+    { "id": "graph_ledger", "label": "Knowledge Graph & Fact Ledger" },
+    { "id": "governance_lane", "label": "WIP Governance & Circuit Breaker", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "ingest", "label": "PDF Upload & Parsing", "fromCol": 0, "toCol": 1 },
+    { "id": "distill", "label": "Batch Chapter Distillation", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "reconcile", "label": "Entity Resolution & Ingestion", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "distill_pool", "label": "Parallel Worker Pool", "lane": "dreaming_engine", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "circuit_breaker", "label": "Token & WIP Protection", "lane": "governance_lane", "fromCol": 2, "toCol": 4, "variant": "security" }
+  ],
+  "mainPath": ["pdf_upload", "pdf_parsing", "chapter_segmentation", "sliding_window_batch", "llm_distillation", "co_reference_resolution", "graph_ingestion", "sse_notification"],
+  "nodes": [
+    { "id": "pdf_upload", "lane": "user_ui", "col": 0, "width": 96, "type": "frontend", "label": "Upload PDF", "sublabel": "Title + 500+ pgs" },
+    { "id": "pdf_parsing", "lane": "parsing_service", "col": 0, "width": 96, "type": "backend", "label": "Parse PDF", "sublabel": "Strip headers", "tag": "pdfplumber" },
+    { "id": "chapter_segmentation", "lane": "parsing_service", "col": 1, "width": 96, "type": "backend", "label": "Split Chapters", "sublabel": "Regex + LLM", "tag": "500+ Chaps" },
+    { "id": "sliding_window_batch", "lane": "dreaming_engine", "col": 2, "width": 96, "type": "messagebus", "label": "Sliding Queue", "sublabel": "Overlap Chunks" },
+    { "id": "llm_distillation", "lane": "dreaming_engine", "col": 3, "width": 96, "type": "backend", "label": "Extract Facts", "sublabel": "Zod Schemas", "tag": "Facts+Nodes" },
+    { "id": "co_reference_resolution", "lane": "graph_ledger", "col": 4, "width": 96, "type": "database", "label": "Resolve Aliases", "sublabel": "Co-ref & Realm" },
+    { "id": "graph_ingestion", "lane": "graph_ledger", "col": 5, "width": 96, "type": "database", "label": "Write Ledger", "sublabel": "SQLite Mutex" },
+    { "id": "sse_notification", "lane": "user_ui", "col": 5, "width": 96, "type": "frontend", "label": "SSE Progress", "sublabel": "Realtime & HitL" },
+    { "id": "budget_check", "lane": "governance_lane", "col": 2, "width": 96, "type": "security", "label": "Check Budget", "sublabel": "4.0h & Tokens", "tag": "Circuit Breaker" },
+    { "id": "locked_by_wip", "lane": "governance_lane", "col": 4, "width": 96, "type": "security", "label": "WIP Lock 423", "sublabel": "Pause & Save" }
+  ],
+  "edges": [
+    { "from": "pdf_upload", "to": "pdf_parsing" },
+    { "from": "pdf_parsing", "to": "chapter_segmentation" },
+    { "from": "chapter_segmentation", "to": "sliding_window_batch", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "sliding_window_batch", "to": "budget_check", "label": "quota", "variant": "security", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "budget_check", "to": "llm_distillation", "label": "valid", "variant": "emphasis", "route": "drop", "fromSide": "top", "toSide": "bottom" },
+    { "from": "budget_check", "to": "locked_by_wip", "label": "exceeded", "variant": "security", "role": "error" },
+    { "from": "sliding_window_batch", "to": "llm_distillation", "variant": "emphasis" },
+    { "from": "llm_distillation", "to": "co_reference_resolution", "variant": "emphasis", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "co_reference_resolution", "to": "graph_ingestion" },
+    { "from": "graph_ingestion", "to": "sse_notification", "label": "done", "variant": "emphasis", "route": "drop", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Mass PDF Ingestion Core", "items": ["Robust PDF layout parsing strips noise and headers across 500+ pages", "Regex + LLM Light identifies chapter boundaries (ej. 'Chapter X', '第X章')", "Sliding window ensures continuous narrative context without missing cliffhangers"] },
+    { "dot": "rose", "title": "Governance & Cost Control", "items": ["Circuit breaker monitors token spend and WIP governance budget", "Exceeding weekly budget triggers HTTP 423 LOCKED_BY_WIP with safe checkpointing", "Resume pipeline anytime from the last verified chapter ID"] },
+    { "dot": "cyan", "title": "Graph & Lore Consistency", "items": ["Co-reference resolution maps aliases, titles, and cultivate realm upgrades", "Fact Ledger stores canonical facts (is_canon=1) with chapter provenance", "Realtime SSE updates give authors instant visibility into extraction progress"] }
+  ]
+}

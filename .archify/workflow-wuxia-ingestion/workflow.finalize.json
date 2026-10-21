@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "workflow",
+  "quality": "standard",
+  "startedAt": "2026-10-21T18:39:39.621Z",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+    "sha256": "7d2b6bdc1d28e0186fa14a39c606427f1375b47bc9d9f64f08a9524ae83ed21e",
+    "bytes": 5193
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+    "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+    "bytes": 827513
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "deliver",
+        "workflow",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "--quality",
+        "standard",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "7d2b6bdc1d28e0186fa14a39c606427f1375b47bc9d9f64f08a9524ae83ed21e",
+          "bytes": 5193
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "standard",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 1,
+          "compositionIssues": [
+            {
+              "severity": "warning",
+              "code": "composition/viewport-height",
+              "readerFit": null,
+              "viewBoxWidth": 720,
+              "viewBoxHeight": 776,
+              "viewportWidth": 1440,
+              "viewportHeight": 900,
+              "ratio": 0.93,
+              "wideRatio": 1.55,
+              "svgWidthPx": 1346,
+              "svgHeightPx": 1451,
+              "fixedChromePx": 126,
+              "pageHeightPx": 1577,
+              "overflowPx": 677,
+              "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 720x776 canvas (ratio 0.93) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 1451px tall at the full 1346px width and the page reaches 1577px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 464 at this width, or spread content sideways so the width is at least 1203 at this height; for architecture and readable-v2 workflow, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
+            }
+          ]
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 287,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "deliver",
+        "workflow",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "--quality",
+        "standard",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "ca16cec4-45cc-4147-a7ef-335a43ce73fa",
+        "ok": true,
+        "command": "deliver",
+        "type": "workflow",
+        "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+        "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "specification": {
+          "sha256": "7d2b6bdc1d28e0186fa14a39c606427f1375b47bc9d9f64f08a9524ae83ed21e",
+          "bytes": 5193
+        },
+        "artifact": {
+          "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+          "bytes": 827513
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "standard",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 1,
+          "compositionIssues": [
+            {
+              "severity": "warning",
+              "code": "composition/viewport-height",
+              "readerFit": null,
+              "viewBoxWidth": 720,
+              "viewBoxHeight": 776,
+              "viewportWidth": 1440,
+              "viewportHeight": 900,
+              "ratio": 0.93,
+              "wideRatio": 1.55,
+              "svgWidthPx": 1346,
+              "svgHeightPx": 1451,
+              "fixedChromePx": 126,
+              "pageHeightPx": 1577,
+              "overflowPx": 677,
+              "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 720x776 canvas (ratio 0.93) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 1451px tall at the full 1346px width and the page reaches 1577px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 464 at this width, or spread content sideways so the width is at least 1203 at this height; for architecture and readable-v2 workflow, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
+            }
+          ]
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 141,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "artifact": {
+          "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+          "bytes": 827513
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "standard",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 1
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 6,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 1,
+            "minProjectedNodeTextPx": 8,
+            "maxBends": 2,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 13,
+            "minInteriorSegmentPx": 70,
+            "shortSegmentCount": 2,
+            "shortEndpointSegmentCount": 2,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": false,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "legacy-930",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 930,
+            "actualBudgetPx": 930,
+            "limit": "legacy",
+            "requestedTargetPx": null,
+            "requestedTargetMet": null,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "pdf_upload"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 8,
+            "semanticTextCount": 24
+          },
+          "issues": [
+            {
+              "severity": "warning",
+              "code": "composition/viewport-height",
+              "readerFit": null,
+              "viewBoxWidth": 720,
+              "viewBoxHeight": 776,
+              "viewportWidth": 1440,
+              "viewportHeight": 900,
+              "ratio": 0.93,
+              "wideRatio": 1.55,
+              "svgWidthPx": 1346,
+              "svgHeightPx": 1451,
+              "fixedChromePx": 126,
+              "pageHeightPx": 1577,
+              "overflowPx": 677,
+              "detail": "[composition/viewport-height] Preserve every node, relationship, and label. This 720x776 canvas (ratio 0.93) declares no intrinsic-height fit and is below the 1.55 wide ratio, so the desktop Reader can neither narrow it nor accept vertical scroll: it renders 1451px tall at the full 1346px width and the page reaches 1577px before cards against 900px, a certain visual-check failure. Either compact vertical spacing so meta.viewBox height is at most 464 at this width, or spread content sideways so the width is at least 1203 at this height; for architecture and readable-v2 workflow, omitting meta.viewBox lets the renderer size the canvas and declare the fit."
+            }
+          ]
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "ca16cec4-45cc-4147-a7ef-335a43ce73fa"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 13,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "ca16cec4-45cc-4147-a7ef-335a43ce73fa",
+        "artifact": {
+          "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+          "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+          "bytes": 827513
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "not-checked",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/evidence-path-conflict",
+            "severity": "error",
+            "message": "browser-check will not replace the existing unowned evidence path \"/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json\".",
+            "subject": {
+              "artifact": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+              "evidencePath": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json"
+            },
+            "evidence": {
+              "reason": {
+                "code": "ownership-artifact-mismatch"
+              }
+            },
+            "supportedFixes": [
+              "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "workflow.browser-check.json",
+          "files": []
+        },
+        "error": "browser-check will not replace the existing unowned evidence path \"/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json\"."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "evidencePath": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.finalize-summary.json",
+    "browserCheckReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-10-21T18:39:40.129Z",
+  "durationMs": 508,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}
