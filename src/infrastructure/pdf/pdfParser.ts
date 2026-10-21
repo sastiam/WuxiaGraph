@@ -1,5 +1,6 @@
 import { PDFParse } from 'pdf-parse';
 import fs from 'node:fs';
+import { splitChapters } from '../../domain/ingestion/chapterSplitter.js';
 
 export interface ParsedChapter {
   chapterIndex: number;
@@ -167,46 +168,14 @@ export class PdfParserService {
   }
 
   /**
-   * Helper to detect and segment novel chapters from extracted text.
+   * Helper to detect and segment novel chapters from extracted text using domain ChapterSplitter.
    */
   extractChapters(text: string): ParsedChapter[] {
-    const chapterRegex = /(?:^|\n)(Chapter\s+\d+.*|Capítulo\s+\d+.*|Capitulo\s+\d+.*|第[一二三四五六七八九十0-9]+章[^\n]*)(?=\n|$)/gi;
-    const matches = Array.from(text.matchAll(chapterRegex));
-
-    if (matches.length === 0) {
-      const trimmed = text.trim();
-      return trimmed.length > 0
-        ? [
-            {
-              chapterIndex: 1,
-              title: 'Section 1',
-              content: trimmed,
-            },
-          ]
-        : [];
-    }
-
-    const chapters: ParsedChapter[] = [];
-
-    for (let i = 0; i < matches.length; i++) {
-      const match = matches[i];
-      const title = match[1].trim();
-      const startIndex = match.index! + match[0].indexOf(match[1]);
-
-      const nextMatch = matches[i + 1];
-      const endIndex = nextMatch
-        ? nextMatch.index! + nextMatch[0].indexOf(nextMatch[1])
-        : text.length;
-
-      const content = text.substring(startIndex + match[1].length, endIndex).trim();
-
-      chapters.push({
-        chapterIndex: i + 1,
-        title,
-        content,
-      });
-    }
-
-    return chapters;
+    const structuredChapters = splitChapters(text);
+    return structuredChapters.map((ch) => ({
+      chapterIndex: ch.chapterIndex,
+      title: ch.title,
+      content: ch.rawContent,
+    }));
   }
 }
