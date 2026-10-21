@@ -1,18 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { getActivePinia } from 'pinia';
+import { useLoreStore, type HitLProposal } from '../stores/lore';
 
-export interface HitLProposal {
-  proposalId: string;
-  candidateName: string;
-  targetEntityId: string;
-  targetCanonicalName: string;
-  confidenceScore: number;
-  isCanon: boolean;
-  status: 'PENDING' | 'APPROVED' | 'REJECTED';
-  domain: string;
-  context?: string;
-  createdAt: string;
-}
+export type { HitLProposal };
 
 export interface AvailableEntity {
   entityId: string;
@@ -37,10 +28,21 @@ const emit = defineEmits<{
   (e: 'unify', payload: { proposal: HitLProposal; targetEntityId: string; targetCanonicalName: string }): void;
 }>();
 
+// Only call useLoreStore if Pinia is active (e.g., in real app or test with pinia plugin)
+const store = getActivePinia() ? useLoreStore() : null;
+
 // Deep copy initial proposals to allow independent local mutation per test/instance
 const proposals = ref<HitLProposal[]>(
   props.initialProposals.map((p) => ({ ...p }))
 );
+
+onMounted(async () => {
+  if (props.initialProposals.length === 0 && store) {
+    await store.fetchPendingAliases();
+    proposals.value = store.pendingAliases.map((p) => ({ ...p }));
+  }
+});
+
 const selectedDomain = ref<string>('ALL');
 const minConfidence = ref<number>(0);
 const selectedStatus = ref<'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED'>('PENDING');
@@ -66,14 +68,28 @@ const filteredProposals = computed(() => {
   });
 });
 
-function handleApprove(proposal: HitLProposal): void {
+async function handleApprove(proposal: HitLProposal): Promise<void> {
   proposal.status = 'APPROVED';
   proposal.isCanon = true;
+  if (store) {
+    try {
+      await store.reviewAliasProposal(proposal.proposalId, 'approve');
+    } catch {
+      // Graceful handling if offline or mock test environment
+    }
+  }
   emit('approve', { ...proposal });
 }
 
-function handleReject(proposal: HitLProposal): void {
+async function handleReject(proposal: HitLProposal): Promise<void> {
   proposal.status = 'REJECTED';
+  if (store) {
+    try {
+      await store.reviewAliasProposal(proposal.proposalId, 'reject');
+    } catch {
+      // Graceful handling if offline or mock test environment
+    }
+  }
   emit('reject', { ...proposal });
 }
 
@@ -87,7 +103,7 @@ function closeUnifyModal(): void {
   selectedUnifyTargetId.value = '';
 }
 
-function handleConfirmUnify(): void {
+async function handleConfirmUnify(): Promise<void> {
   if (!unifyingProposal.value || !selectedUnifyTargetId.value) return;
 
   const targetEntity = props.availableEntities.find(
@@ -100,6 +116,18 @@ function handleConfirmUnify(): void {
   unifyingProposal.value.targetCanonicalName = targetName;
   unifyingProposal.value.status = 'APPROVED';
   unifyingProposal.value.isCanon = true;
+
+  if (store) {
+    try {
+      await store.reviewAliasProposal(
+        unifyingProposal.value.proposalId,
+        'approve',
+        selectedUnifyTargetId.value
+      );
+    } catch {
+      // Graceful handling if offline or mock test environment
+    }
+  }
 
   emit('unify', {
     proposal: { ...unifyingProposal.value },

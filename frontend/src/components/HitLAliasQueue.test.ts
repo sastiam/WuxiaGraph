@@ -161,4 +161,47 @@ describe('HitLAliasQueue.vue', () => {
       }),
     });
   });
+
+  it('debe llamar a store.fetchPendingAliases() en onMounted si props.initialProposals está vacío', async () => {
+    const { createPinia, setActivePinia } = await import('pinia');
+    const { useLoreStore } = await import('../stores/lore');
+    const pinia = createPinia();
+    setActivePinia(pinia);
+
+    const store = useLoreStore();
+    store.pendingAliases = [
+      {
+        proposalId: 'prop-store-1',
+        candidateName: 'Lord Ye',
+        targetEntityId: 'ent-ye-chen',
+        targetCanonicalName: 'Ye Chen',
+        confidenceScore: 0.88,
+        isCanon: false,
+        status: 'PENDING',
+        domain: 'jianghu',
+        createdAt: '2026-10-21T12:00:00Z',
+      },
+    ];
+
+    let fetchCalled = false;
+    store.fetchPendingAliases = async () => {
+      fetchCalled = true;
+    };
+
+    const wrapper = mount(HitLAliasQueue, {
+      global: {
+        plugins: [pinia],
+      },
+      props: {
+        initialProposals: [],
+        availableEntities: mockEntities,
+      },
+    });
+
+    // Esperar tick / mount
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(fetchCalled).toBe(true);
+    expect(wrapper.text()).toContain('"Lord Ye"');
+  });
 });
