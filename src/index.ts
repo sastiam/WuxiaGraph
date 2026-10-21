@@ -6,16 +6,20 @@ import { createDatabase } from './infrastructure/database.js';
 import { SqliteContextRepository } from './infrastructure/sqlite-context.repository.js';
 import { SqliteDreamingRepository } from './infrastructure/repositories/dreamingRepository.js';
 import { SqliteWipGovernanceRepository } from './infrastructure/sqlite-wip-governance.repository.js';
+import { SqliteGraphRepository } from './infrastructure/repositories/graphRepository.js';
 import { ContextInjectorService } from './domain/context/index.js';
 import { DreamingService } from './domain/dreaming/index.js';
+import { GraphService } from './domain/graph/graphService.js';
 import { createContextRouter } from './api/context.router.js';
 import { createDreamingRouter } from './api/routes/dreaming.js';
+import { createGraphRouter } from './api/routes/graph.js';
 import { createMcpServer, McpServer } from './mcp/index.js';
 
 export interface AppOptions {
   db?: DatabaseSync;
   contextService?: ContextInjectorService;
   dreamingService?: DreamingService;
+  graphService?: GraphService;
   mcpServer?: McpServer;
 }
 
@@ -29,12 +33,16 @@ export function createApp(options?: AppOptions): Hono {
   const dreamingRepo = new SqliteDreamingRepository(db);
   const govRepo = new SqliteWipGovernanceRepository(db);
   const dreamingService = options?.dreamingService ?? new DreamingService(dreamingRepo, govRepo);
+  const graphRepo = new SqliteGraphRepository(db);
+  const graphService = options?.graphService ?? new GraphService(graphRepo);
   const mcpServer =
     options?.mcpServer ??
     createMcpServer({
       dreamingRepo,
       govRepo,
       contextRepo,
+      graphRepo,
+      graphService,
     });
 
   // Health check endpoint
@@ -49,6 +57,10 @@ export function createApp(options?: AppOptions): Hono {
   // Montaje de rutas del Servicio Dreaming (WXG-014)
   const dreamingRouter = createDreamingRouter(dreamingService);
   app.route('/api/v1/dreaming', dreamingRouter);
+
+  // Montaje de rutas del Motor de Grafos (WXG-021)
+  const graphRouter = createGraphRouter(graphService);
+  app.route('/api/v1/graph', graphRouter);
 
   // Montaje de endpoint JSON-RPC para MCP Server (WXG-016)
   app.post('/api/v1/mcp', async (c) => {
