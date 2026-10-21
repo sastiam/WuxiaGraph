@@ -38,12 +38,20 @@ export interface LoreRelationship {
   affinity_weight: number;
   description?: string | null;
   last_updated_timestamp?: string;
+  valid_from_chapter?: number;
+  valid_to_chapter?: number | null;
+  recorded_at?: string;
+  superseded_by?: number | string | null;
   relationshipId?: string;
   sourceEntityId?: string;
   targetEntityId?: string;
   relationshipType?: string;
   affinityWeight?: number;
   lastUpdatedTimestamp?: string;
+  validFromChapter?: number;
+  validToChapter?: number | null;
+  recordedAt?: string;
+  supersededBy?: number | string | null;
 }
 
 export interface GraphPath {

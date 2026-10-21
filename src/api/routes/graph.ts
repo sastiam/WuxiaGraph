@@ -51,6 +51,14 @@ export const CreateRelationshipSchema = z
     affinity_weight: z.number().optional(),
     affinityWeight: z.number().optional(),
     description: z.string().optional().nullable(),
+    valid_from_chapter: z.coerce.number().int().min(1).optional(),
+    validFromChapter: z.coerce.number().int().min(1).optional(),
+    valid_to_chapter: z.coerce.number().int().min(1).optional().nullable(),
+    validToChapter: z.coerce.number().int().min(1).optional().nullable(),
+    recorded_at: z.string().optional(),
+    recordedAt: z.string().optional(),
+    superseded_by: z.union([z.string(), z.number()]).optional().nullable(),
+    supersededBy: z.union([z.string(), z.number()]).optional().nullable(),
   })
   .refine(
     (data) => Boolean((data.relationship_id ?? data.relationshipId)?.trim()),
@@ -68,6 +76,10 @@ export const CreateRelationshipSchema = z
     (data) => Boolean((data.relationship_type ?? data.relationshipType)?.trim()),
     { message: 'El campo "relationship_type" es requerido.', path: ['relationship_type'] }
   );
+
+export const AsOfChapterParamSchema = z.object({
+  chapterId: z.coerce.number().int().positive('chapterId debe ser un número entero positivo.'),
+});
 
 /**
  * Enrutador de API HTTP Hono para el Motor de Grafos (WXG-021).
@@ -134,6 +146,31 @@ export function createGraphRouter(graphService: GraphService): Hono {
     }
   });
 
+  // GET /as-of/:chapterId
+  router.get('/as-of/:chapterId', async (c) => {
+    const rawParam = c.req.param();
+    const parseResult = AsOfChapterParamSchema.safeParse(rawParam);
+
+    if (!parseResult.success) {
+      return c.json(
+        {
+          error: 'INVALID_REQUEST',
+          message: parseResult.error.issues[0]?.message ?? 'Parámetro de capítulo inválido.',
+        },
+        400
+      );
+    }
+
+    try {
+      const { chapterId } = parseResult.data;
+      const relationships = await graphService.getGraphAsOfChapter(chapterId);
+      return c.json(relationships, 200);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error interno inesperado';
+      return c.json({ error: 'INTERNAL_ERROR', message }, 500);
+    }
+  });
+
   // POST /relationships (opcional / soporte para registro de relaciones)
   router.post('/relationships', async (c) => {
     let body: unknown;
@@ -177,6 +214,10 @@ export function createGraphRouter(graphService: GraphService): Hono {
         relationship_type: relationshipType,
         affinity_weight: affinityWeight,
         description,
+        valid_from_chapter: data.valid_from_chapter ?? data.validFromChapter,
+        valid_to_chapter: data.valid_to_chapter !== undefined ? data.valid_to_chapter : data.validToChapter,
+        recorded_at: data.recorded_at ?? data.recordedAt,
+        superseded_by: data.superseded_by !== undefined ? data.superseded_by : data.supersededBy,
       });
 
       return c.json({ success: true, relationship_id: relationshipId }, 201);
