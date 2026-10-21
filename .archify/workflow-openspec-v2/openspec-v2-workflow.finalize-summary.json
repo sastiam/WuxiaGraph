@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "workflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/candidate.json",
+    "sha256": "26fed392dce15cd263f4c8a2e9aa741b756debf6adb7d5516136b1877204b050",
+    "bytes": 4449
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/openspec-v2-workflow.html",
+    "sha256": "edce7b19773c10809d8507c88251fd5e8f0f898b8acac1739abfc68251e517ed",
+    "bytes": 828277
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/openspec-v2-workflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/openspec-v2-workflow.finalize-summary.json",
+    "browserCheckReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-openspec-v2/openspec-v2-workflow.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 2777,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  }
+}
