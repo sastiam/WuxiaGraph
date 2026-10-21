@@ -1,17 +1,17 @@
 # Graph Report - WuxiaGraph  (2026-10-21)
 
 ## Corpus Check
-- 140 files · ~109,569 words
+- 143 files · ~111,670 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: (none) 8, .css 1, .tsbuildinfo 1)
 
 ## Summary
-- 937 nodes · 1574 edges · 70 communities (63 shown, 7 thin omitted)
+- 958 nodes · 1619 edges · 70 communities (63 shown, 7 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7f17b7d8`
+- Built from commit: `765171e3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -78,7 +78,7 @@
 - WuxiaGraph Project Rules for Hermes Agent
 - README.md
 - ADDED Requirements
-- router.ts
+- Tasks
 - Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3)
 - Design: Mass PDF Ingestion Pipeline Architecture
 - Design: Frontend Dashboard (Vue 3, Pinia, Vue Flow)
@@ -93,7 +93,7 @@
 5. `NarrativeFact` - 20 edges
 6. `IWipGovernanceRepository` - 19 edges
 7. `compilerOptions` - 18 edges
-8. `vitest` - 17 edges
+8. `vitest` - 18 edges
 9. `createApp()` - 16 edges
 10. `SqliteDreamingRepository` - 16 edges
 
@@ -102,10 +102,10 @@
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/design.md → src/domain/governance/errors.ts
 - `What Changes` --references--> `WipLimitExceededError`  [INFERRED]
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/proposal.md → src/domain/governance/errors.ts
+- `2. Enrutador Principal, Middlewares y Servidor Central` --references--> `createApiRouter()`  [INFERRED]
+  openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/tasks.md → src/api/router.ts
 - `2. Invariantes Implementadas` --references--> `IContextRepository`  [INFERRED]
   openspec/changes/wxg-016-mcp-server.md → src/domain/context/types.ts
-- `2. Invariantes Implementadas` --references--> `IDreamingRepository`  [INFERRED]
-  openspec/changes/wxg-016-mcp-server.md → src/domain/dreaming/repository.ts
 - `Context & Impact` --references--> `DreamingService`  [INFERRED]
   openspec/changes/wxg-004-pdf-mass-ingestion/proposal.md → src/domain/dreaming/service.ts
 
@@ -119,12 +119,12 @@ Cohesion: 0.22
 Nodes (9): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, typescript, vite, @vitejs/plugin-vue (+1 more)
 
 ### Community 1 - "router.ts"
-Cohesion: 0.10
-Nodes (24): buildLoreEntity(), buildNarrativeFact(), extractFactsFromText(), parseAndValidateAttributes(), DreamingForeignKeyViolationError, EmptyNarrativeInputError, EntityNotFoundError, InvalidAttributesJsonError (+16 more)
+Cohesion: 0.05
+Nodes (44): 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools, ApiRouterDependencies, createDreamingRouter(), createGovernanceRouter(), DistillEntityDto (+36 more)
 
 ### Community 2 - "tools/index.ts"
 Cohesion: 0.08
-Nodes (40): 3.1. Umbrales de Vulnerabilidad (CVE / CVSS), 3.2. Salud del Proyecto y OpenSSF Scorecard, 3.3. Cumplimiento de Licenciamiento (License Compliance), 3. Criterios Obligatorios para la Aceptación de Paquetes, MCP_PROTOCOL_VERSION, MCP_SERVER_INFO, McpServer, getCanonicalEntitiesDefinition (+32 more)
+Nodes (41): 3.1. Umbrales de Vulnerabilidad (CVE / CVSS), 3.2. Salud del Proyecto y OpenSSF Scorecard, 3.3. Cumplimiento de Licenciamiento (License Compliance), 3. Criterios Obligatorios para la Aceptación de Paquetes, zod, MCP_PROTOCOL_VERSION, MCP_SERVER_INFO, McpServer (+33 more)
 
 ### Community 3 - "frontend/package.json"
 Cohesion: 0.11
@@ -136,7 +136,7 @@ Nodes (17): availableDomains, depth, edges, fetchError, filterCanonOnly, isLoadi
 
 ### Community 5 - "database.ts"
 Cohesion: 0.07
-Nodes (48): Context, 1. Contexto & Propósito, 2. Invariantes Implementadas, OpenSpec Change Proposal: WXG-015 Context Injector Service, hono, vitest, buildImmutablePromptPrefix(), ContextInjectorService (+40 more)
+Nodes (52): Context, 1. Contexto & Propósito, 2. Invariantes Implementadas, OpenSpec Change Proposal: WXG-015 Context Injector Service, hono, vitest, contextQuerySchema, createContextRouter() (+44 more)
 
 ### Community 6 - "package.json"
 Cohesion: 0.06
@@ -172,7 +172,7 @@ Nodes (12): currentTab, loreStore, selectedDomain, TabView, DistillSuccessData, 
 
 ### Community 14 - "GraphService"
 Cohesion: 0.06
-Nodes (27): 1. Dominio (`src/domain/graph/`), 2. Infraestructura (`src/infrastructure/repositories/graphRepository.ts`), 3. Capa de API HTTP (`src/api/routes/graph.ts`), 4. Capa MCP (`src/mcp/tools/graphTools.ts`), Arquitectura Hexagonal, Design: Motor de Grafos & Consultas Relacionales (WXG-002), Tasks: Motor de Grafos & Consultas Relacionales (WXG-002), Context & Impact (+19 more)
+Nodes (29): 1. Dominio (`src/domain/graph/`), 2. Infraestructura (`src/infrastructure/repositories/graphRepository.ts`), 3. Capa de API HTTP (`src/api/routes/graph.ts`), 4. Capa MCP (`src/mcp/tools/graphTools.ts`), Arquitectura Hexagonal, Design: Motor de Grafos & Consultas Relacionales (WXG-002), Tasks: Motor de Grafos & Consultas Relacionales (WXG-002), Context & Impact (+21 more)
 
 ### Community 17 - "Requirements"
 Cohesion: 0.15
@@ -211,8 +211,8 @@ Cohesion: 0.25
 Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Proposal, What Changes, Why
 
 ### Community 26 - "pdf/pdfParser.ts"
-Cohesion: 0.19
-Nodes (9): pdf-parse, cleanWatermarks(), DEFAULT_WATERMARK_PATTERNS, ParsedChapter, ParsedPdfPage, PdfCleanerOptions, PdfParseResult, PdfParserOptions (+1 more)
+Cohesion: 0.10
+Nodes (19): pdf-parse, calculateWordCount(), ChapterInputPage, ChapterSplitter, ChapterSplitterOptions, DEFAULT_HEADER_PATTERNS, InternalLineMatch, PageSpan (+11 more)
 
 ### Community 27 - "Contract: [WXG-023] Componente Visualizador de Grafo Interactivo de Lore (Vue Flow / Vue 3)"
 Cohesion: 0.18
@@ -354,9 +354,9 @@ Nodes (6): ADDED Requirements, Requirement: Depth-based Graph Query and Visualiz
 Cohesion: 0.29
 Nodes (6): ADDED Requirements, Requirement: Chapter-Level Ingestion Checkpoints, Requirement: Human-in-the-Loop Alias Approval Queue, Scenario: Resuming interrupted ingestion, Scenario: User approves proposed alias, Spec: Mass PDF Ingestion Engine
 
-### Community 69 - "router.ts"
-Cohesion: 0.06
-Nodes (31): 1. Esquemas y Enrutador de Gobernanza WIP, 2. Enrutador Principal, Middlewares y Servidor Central, 3. Pruebas de Integración y Verificación, Tasks, 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools (+23 more)
+### Community 69 - "Tasks"
+Cohesion: 0.40
+Nodes (4): 1. Esquemas y Enrutador de Gobernanza WIP, 2. Enrutador Principal, Middlewares y Servidor Central, 3. Pruebas de Integración y Verificación, Tasks
 
 ### Community 72 - "Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3)"
 Cohesion: 0.40
@@ -368,7 +368,7 @@ Nodes (3): Design: Mass PDF Ingestion Pipeline Architecture, Diagrama de Flujo, 
 
 ## Knowledge Gaps
 - **11 isolated node(s):** `@vueuse/core`, `@types/node`, `autoprefixer`, `postcss`, `tailwindcss` (+6 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 507 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 514 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -381,9 +381,9 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `@vueuse/core`, `@types/node`, `autoprefixer` to the rest of the system?**
   _11 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `router.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.09898989898989899 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05174190888476603 - nodes in this community are weakly interconnected._
 - **Should `tools/index.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07966457023060797 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07946127946127945 - nodes in this community are weakly interconnected._
 - **Should `frontend/package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `LoreGraphVisualizer.vue` be split into smaller, more focused modules?**

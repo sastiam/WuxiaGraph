@@ -72,8 +72,8 @@
     "semantic_hash": "8076e88d54086a21bd05e3ef7d6f03ae"
   },
   "package.json": {
-    "mtime": 1792609092.6768405,
-    "seen": 1792609503.8791704,
+    "mtime": 1792609591.2652915,
+    "seen": 1792610004.591789,
     "ast_hash": "78efe3774645f17ef0d7c4596c047bb1",
     "semantic_hash": ""
   },
@@ -192,9 +192,9 @@
     "semantic_hash": "8bb7a7caaf70f08bfc01cf48c0e567ae"
   },
   "src/domain/index.ts": {
-    "mtime": 1792608026.1945996,
-    "seen": 1792609503.8792055,
-    "ast_hash": "ad681d59fd9e801f4e0e314c6463b1ba",
+    "mtime": 1792609907.7442503,
+    "seen": 1792610004.5918262,
+    "ast_hash": "831ffa6d3375d36a9b1ed65a10a3f7ac",
     "semantic_hash": ""
   },
   "src/index.test.ts": {
@@ -216,8 +216,8 @@
     "semantic_hash": ""
   },
   "src/infrastructure/index.ts": {
-    "mtime": 1792609399.4225001,
-    "seen": 1792609503.87921,
+    "mtime": 1792609591.2652915,
+    "seen": 1792610004.5918348,
     "ast_hash": "14cc8f585c78a9b177750135e2dc0752",
     "semantic_hash": ""
   },
@@ -816,20 +816,20 @@
     "semantic_hash": ""
   },
   "src/infrastructure/pdf/pdfParser.ts": {
-    "mtime": 1792609465.7748592,
-    "seen": 1792609503.8792112,
-    "ast_hash": "b6d4446089e50e4d02da222696dd9d5c",
+    "mtime": 1792609949.52476,
+    "seen": 1792610004.591836,
+    "ast_hash": "35042eba2b9ccf177547f63812ce2ad3",
     "semantic_hash": ""
   },
   "src/infrastructure/pdfParser.ts": {
-    "mtime": 1792609392.2954617,
-    "seen": 1792609503.8792129,
+    "mtime": 1792609591.2652915,
+    "seen": 1792610004.5918372,
     "ast_hash": "8b828725c896740ecb37e328cb479201",
     "semantic_hash": ""
   },
   "tests/infrastructure/pdfParser.test.ts": {
-    "mtime": 1792609479.6408467,
-    "seen": 1792609503.879246,
+    "mtime": 1792609591.2652915,
+    "seen": 1792610004.591873,
     "ast_hash": "08e55cc6d2337c5670321703ee3dde73",
     "semantic_hash": ""
   },
@@ -864,33 +864,33 @@
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/.openspec.yaml": {
-    "mtime": 1792608988.662278,
-    "seen": 1792609503.879317,
+    "mtime": 1792609591.2635381,
+    "seen": 1792610004.5919416,
     "ast_hash": "8dc49b4fe381379a3a28d72313f76df6",
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/design.md": {
-    "mtime": 1792609005.3373682,
-    "seen": 1792609503.8793182,
+    "mtime": 1792609591.2652166,
+    "seen": 1792610004.591943,
     "ast_hash": "e9e29370b53c35a5c0096ff1ed6640cd",
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/proposal.md": {
-    "mtime": 1792609001.3663466,
-    "seen": 1792609503.8793192,
+    "mtime": 1792609591.2652166,
+    "seen": 1792610004.591944,
     "ast_hash": "99f70fb2e9d123a6e13604f31813f57b",
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/specs/pdf-ingestion/spec.md": {
-    "mtime": 1792609012.648068,
-    "seen": 1792609503.8793206,
+    "mtime": 1792609591.2652915,
+    "seen": 1792610004.591945,
     "ast_hash": "ca0d56a76a05a97c9e80580502db0a92",
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/tasks.md": {
-    "mtime": 1792609498.9040384,
-    "seen": 1792609503.8793218,
-    "ast_hash": "147be648f8335ee0a79b78bb00f21a4b",
+    "mtime": 1792609998.4107406,
+    "seen": 1792610004.5919461,
+    "ast_hash": "d68c8c6fd09d37892637136e16b30648",
     "semantic_hash": ""
   },
   "openspec/specs/frontend-dashboard/spec.md": {
@@ -900,9 +900,27 @@
     "semantic_hash": ""
   },
   "tests/fixtures/sample-book.pdf": {
-    "mtime": 1792609455.2476249,
-    "seen": 1792609503.879336,
+    "mtime": 1792609591.2652915,
+    "seen": 1792610004.5919592,
     "ast_hash": "fe62f80fb686655644440cb7cd4ee800",
+    "semantic_hash": ""
+  },
+  "src/domain/ingestion/chapterSplitter.ts": {
+    "mtime": 1792609982.6721988,
+    "seen": 1792610004.5918276,
+    "ast_hash": "1d70b421e039834ab3aaa2e28d1489c7",
+    "semantic_hash": ""
+  },
+  "src/domain/ingestion/index.ts": {
+    "mtime": 1792609892.7651691,
+    "seen": 1792610004.5918293,
+    "ast_hash": "6d977738dd6016cbf572d71c07849e46",
+    "semantic_hash": ""
+  },
+  "tests/domain/chapterSplitter.test.ts": {
+    "mtime": 1792609929.900892,
+    "seen": 1792610004.5918586,
+    "ast_hash": "d047dbec3d41cfacbc9e8799df941a09",
     "semantic_hash": ""
   }
 }
