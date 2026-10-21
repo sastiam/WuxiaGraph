@@ -10,6 +10,7 @@ import { SqliteGraphRepository } from './infrastructure/repositories/graphReposi
 import { ContextInjectorService } from './domain/context/index.js';
 import { DreamingService } from './domain/dreaming/index.js';
 import { GraphService } from './domain/graph/graphService.js';
+import { HitLService } from './domain/ingestion/hitlService.js';
 import { createApiRouter } from './api/router.js';
 import { createMcpServer, McpServer } from './mcp/index.js';
 
@@ -18,6 +19,7 @@ export interface AppOptions {
   contextService?: ContextInjectorService;
   dreamingService?: DreamingService;
   graphService?: GraphService;
+  hitlService?: HitLService;
   govRepo?: SqliteWipGovernanceRepository;
   mcpServer?: McpServer;
 }
@@ -32,6 +34,7 @@ export function createApp(options?: AppOptions): Hono {
   const dreamingService = options?.dreamingService ?? new DreamingService(dreamingRepo, govRepo);
   const graphRepo = new SqliteGraphRepository(db);
   const graphService = options?.graphService ?? new GraphService(graphRepo);
+  const hitlService = options?.hitlService ?? new HitLService(db);
   const mcpServer =
     options?.mcpServer ??
     createMcpServer({
@@ -48,6 +51,7 @@ export function createApp(options?: AppOptions): Hono {
     dreamingService,
     govRepo,
     graphService,
+    hitlService,
   });
 
   // Health check endpoint
