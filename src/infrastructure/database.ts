@@ -44,6 +44,18 @@ CREATE TABLE IF NOT EXISTS lore_relationships (
 
 CREATE INDEX IF NOT EXISTS idx_lore_relationships_source_target ON lore_relationships(source_entity_id, target_entity_id);
 CREATE INDEX IF NOT EXISTS idx_lore_relationships_target_source ON lore_relationships(target_entity_id, source_entity_id);
+
+CREATE TABLE IF NOT EXISTS ingestion_checkpoints (
+    job_id TEXT NOT NULL,
+    book_title TEXT NOT NULL,
+    chapter_index INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    processed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    error_message TEXT,
+    PRIMARY KEY (job_id, chapter_index)
+);
+
+CREATE INDEX IF NOT EXISTS idx_ingestion_checkpoints_job ON ingestion_checkpoints(job_id, status);
 `;
 
 export interface DatabaseOptions {
