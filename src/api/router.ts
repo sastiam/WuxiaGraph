@@ -92,6 +92,11 @@ export function createApiRouter(deps: ApiRouterDependencies): Hono {
   const dreamingRouter = createDreamingRouter(deps.dreamingService);
   const governanceRouter = createGovernanceRouter(deps.govRepo);
 
+  // Health check endpoint
+  app.get('/health', (c) => {
+    return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
   app.route('/api/v1/context', contextRouter);
   app.route('/api/v1/dreaming', dreamingRouter);
   app.route('/api/v1/wip', governanceRouter);

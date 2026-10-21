@@ -45,18 +45,13 @@ export function createApp(options?: AppOptions): Hono {
       graphService,
     });
 
-  // Creamos el router central de API (con CORS, onError centralizado y rutas v1)
+  // Creamos el router central de API (con CORS, onError centralizado, /health y rutas v1)
   const app = createApiRouter({
     contextService,
     dreamingService,
     govRepo,
     graphService,
     hitlService,
-  });
-
-  // Health check endpoint
-  app.get('/health', (c) => {
-    return c.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
   // Montaje de endpoint JSON-RPC para MCP Server (WXG-016)

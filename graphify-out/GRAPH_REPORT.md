@@ -1,17 +1,17 @@
 # Graph Report - WuxiaGraph  (2026-10-21)
 
 ## Corpus Check
-- 203 files · ~275,617 words
+- 209 files · ~276,879 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 10 file(s) not represented in the graph (top: (none) 8, .css 1, .tsbuildinfo 1)
+- Unclassified: 12 file(s) not represented in the graph (top: (none) 10, .css 1, .tsbuildinfo 1)
 
 ## Summary
-- 1228 nodes · 2067 edges · 97 communities (86 shown, 11 thin omitted)
+- 1259 nodes · 2099 edges · 102 communities (90 shown, 12 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 72 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3920a50d`
+- Built from commit: `86846afd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -99,7 +99,7 @@
 - 2026-10-21-wxg-047-hitl-curation/tasks.md
 - Proposal: SaaS Mass PDF Chapter Ingestion Engine (WXG-004)
 - Proposal: Core Architecture, Graph Engine & E2E Integration Suite
-- router.ts
+- coreference.ts
 - Design: Mass PDF Ingestion Pipeline Architecture
 - Architecture & Data Schema
 - 2026-10-21-wxg-004-pdf-mass-ingestion/tasks.md
@@ -107,10 +107,15 @@
 - Design: OpenSpec Engine v2 Architecture
 - 2026-10-21-wxg-034-openspec-v2/tasks.md
 - btrfs-snapshot.sh
+- Guía de Despliegue en Raspberry Pi 4 (ARM64) — WuxiaGraph
 - Requirements
 - scripts
 - ADDED Requirements
+- ADDED Requirements
+- Proposal: Optimized Docker Deployment for Raspberry Pi 4 (ARM64)
 - Design: Bi-Temporal Knowledge Graph Architecture
+- Design: Docker RPi4 ARM64 Packaging
+- 2026-10-21-wxg-048-docker-rpi4/tasks.md
 
 ## God Nodes (most connected - your core abstractions)
 1. `GraphService` - 37 edges
@@ -121,8 +126,8 @@
 6. `NarrativeFact` - 20 edges
 7. `WipLimitExceededError` - 20 edges
 8. `createDatabase()` - 20 edges
-9. `compilerOptions` - 18 edges
-10. `createApp()` - 18 edges
+9. `createApp()` - 19 edges
+10. `compilerOptions` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `What Changes` --references--> `WipLimitExceededError`  [INFERRED]
@@ -131,39 +136,39 @@
   openspec/changes/archive/2026-10-21-wxg-014-018-core-and-graph-engine/design.md → src/domain/graph/graphService.ts
 - `2. Infraestructura (`src/infrastructure/repositories/graphRepository.ts`)` --references--> `SqliteGraphRepository`  [INFERRED]
   openspec/changes/archive/2026-10-21-wxg-002-graph-engine/design.md → src/infrastructure/repositories/graphRepository.ts
-- `2. Invariantes Implementadas` --references--> `IContextRepository`  [INFERRED]
-  openspec/changes/wxg-015-context-injector.md → src/domain/context/types.ts
-- `2. Invariantes Implementadas` --references--> `IDreamingRepository`  [INFERRED]
-  openspec/changes/wxg-016-mcp-server.md → src/domain/dreaming/repository.ts
+- `2. Enrutador Principal, Middlewares y Servidor Central` --references--> `createApiRouter()`  [INFERRED]
+  openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/tasks.md → src/api/router.ts
+- `Context & Impact` --references--> `DreamingService`  [INFERRED]
+  openspec/changes/archive/2026-10-21-wxg-004-pdf-mass-ingestion/proposal.md → src/domain/dreaming/service.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (97 total, 11 thin omitted)
+## Communities (102 total, 12 thin omitted)
 
 ### Community 0 - "workerQueue.ts"
-Cohesion: 0.06
-Nodes (25): Decisions, Design, Goals / Non-Goals, Risks / Trade-offs, WipGovernanceLedger, WipLimitExceededError, IWipGovernanceRepository, DEFAULT_MAX_BUDGET_HOURS (+17 more)
+Cohesion: 0.05
+Nodes (35): Decisions, Design, Goals / Non-Goals, Risks / Trade-offs, 1. Esquemas y Enrutador de Gobernanza WIP, 2. Enrutador Principal, Middlewares y Servidor Central, 3. Pruebas de Integración y Verificación, Tasks (+27 more)
 
 ### Community 1 - "LoreEntity"
-Cohesion: 0.07
-Nodes (38): DistillEntityDto, DistillEntitySchema, DistillFactDto, DistillFactSchema, DistillRequestDto, DistillRequestSchema, buildLoreEntity(), buildNarrativeFact() (+30 more)
+Cohesion: 0.06
+Nodes (49): Context, 1. Contexto & Propósito, 2. Invariantes Implementadas, OpenSpec Change Proposal: WXG-015 Context Injector Service, 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools (+41 more)
 
 ### Community 2 - "tools/index.ts"
-Cohesion: 0.07
-Nodes (46): 3.1. Umbrales de Vulnerabilidad (CVE / CVSS), 3.2. Salud del Proyecto y OpenSSF Scorecard, 3.3. Cumplimiento de Licenciamiento (License Compliance), 3. Criterios Obligatorios para la Aceptación de Paquetes, 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools (+38 more)
+Cohesion: 0.08
+Nodes (40): 3.1. Umbrales de Vulnerabilidad (CVE / CVSS), 3.2. Salud del Proyecto y OpenSSF Scorecard, 3.3. Cumplimiento de Licenciamiento (License Compliance), 3. Criterios Obligatorios para la Aceptación de Paquetes, MCP_PROTOCOL_VERSION, MCP_SERVER_INFO, McpServer, getCanonicalEntitiesDefinition (+32 more)
 
 ### Community 3 - "frontend/package.json"
-Cohesion: 0.10
-Nodes (18): @types/node, typescript, vitest, name, private, type, version, autoprefixer (+10 more)
+Cohesion: 0.11
+Nodes (17): @types/node, typescript, vitest, name, private, type, version, autoprefixer (+9 more)
 
 ### Community 4 - "LoreGraphVisualizer.vue"
 Cohesion: 0.11
 Nodes (17): availableDomains, depth, edges, fetchError, filterCanonOnly, isLoadingRels, LoreRelationship, minAffinity (+9 more)
 
 ### Community 5 - "database.ts"
-Cohesion: 0.07
-Nodes (50): Context, 1. Contexto & Propósito, 2. Invariantes Implementadas, OpenSpec Change Proposal: WXG-015 Context Injector Service, hono, buildImmutablePromptPrefix(), ContextInjectorService, deepFreeze() (+42 more)
+Cohesion: 0.09
+Nodes (35): hono, @vitejs/plugin-vue, app, createApp(), CanonicalContextRow, createDatabase(), DatabaseOptions, ensureTemporalColumns() (+27 more)
 
 ### Community 6 - "package.json"
 Cohesion: 0.06
@@ -194,12 +199,12 @@ Cohesion: 0.15
 Nodes (14): availableDomains, closeUnifyModal(), emit, filteredProposals, handleApprove(), handleConfirmUnify(), handleReject(), minConfidence (+6 more)
 
 ### Community 13 - "GraphService"
-Cohesion: 0.25
+Cohesion: 0.22
 Nodes (5): 2026-10-21 - Eliminate $O(N^2)$ DB & Adjacency List Reconstructions in `getAffinityMatrix`, 1. Dominio (`src/domain/graph/`), Tasks: Core & Graph Engine Implementation, GraphPath, GraphService
 
 ### Community 14 - "LoreRelationship"
-Cohesion: 0.16
-Nodes (7): LoreRelationship, FindPathOptions, GraphEdge, SearchState, GraphRepository, IGraphRepository, InMemoryGraphRepository
+Cohesion: 0.17
+Nodes (8): createGraphRouter(), LoreRelationship, FindPathOptions, GraphEdge, SearchState, GraphRepository, IGraphRepository, InMemoryGraphRepository
 
 ### Community 17 - "Requirements"
 Cohesion: 0.15
@@ -453,9 +458,9 @@ Nodes (4): Context & Impact, Definition of Done, Proposal: SaaS Mass PDF Chapter
 Cohesion: 0.40
 Nodes (4): Context & Impact, Definition of Done, Proposal: Core Architecture, Graph Engine & E2E Integration Suite, Why
 
-### Community 85 - "router.ts"
-Cohesion: 0.08
-Nodes (24): 1. Esquemas y Enrutador de Gobernanza WIP, 2. Enrutador Principal, Middlewares y Servidor Central, 3. Pruebas de Integración y Verificación, Tasks, Definition of Done, Proposal: HitL Alias Curation API & Reactive Workflow, What Changes, Why (+16 more)
+### Community 85 - "coreference.ts"
+Cohesion: 0.09
+Nodes (24): Definition of Done, Proposal: HitL Alias Curation API & Reactive Workflow, What Changes, Why, createAliasesRouter(), ReviewAliasDto, ReviewAliasSchema, BatchResolutionResult (+16 more)
 
 ### Community 86 - "Design: Mass PDF Ingestion Pipeline Architecture"
 Cohesion: 0.50
@@ -469,6 +474,10 @@ Nodes (4): Definition of Done, Proposal: OpenSpec Engine v2 (Archify, Btrfs CoW 
 Cohesion: 0.50
 Nodes (3): Architecture & Data Flow, Design: OpenSpec Engine v2 Architecture, Ports & Adapters
 
+### Community 93 - "Guía de Despliegue en Raspberry Pi 4 (ARM64) — WuxiaGraph"
+Cohesion: 0.17
+Nodes (11): 1. Arquitectura y Restricciones de Recursos, 2. Dockerfile Multistage, 3. Configuración con Docker Compose, 4. Persistencia de Datos y SQLite WAL, 5. Health Check y Monitoreo, 6. Comandos Operativos, Consultar estado y métricas de memoria, Detener el servicio (+3 more)
+
 ### Community 94 - "Requirements"
 Cohesion: 0.25
 Nodes (7): Purpose, Requirement: Bi-Temporal Schema and Relationship History, Requirement: Frozen Subgraph Query As-Of Chapter, Requirements, Scenario: Query As-Of Chapter, Scenario: Temporal Relationship Mutation, temporal-kg Specification
@@ -481,29 +490,41 @@ Nodes (5): scripts, build, dev, preview, test
 Cohesion: 0.29
 Nodes (6): ADDED Requirements, Capability: Bi-Temporal Knowledge Graph, Requirement: Bi-Temporal Schema and Relationship History, Requirement: Frozen Subgraph Query As-Of Chapter, Scenario: Query As-Of Chapter, Scenario: Temporal Relationship Mutation
 
+### Community 97 - "ADDED Requirements"
+Cohesion: 0.29
+Nodes (6): ADDED Requirements, Capability: Docker RPi4 Deployment, Requirement: Application Health Check, Requirement: Low-Memory Multistage Docker Container, Scenario: Build and Run Low-Memory Container, Scenario: Health Check Execution
+
+### Community 98 - "Proposal: Optimized Docker Deployment for Raspberry Pi 4 (ARM64)"
+Cohesion: 0.40
+Nodes (4): Definition of Done, Proposal: Optimized Docker Deployment for Raspberry Pi 4 (ARM64), What Changes, Why
+
 ### Community 99 - "Design: Bi-Temporal Knowledge Graph Architecture"
 Cohesion: 0.40
 Nodes (4): Design: Bi-Temporal Knowledge Graph Architecture, Ports & Adapters, Schema Extensions, Temporal Query Logic
 
+### Community 100 - "Design: Docker RPi4 ARM64 Packaging"
+Cohesion: 0.50
+Nodes (3): Design: Docker RPi4 ARM64 Packaging, Docker Compose Limits, Multistage Build Strategy
+
 ## Knowledge Gaps
 - **15 isolated node(s):** `@vueuse/core`, `@types/node`, `autoprefixer`, `jsdom`, `postcss` (+10 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 655 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 677 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `GraphService` connect `GraphService` to `tools/index.ts`, `graph.ts`, `SqliteGraphRepository`, `database.ts`, `LoreRelationship`, `createGraphRouter`, `Requirements`, `ADDED Requirements`, `Proposal: SaaS Mass PDF Chapter Ingestion Engine (WXG-004)`, `router.ts`, `Architecture & Data Schema`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
+- **Why does `GraphService` connect `GraphService` to `LoreEntity`, `tools/index.ts`, `graph.ts`, `SqliteGraphRepository`, `database.ts`, `LoreRelationship`, `createGraphRouter`, `Requirements`, `ADDED Requirements`, `Proposal: SaaS Mass PDF Chapter Ingestion Engine (WXG-004)`, `Architecture & Data Schema`?**
+  _High betweenness centrality (0.041) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `GraphService` (e.g. with `1. Dominio (`src/domain/graph/`)` and `Requirement: Domain Graph Service Pathfinding`) actually correct?**
   _`GraphService` has 9 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `@vueuse/core`, `@types/node`, `autoprefixer` to the rest of the system?**
   _15 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `workerQueue.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.06479113384484228 - nodes in this community are weakly interconnected._
-- **Why does `hono` connect `database.ts` to `LoreEntity`, `graph.ts`, `router.ts`, `package.json`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+  _Cohesion score 0.050436953807740326 - nodes in this community are weakly interconnected._
+- **Why does `hono` connect `database.ts` to `workerQueue.ts`, `LoreEntity`, `graph.ts`, `package.json`, `coreference.ts`?**
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `IWipGovernanceRepository` (e.g. with `Context` and `2. Invariantes Implementadas`) actually correct?**
   _`IWipGovernanceRepository` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **Should `LoreEntity` be split into smaller, more focused modules?**
-  _Cohesion score 0.07191316146540028 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.057738572574178026 - nodes in this community are weakly interconnected._
