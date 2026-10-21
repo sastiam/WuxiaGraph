@@ -210,8 +210,8 @@ describe('HTTP API: POST /api/v1/dreaming/distill', () => {
   });
 
   it('debe retornar HTTP 423 Locked cuando el Circuit Breaker de WIP está activado (> 4.0h)', async () => {
-    // Bloqueamos el ledger en la base de datos
-    const weekStart = '2026-10-12';
+    // Bloqueamos el ledger en la base de datos para la semana actual
+    const weekStart = govRepo ? (await govRepo.getOrCreateCurrentWeekLedger()).weekStartDate : '2026-10-12';
     upsertWipLedger(db, {
       weekStartDate: weekStart,
       totalHoursLogged: 4.1,
