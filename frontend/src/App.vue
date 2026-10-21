@@ -1,15 +1,97 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useLoreStore } from './stores/lore';
 import LoreGraphVisualizer from './components/LoreGraphVisualizer.vue';
 import GovernancePanel from './components/GovernancePanel.vue';
 import DreamingConsole, { type DistillSuccessData } from './components/DreamingConsole.vue';
+import HitLAliasQueue, { type HitLProposal, type AvailableEntity } from './components/HitLAliasQueue.vue';
 
-type TabView = 'graph' | 'governance' | 'dreaming';
+type TabView = 'graph' | 'governance' | 'dreaming' | 'hitl';
 
 const currentTab = ref<TabView>('graph');
 const loreStore = useLoreStore();
 const selectedDomain = ref<string>(loreStore.currentDomain);
+
+// HitL proposals state
+const hitlProposals = ref<HitLProposal[]>([
+  {
+    proposalId: 'prop-hitl-001',
+    candidateName: 'Young Master Ye',
+    targetEntityId: 'ent-ye-chen',
+    targetCanonicalName: 'Ye Chen',
+    confidenceScore: 0.78,
+    isCanon: false,
+    status: 'PENDING',
+    domain: 'jianghu',
+    context: 'El joven Young Master Ye desenvainó su espada estelar frente a los ancianos del clan.',
+    createdAt: '2026-10-21T09:30:00Z',
+  },
+  {
+    proposalId: 'prop-hitl-002',
+    candidateName: 'Sword Immortal Ye',
+    targetEntityId: 'ent-ye-chen',
+    targetCanonicalName: 'Ye Chen',
+    confidenceScore: 0.92,
+    isCanon: false,
+    status: 'PENDING',
+    domain: 'jianghu',
+    context: 'Los rumores del Sword Immortal Ye estremecieron la cordillera de las diez mil espadas.',
+    createdAt: '2026-10-21T10:15:00Z',
+  },
+  {
+    proposalId: 'prop-hitl-003',
+    candidateName: 'Yellow Maple Pavilion',
+    targetEntityId: 'ent-yellow-maple',
+    targetCanonicalName: 'Valle del Arce Amarillo (黄枫谷)',
+    confidenceScore: 0.65,
+    isCanon: false,
+    status: 'PENDING',
+    domain: 'sects',
+    context: 'En el pabellón Yellow Maple Pavilion se realizaban los intercambios de elixires.',
+    createdAt: '2026-10-21T11:00:00Z',
+  },
+]);
+
+const availableEntitiesForHitL = computed<AvailableEntity[]>(() => {
+  if (loreStore.entities.length > 0) {
+    return loreStore.entities.map((e) => ({
+      entityId: e.entityId,
+      canonicalName: e.canonicalName,
+      domain: e.domain,
+    }));
+  }
+  // Fallback defaults
+  return [
+    { entityId: 'ent-ye-chen', canonicalName: 'Ye Chen', domain: 'jianghu' },
+    { entityId: 'ent-yellow-maple', canonicalName: 'Valle del Arce Amarillo (黄枫谷)', domain: 'sects' },
+    { entityId: 'ent-han-li', canonicalName: 'Han Li', domain: 'jianghu' },
+  ];
+});
+
+function handleApproveProposal(proposal: HitLProposal): void {
+  const target = hitlProposals.value.find((p) => p.proposalId === proposal.proposalId);
+  if (target) {
+    target.status = 'APPROVED';
+    target.isCanon = true;
+  }
+}
+
+function handleRejectProposal(proposal: HitLProposal): void {
+  const target = hitlProposals.value.find((p) => p.proposalId === proposal.proposalId);
+  if (target) {
+    target.status = 'REJECTED';
+  }
+}
+
+function handleUnifyProposal(payload: { proposal: HitLProposal; targetEntityId: string; targetCanonicalName: string }): void {
+  const target = hitlProposals.value.find((p) => p.proposalId === payload.proposal.proposalId);
+  if (target) {
+    target.status = 'APPROVED';
+    target.isCanon = true;
+    target.targetEntityId = payload.targetEntityId;
+    target.targetCanonicalName = payload.targetCanonicalName;
+  }
+}
 
 function handleSearch(): void {
   if (selectedDomain.value.trim()) {
@@ -99,6 +181,24 @@ onMounted(() => {
         >
           <span>✨</span>
           <span>Consola Dreaming (IA)</span>
+        </button>
+
+        <button
+          type="button"
+          @click="currentTab = 'hitl'"
+          class="px-4 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition"
+          :class="currentTab === 'hitl'
+            ? 'bg-amber-500/10 text-amber-400 border-b-2 border-amber-400'
+            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'"
+        >
+          <span>👥</span>
+          <span>Cola HitL de Alias</span>
+          <span
+            v-if="hitlProposals.filter(p => p.status === 'PENDING').length > 0"
+            class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
+          >
+            {{ hitlProposals.filter(p => p.status === 'PENDING').length }}
+          </span>
         </button>
       </nav>
 
@@ -218,6 +318,17 @@ onMounted(() => {
       <!-- TAB 3: Dreaming Console -->
       <div v-show="currentTab === 'dreaming'">
         <DreamingConsole @dreamingCompleted="handleDreamingCompleted" />
+      </div>
+
+      <!-- TAB 4: HitL Alias Approval Queue -->
+      <div v-show="currentTab === 'hitl'">
+        <HitLAliasQueue
+          :initialProposals="hitlProposals"
+          :availableEntities="availableEntitiesForHitL"
+          @approve="handleApproveProposal"
+          @reject="handleRejectProposal"
+          @unify="handleUnifyProposal"
+        />
       </div>
     </div>
   </main>

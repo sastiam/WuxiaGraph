@@ -281,18 +281,40 @@ export class GraphService {
 
   /**
    * Genera una matriz de afinidad y alianzas para una lista de entidades dadas.
+   * Optimizado: Carga relaciones y lista de adyacencia 1 vez y ejecuta BFS por nodo fuente.
    */
   async getAffinityMatrix(entityIds: string[]): Promise<Record<string, Record<string, number>>> {
     const matrix: Record<string, Record<string, number>> = {};
+    const allRelationships = await this.graphRepo.getAllRelationships();
+    const adj = this.buildAdjacencyList(allRelationships, false);
 
     for (const idA of entityIds) {
       matrix[idA] = {};
+      matrix[idA][idA] = 1.0;
+
+      // Single-source BFS desde idA para encontrar afinidades de ruta más corta
+      const queue: { currentId: string; totalAffinity: number }[] = [{ currentId: idA, totalAffinity: 0 }];
+      const visited = new Set<string>([idA]);
+      const affinities = new Map<string, number>();
+
+      while (queue.length > 0) {
+        const current = queue.shift()!;
+        const neighbors = adj.get(current.currentId) ?? [];
+
+        for (const edge of neighbors) {
+          if (!visited.has(edge.neighbor)) {
+            visited.add(edge.neighbor);
+            const rawAffinity = current.totalAffinity + (edge.relationship.affinity_weight ?? 0);
+            const roundedAffinity = Math.round(rawAffinity * 10000) / 10000;
+            affinities.set(edge.neighbor, roundedAffinity);
+            queue.push({ currentId: edge.neighbor, totalAffinity: rawAffinity });
+          }
+        }
+      }
+
       for (const idB of entityIds) {
-        if (idA === idB) {
-          matrix[idA][idB] = 1.0;
-        } else {
-          const path = await this.findShortestPath(idA, idB);
-          matrix[idA][idB] = path.path.length > 0 ? path.total_affinity : 0;
+        if (idA !== idB) {
+          matrix[idA][idB] = affinities.get(idB) ?? 0;
         }
       }
     }
