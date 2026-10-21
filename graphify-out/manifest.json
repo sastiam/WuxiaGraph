@@ -1,9 +1,9 @@
 {
   "frontend/package.json": {
-    "mtime": 1792608026.1906781,
-    "seen": 1792609503.879151,
-    "ast_hash": "2c55273eeb43cabe8b82e1cb7ba6ea41",
-    "semantic_hash": "2c55273eeb43cabe8b82e1cb7ba6ea41"
+    "mtime": 1792610832.0052652,
+    "seen": 1792611022.0315628,
+    "ast_hash": "f6656f8205c809ca3ab745111ae06ed4",
+    "semantic_hash": ""
   },
   "frontend/postcss.config.js": {
     "mtime": 1792590265.8574247,
@@ -12,9 +12,9 @@
     "semantic_hash": "c735540bb63936a123bc867d950c9f69"
   },
   "frontend/src/App.vue": {
-    "mtime": 1792609537.0802448,
-    "seen": 1792609549.8102686,
-    "ast_hash": "b680dfe5787cddd3e2f55bed88f1fe64",
+    "mtime": 1792610960.682964,
+    "seen": 1792611022.0315661,
+    "ast_hash": "06745002274a23eed74cd4e09d37beb7",
     "semantic_hash": ""
   },
   "frontend/src/components/DreamingConsole.vue": {
@@ -66,10 +66,10 @@
     "semantic_hash": "740f2b6fe0280127dd426d55bf7c6500"
   },
   "frontend/vite.config.ts": {
-    "mtime": 1792590258.4193854,
-    "seen": 1792603202.5103846,
-    "ast_hash": "8076e88d54086a21bd05e3ef7d6f03ae",
-    "semantic_hash": "8076e88d54086a21bd05e3ef7d6f03ae"
+    "mtime": 1792610969.1760104,
+    "seen": 1792611022.03158,
+    "ast_hash": "21fc4a415e4c5842a53e5306c2cd3a5f",
+    "semantic_hash": ""
   },
   "package.json": {
     "mtime": 1792609591.2652915,
@@ -888,8 +888,8 @@
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/tasks.md": {
-    "mtime": 1792610485.783005,
-    "seen": 1792610490.0331373,
+    "mtime": 1792610514.4985404,
+    "seen": 1792611022.031746,
     "ast_hash": "5ae0c0c88d51ed48b5269acb0180a9c0",
     "semantic_hash": ""
   },
@@ -912,8 +912,8 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/index.ts": {
-    "mtime": 1792610428.1040711,
-    "seen": 1792610490.033005,
+    "mtime": 1792610514.500004,
+    "seen": 1792611022.0316203,
     "ast_hash": "05e7ecdbd3c19c09d40f30c2c757abd1",
     "semantic_hash": ""
   },
@@ -948,15 +948,33 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/coreference.ts": {
-    "mtime": 1792610413.3649302,
-    "seen": 1792610490.033003,
+    "mtime": 1792610514.4985404,
+    "seen": 1792611022.0316193,
     "ast_hash": "f0f841c73dac09dd189d6b3a0b2d4252",
     "semantic_hash": ""
   },
   "tests/domain/coreference.test.ts": {
-    "mtime": 1792610472.3662784,
-    "seen": 1792610490.0330405,
+    "mtime": 1792610514.500004,
+    "seen": 1792611022.0316563,
     "ast_hash": "7627c47efeb2ed31b49834e73f29d8e2",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/HitLAliasQueue.test.ts": {
+    "mtime": 1792610883.2765436,
+    "seen": 1792611022.0315702,
+    "ast_hash": "363b41d9006abf9a5a26202652f220a3",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/HitLAliasQueue.vue": {
+    "mtime": 1792610923.7237635,
+    "seen": 1792611022.0315714,
+    "ast_hash": "f2b9e3cdb71456011c7fce263e16c49e",
+    "semantic_hash": ""
+  },
+  "vitest.config.ts": {
+    "mtime": 1792610996.8421607,
+    "seen": 1792611022.0316749,
+    "ast_hash": "e11a1bebd334214ba07ff68242dee05c",
     "semantic_hash": ""
   }
 }
