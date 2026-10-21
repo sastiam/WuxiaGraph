@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "WuxiaGraph Mass PDF Ingestion Pipeline Data Flow",
+    "output": ".archify/dataflow-wuxia-ingestion/dataflow.html",
+    "animation": "trace",
+    "quality_profile": "standard"
+  },
+  "stages": [
+    { "label": "Ingest" },
+    { "label": "Parse & Govern" },
+    { "label": "Queue" },
+    { "label": "Distill & Resolve" },
+    { "label": "Persist & Notify" }
+  ],
+  "nodes": [
+    { "id": "pdf_upload", "type": "frontend", "label": "Upload PDF", "sublabel": "Title + 500+ pgs", "stage": 0, "row": 0, "tag": "Frontend" },
+    { "id": "pdf_parser", "type": "backend", "label": "Layout Analysis", "sublabel": "Strip headers/numbers", "stage": 0, "row": 2, "tag": "pdfplumber" },
+    { "id": "chapter_splitter", "type": "backend", "label": "Chapter Splitter", "sublabel": "Regex + LLM Light", "stage": 1, "row": 1, "tag": "500+ Chaps" },
+    { "id": "budget_gate", "type": "security", "label": "Circuit Breaker", "sublabel": "Check 4.0h & Tokens", "stage": 1, "row": 0, "tag": "423 Locked" },
+    { "id": "sliding_queue", "type": "messagebus", "label": "Sliding Window", "sublabel": "Overlapping Chunks", "stage": 2, "row": 1, "tag": "Batch Queue" },
+    { "id": "batch_worker", "type": "backend", "label": "Extract Workers", "sublabel": "Zod Extraction", "stage": 3, "row": 0, "tag": "Facts+Entities" },
+    { "id": "co_ref_engine", "type": "database", "label": "Co-Ref Resolver", "sublabel": "Aliases & Cultivation", "stage": 3, "row": 2, "tag": "Graph Engine" },
+    { "id": "fact_ledger", "type": "database", "label": "Fact Ledger", "sublabel": "SQLite WAL Mutex", "stage": 4, "row": 0, "tag": "is_canon=1" },
+    { "id": "sse_feed", "type": "frontend", "label": "SSE Live UI", "sublabel": "Progress & HitL Review", "stage": 4, "row": 2, "tag": "Realtime" }
+  ],
+  "flows": [
+    { "id": "flow-1", "from": "pdf_upload", "to": "pdf_parser", "label": "PDF file", "classification": "binary stream", "variant": "default" },
+    { "id": "flow-2", "from": "pdf_parser", "to": "chapter_splitter", "label": "clean text", "classification": "layout stripped", "variant": "default" },
+    { "id": "flow-3", "from": "chapter_splitter", "to": "budget_gate", "label": "check quota", "labelAt": [315, 210], "classification": "governance", "variant": "security" },
+    { "id": "flow-4", "from": "budget_gate", "to": "sliding_queue", "label": "authorized", "classification": "approved job", "variant": "emphasis" },
+    { "id": "flow-5", "from": "sliding_queue", "to": "batch_worker", "label": "chunk batch", "classification": "chunk stream", "variant": "emphasis" },
+    { "id": "flow-6", "from": "batch_worker", "to": "co_ref_engine", "label": "raw facts", "classification": "unfiltered graph", "variant": "emphasis" },
+    { "id": "flow-7", "from": "co_ref_engine", "to": "fact_ledger", "label": "canonical graph", "classification": "resolved entities", "variant": "emphasis" },
+    { "id": "flow-8", "from": "fact_ledger", "to": "sse_feed", "label": "live events", "classification": "SSE broadcast", "variant": "default" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Mass Ingestion Architecture",
+      "items": [
+        "Layout-aware PDF parsing preserves narrative text while eliminating pagination artifacts across 500+ pages",
+        "Dual Regex + LLM Light chapter discovery parses Wuxia/Xianxia table of contents and chapter headings",
+        "Sliding window strategy prevents narrative fragmentation across chapter boundaries"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "WIP Governance & Cost Circuit Breaker",
+      "items": [
+        "Every batch worker verifies remaining token budget and weekly 4.0h WIP limits",
+        "Automatic checkpointing on HTTP 423 LOCKED_BY_WIP allows non-destructive pause and resume",
+        "Protects against API rate limits and unexpected token billing spikes"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Lore Consistency & Temporal Fact Ledger",
+      "items": [
+        "Co-reference engine handles Wuxia alias evolution (e.g. Young Master -> Elder -> Immortal)",
+        "Atomic transactions in SQLite WAL insert canonical facts with explicit chapter provenance",
+        "Server-Sent Events (SSE) push live progress and Human-in-the-Loop review prompts to Vue UI"
+      ]
+    }
+  ]
+}

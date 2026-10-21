@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "standard",
+  "startedAt": "2026-10-21T18:40:34.515Z",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "a219fa91c15235fc1a5ea04e46f7f64ed0e37d31141c6d6c140e2f6b3af73fb3",
+    "bytes": 4300
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "stages": {
+    "validate": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": null,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "deliver",
+        "dataflow",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "--quality",
+        "standard",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "deliver",
+        "receiptId": "cefde189-85c5-4643-a74c-cfb74c1d1405",
+        "stage": "render",
+        "type": "dataflow",
+        "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "error": "dataflow schema validation failed:\n  /flows/2 (id/label: \"flow-3\") must have required property 'label' {\"missingProperty\":\"label\"}",
+        "diagnostics": [
+          {
+            "code": "schema/required",
+            "severity": "error",
+            "message": "/flows/2 (id/label: \"flow-3\") must have required property 'label'",
+            "subject": {
+              "diagramType": "dataflow",
+              "path": "/flows/2",
+              "identity": "flow-3"
+            },
+            "evidence": {
+              "keyword": "required",
+              "missingProperty": "label"
+            },
+            "supportedFixes": [
+              "add required property \"label\""
+            ]
+          }
+        ],
+        "provenance": "absent",
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      },
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "not-run",
+      "execution": "blocked-by-validate"
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "schema/required",
+      "severity": "error",
+      "message": "/flows/2 (id/label: \"flow-3\") must have required property 'label'",
+      "subject": {
+        "diagramType": "dataflow",
+        "path": "/flows/2",
+        "identity": "flow-3"
+      },
+      "evidence": {
+        "keyword": "required",
+        "missingProperty": "label"
+      },
+      "supportedFixes": [
+        "add required property \"label\""
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-3/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-3/dataflow.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "validate",
+  "finishedAt": "2026-10-21T18:40:34.694Z",
+  "durationMs": 179,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

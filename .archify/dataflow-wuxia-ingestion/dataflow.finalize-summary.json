@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "9943697d40428be3bc1630b4f14a38121c8ac5ab9cc88968790ff4aa2a6415be",
+    "bytes": 4331
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "gates": {
+    "validate": "fail",
+    "deliver": "not-run",
+    "check": "not-run",
+    "browser-check": "not-run"
+  },
+  "failedStage": "validate",
+  "diagnostics": [
+    {
+      "code": "schema/maxItems",
+      "severity": "error",
+      "message": "/stages must NOT have more than 5 items",
+      "subject": {
+        "diagramType": "dataflow",
+        "path": "/stages"
+      },
+      "evidence": {
+        "keyword": "maxItems",
+        "limit": 5
+      },
+      "supportedFixes": [
+        "provide at most 5 item(s)"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.finalize-summary.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 183,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "nextAction": {
+    "action": "edit-in-place",
+    "candidate": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "constraint": "Preserve unaffected semantics and geometry; apply each diagnostic's supportedFixes, or the fix its message names, and do not replace the whole candidate.",
+    "then": "finalize-once"
+  }
+}

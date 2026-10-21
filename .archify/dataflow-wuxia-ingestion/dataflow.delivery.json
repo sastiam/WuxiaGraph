@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "55577eaa-628e-49ce-8e07-7a60f2634b04",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+  "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+  "specification": {
+    "sha256": "fcba2d8de7b046b820c0cf7b260b00693db7148af00adbf0c6529d4e918d2348",
+    "bytes": 4347
+  },
+  "artifact": {
+    "sha256": "f13573751a46be43c727a1c768473d0f5ffe082cb3fc2fef3332ff856a140920",
+    "bytes": 821399
+  }
+}

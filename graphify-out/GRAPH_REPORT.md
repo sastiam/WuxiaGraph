@@ -1,17 +1,17 @@
 # Graph Report - WuxiaGraph  (2026-10-21)
 
 ## Corpus Check
-- 132 files · ~107,814 words
+- 159 files · ~258,565 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: (none) 8, .css 1, .tsbuildinfo 1)
 
 ## Summary
-- 894 nodes · 1523 edges · 66 communities (60 shown, 6 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 51 edges (avg confidence: 0.9)
+- 945 nodes · 1570 edges · 69 communities (63 shown, 6 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `65afcd82`
+- Built from commit: `f75234cc`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -40,16 +40,17 @@
 - Contract: [WXG-022] OpenSpec [WXG-003]: Setup Frontend Vue 3 + Vite + TailwindCSS + Pinia
 - DreamingService
 - Proposal
+- OpenSpec [WXG-004]: Ingestor Masivo de PDFs de Cientos de Capítulos en WuxiaGraph
 - Contract: [WXG-023] Componente Visualizador de Grafo Interactivo de Lore (Vue Flow / Vue 3)
 - Contract: [WXG-023] Componente Visualizador de Grafo Interactivo de Lore (Vue Flow / Vue 3)
-- ADDED Requirements
+- frontend-dashboard Specification
 - schema.sql
 - infrastructure/schema.sql
 - Contract: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3
 - Contract: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3
 - Proposal: Motor de Grafos & Consultas Relacionales (WXG-002)
 - Tasks
-- IContextRepository
+- ADDED Requirements
 - Estándar Internacional de Seguridad de Paquetes y Cadena de Suministro (Supply Chain Security)
 - Technical Approach
 - Why
@@ -61,6 +62,7 @@
 - Why
 - Technical Approach
 - Why
+- ADDED Requirements
 - Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3)
 - OpenSpec [WXG-001]: Backend Core Architecture, Graph Engine, Circuit Breaker & MCP Server
 - SOUL.md — Principios, Identidad & Estándares de Sebastian Chota (@sastiam)
@@ -71,18 +73,19 @@
 - Tasks: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3
 - WuxiaGraph: Project Overview
 - OpenSpec [WXG-003]: Frontend Dashboard & Graph Visualizer (Vue 3)
+- Proposal: Core Architecture, Graph Engine & E2E Integration Suite
+- ADDED Requirements
+- ADDED Requirements
+- ADDED Requirements
+- ADDED Requirements
+- ADDED Requirements
 - Design: Frontend Dashboard (Vue 3, Pinia, Vue Flow)
-- ADDED Requirements
-- ADDED Requirements
-- ADDED Requirements
-- ADDED Requirements
-- ADDED Requirements
-- wxg-023-024-frontend-dashboard/tasks.md
 - WuxiaGraph Project Rules for Hermes Agent
 - README.md
+- 2026-10-21-wxg-023-024-frontend-dashboard/tasks.md
 
 ## God Nodes (most connected - your core abstractions)
-1. `GraphService` - 29 edges
+1. `GraphService` - 31 edges
 2. `LoreRelationship` - 24 edges
 3. `LoreEntity` - 22 edges
 4. `WipGovernanceLedger` - 22 edges
@@ -98,17 +101,17 @@
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/design.md → src/domain/governance/errors.ts
 - `What Changes` --references--> `WipLimitExceededError`  [INFERRED]
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/proposal.md → src/domain/governance/errors.ts
+- `2. Infraestructura (`src/infrastructure/repositories/graphRepository.ts`)` --references--> `SqliteGraphRepository`  [INFERRED]
+  openspec/changes/archive/2026-10-21-wxg-002-graph-engine/design.md → src/infrastructure/repositories/graphRepository.ts
 - `2. Enrutador Principal, Middlewares y Servidor Central` --references--> `createApiRouter()`  [INFERRED]
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/tasks.md → src/api/router.ts
-- `2. Invariantes Implementadas` --references--> `ContextInjectorService`  [INFERRED]
-  openspec/changes/wxg-015-context-injector.md → src/domain/context/contextInjectorService.ts
-- `2. Invariantes Implementadas` --references--> `IDreamingRepository`  [INFERRED]
-  openspec/changes/wxg-016-mcp-server.md → src/domain/dreaming/repository.ts
+- `2. Invariantes Implementadas` --references--> `IContextRepository`  [INFERRED]
+  openspec/changes/wxg-015-context-injector.md → src/domain/context/types.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (66 total, 6 thin omitted)
+## Communities (69 total, 6 thin omitted)
 
 ### Community 0 - "devDependencies"
 Cohesion: 0.22
@@ -116,11 +119,11 @@ Nodes (9): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, typ
 
 ### Community 1 - "router.ts"
 Cohesion: 0.06
-Nodes (41): ApiRouterDependencies, createDreamingRouter(), createGovernanceRouter(), DistillEntityDto, DistillEntitySchema, DistillFactDto, DistillFactSchema, DistillRequestDto (+33 more)
+Nodes (37): createDreamingRouter(), createGovernanceRouter(), DistillEntityDto, DistillEntitySchema, DistillFactDto, DistillFactSchema, DistillRequestDto, DistillRequestSchema (+29 more)
 
 ### Community 2 - "tools/index.ts"
-Cohesion: 0.09
-Nodes (37): zod, MCP_PROTOCOL_VERSION, MCP_SERVER_INFO, McpServer, getCanonicalEntitiesDefinition, GetCanonicalEntitiesInput, GetCanonicalEntitiesInputSchema, handleGetCanonicalEntities() (+29 more)
+Cohesion: 0.07
+Nodes (44): 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools, zod, LogWipInput, LogWipSchema, IContextRepository (+36 more)
 
 ### Community 3 - "frontend/package.json"
 Cohesion: 0.11
@@ -131,8 +134,8 @@ Cohesion: 0.11
 Nodes (17): availableDomains, depth, edges, fetchError, filterCanonOnly, isLoadingRels, LoreRelationship, minAffinity (+9 more)
 
 ### Community 5 - "database.ts"
-Cohesion: 0.09
-Nodes (42): Context, hono, vitest, contextQuerySchema, createContextRouter(), createApiRouter(), ContextInjectorService, DreamingService (+34 more)
+Cohesion: 0.06
+Nodes (56): Context, 1. Contexto & Propósito, 2. Invariantes Implementadas, OpenSpec Change Proposal: WXG-015 Context Injector Service, hono, vitest, contextQuerySchema, createContextRouter() (+48 more)
 
 ### Community 6 - "package.json"
 Cohesion: 0.06
@@ -167,8 +170,8 @@ Cohesion: 0.13
 Nodes (12): currentTab, loreStore, selectedDomain, TabView, DistillSuccessData, *.vue, app, pinia (+4 more)
 
 ### Community 14 - "GraphService"
-Cohesion: 0.06
-Nodes (25): 1. Dominio (`src/domain/graph/`), 2. Infraestructura (`src/infrastructure/repositories/graphRepository.ts`), 3. Capa de API HTTP (`src/api/routes/graph.ts`), 4. Capa MCP (`src/mcp/tools/graphTools.ts`), Arquitectura Hexagonal, Design: Motor de Grafos & Consultas Relacionales (WXG-002), Tasks: Motor de Grafos & Consultas Relacionales (WXG-002), createGraphRouter() (+17 more)
+Cohesion: 0.07
+Nodes (24): 1. Dominio (`src/domain/graph/`), 2. Infraestructura (`src/infrastructure/repositories/graphRepository.ts`), 3. Capa de API HTTP (`src/api/routes/graph.ts`), 4. Capa MCP (`src/mcp/tools/graphTools.ts`), Arquitectura Hexagonal, Design: Motor de Grafos & Consultas Relacionales (WXG-002), Tasks: Motor de Grafos & Consultas Relacionales (WXG-002), Architecture & Data Schema (+16 more)
 
 ### Community 17 - "Requirements"
 Cohesion: 0.15
@@ -206,6 +209,10 @@ Nodes (4): Decisions, Design, Goals / Non-Goals, Risks / Trade-offs
 Cohesion: 0.25
 Nodes (7): Capabilities, Impact, Modified Capabilities, New Capabilities, Proposal, What Changes, Why
 
+### Community 26 - "OpenSpec [WXG-004]: Ingestor Masivo de PDFs de Cientos de Capítulos en WuxiaGraph"
+Cohesion: 0.08
+Nodes (25): 1.1 Propósito Estratégico, 1.2 Propuesta de Valor Diferenciadora (vs RAG Tradicional y Context Windows), 1.3 Target Personas (Perfil de Usuarios SaaS), 1.4 Modelo SaaS & Economía de Cómputo, 1. Visión Estratégica de Producto SaaS & Propuesta de Valor, 2. Casos de Uso de Usuario, 3. Arquitectura del Pipeline de Ingesta (End-to-End), 4. Roadmap Iterativo de Producto (+17 more)
+
 ### Community 27 - "Contract: [WXG-023] Componente Visualizador de Grafo Interactivo de Lore (Vue Flow / Vue 3)"
 Cohesion: 0.18
 Nodes (10): 🧪 Casos Borde & Verificación, Contract: [WXG-023] Componente Visualizador de Grafo Interactivo de Lore (Vue Flow / Vue 3), ✅ Criterios de Aceptación (Definition of Done), 🤖 Herramientas MCP Obligatorias para Agentes, Post-conditions, Pre-conditions, Proposed Changes, 📋 Requisitos Técnicos (+2 more)
@@ -214,9 +221,9 @@ Nodes (10): 🧪 Casos Borde & Verificación, Contract: [WXG-023] Componente Vis
 Cohesion: 0.18
 Nodes (10): 🧪 Casos Borde & Verificación, Contract: [WXG-023] Componente Visualizador de Grafo Interactivo de Lore (Vue Flow / Vue 3), ✅ Criterios de Aceptación (Definition of Done), 🤖 Herramientas MCP Obligatorias para Agentes, Post-conditions, Pre-conditions, Proposed Changes, 📋 Requisitos Técnicos (+2 more)
 
-### Community 29 - "ADDED Requirements"
-Cohesion: 0.29
-Nodes (6): ADDED Requirements, Requirement: Depth-based Graph Query and Visualization, Requirement: Governance 423 Locked Disablement, Scenario: Circuit breaker budget exceeded, Scenario: Fetching graph with depth filter, Spec: Frontend Dashboard & Graph Visualizer
+### Community 29 - "frontend-dashboard Specification"
+Cohesion: 0.25
+Nodes (7): frontend-dashboard Specification, Purpose, Requirement: Depth-based Graph Query and Visualization, Requirement: Governance 423 Locked Disablement, Requirements, Scenario: Circuit breaker budget exceeded, Scenario: Fetching graph with depth filter
 
 ### Community 30 - "schema.sql"
 Cohesion: 0.48
@@ -242,9 +249,9 @@ Nodes (4): Contexto e Impacto, Definition of Done (DoD), Por Qué (Why), Proposa
 Cohesion: 0.40
 Nodes (4): 1. Esquemas y Enrutador de Gobernanza WIP, 2. Enrutador Principal, Middlewares y Servidor Central, 3. Pruebas de Integración y Verificación, Tasks
 
-### Community 36 - "IContextRepository"
-Cohesion: 0.14
-Nodes (13): 1. Contexto & Propósito, 2. Invariantes Implementadas, OpenSpec Change Proposal: WXG-015 Context Injector Service, 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools, buildImmutablePromptPrefix() (+5 more)
+### Community 36 - "ADDED Requirements"
+Cohesion: 0.29
+Nodes (6): ADDED Requirements, Requirement: Depth-based Graph Query and Visualization, Requirement: Governance 423 Locked Disablement, Scenario: Circuit breaker budget exceeded, Scenario: Fetching graph with depth filter, Spec: Frontend Dashboard & Graph Visualizer
 
 ### Community 37 - "Estándar Internacional de Seguridad de Paquetes y Cadena de Suministro (Supply Chain Security)"
 Cohesion: 0.14
@@ -290,7 +297,11 @@ Nodes (9): Architecture Context, 🧪 Casos Borde & Verificación, ✅ Criterios
 Cohesion: 0.20
 Nodes (9): 🧪 Casos Borde & Verificación, ✅ Criterios de Aceptación (Definition of Done), 🤖 Herramientas MCP Obligatorias para Agentes, Impact, 🎯 Objetivo & Contexto, Proposal: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3, 📋 Requisitos Técnicos, What Changes (+1 more)
 
-### Community 48 - "Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3)"
+### Community 48 - "ADDED Requirements"
+Cohesion: 0.29
+Nodes (6): ADDED Requirements, Requirement: E2E In-Memory Test Suite Isolation, Requirement: Relational Lore Graph Querying, Scenario: Querying relationship path, Scenario: Running full lifecycle test, Spec: Core Architecture & Graph Engine
+
+### Community 49 - "Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3)"
 Cohesion: 0.40
 Nodes (4): Context & Impact, Definition of Done, Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3), Why
 
@@ -330,6 +341,10 @@ Nodes (5): 1. Visión y Propósito, 2. Stack Tecnológico, 3. Arquitectura del C
 Cohesion: 0.33
 Nodes (5): 1. Intent & Capability, 2. Invariantes de Arquitectura & Código, 3. Componentes Principales, 4. Casos Borde & Pruebas Exigidas, OpenSpec [WXG-003]: Frontend Dashboard & Graph Visualizer (Vue 3)
 
+### Community 59 - "Proposal: Core Architecture, Graph Engine & E2E Integration Suite"
+Cohesion: 0.40
+Nodes (4): Context & Impact, Definition of Done, Proposal: Core Architecture, Graph Engine & E2E Integration Suite, Why
+
 ### Community 60 - "ADDED Requirements"
 Cohesion: 0.40
 Nodes (4): ADDED Requirements, Requirement: Implementation SHALL fulfill task gh-16, Scenario: Verification passing, Spec Delta: [WXG-020] Servicio de Grafo de Dominio: Algoritmo de Pathfinding (BFS/DFS) y Matriz de Alianzas
@@ -352,22 +367,22 @@ Nodes (4): ADDED Requirements, Requirement: Implementation SHALL fulfill task gh
 
 ## Knowledge Gaps
 - **10 isolated node(s):** `@vueuse/core`, `@types/node`, `autoprefixer`, `postcss`, `tailwindcss` (+5 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 486 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 520 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `vue` connect `App.vue` to `DreamingConsole.vue`, `GovernancePanel.vue`, `frontend/package.json`, `LoreGraphVisualizer.vue`?**
-  _High betweenness centrality (0.073) - this node is a cross-community bridge._
-- **Are the 4 inferred relationships involving `GraphService` (e.g. with `1. Dominio (`src/domain/graph/`)` and `Requirement: Domain Graph Service Pathfinding`) actually correct?**
-  _`GraphService` has 4 INFERRED edges - model-reasoned connections that need verification._
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
+- **Are the 6 inferred relationships involving `GraphService` (e.g. with `1. Dominio (`src/domain/graph/`)` and `Requirement: Domain Graph Service Pathfinding`) actually correct?**
+  _`GraphService` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `@vueuse/core`, `@types/node`, `autoprefixer` to the rest of the system?**
   _10 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `router.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.05554311310190369 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06001021450459653 - nodes in this community are weakly interconnected._
 - **Should `tools/index.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.08941176470588236 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06830601092896176 - nodes in this community are weakly interconnected._
 - **Should `frontend/package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.1111111111111111 - nodes in this community are weakly interconnected._
 - **Should `LoreGraphVisualizer.vue` be split into smaller, more focused modules?**

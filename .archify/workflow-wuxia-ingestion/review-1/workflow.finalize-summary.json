@@ -1,0 +1,600 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "workflow",
+  "quality": "standard",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+    "sha256": "7d2b6bdc1d28e0186fa14a39c606427f1375b47bc9d9f64f08a9524ae83ed21e",
+    "bytes": 5193
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+    "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+    "bytes": 827513
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/viewport-overflow",
+      "severity": "error",
+      "message": "The rendered artifact overflows 6 viewport/theme combinations.",
+      "subject": {},
+      "evidence": {
+        "overflows": [
+          {
+            "detection": "browser-measurement",
+            "subject": {
+              "viewport": {
+                "width": 1440,
+                "height": 900,
+                "theme": "light"
+              }
+            },
+            "evidence": {
+              "scrollWidth": 1440,
+              "scrollHeight": 1798,
+              "overflowX": false,
+              "overflowY": true,
+              "overflowDisposition": "unexpected-overflow",
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 1451,
+                "cardsPx": 205,
+                "viewBoxHeight": 776
+              },
+              "pageCompositionMeasurement": "CSS pixels at this viewport; body padding, header, diagram chrome, SVG and cards stack vertically and sum to scrollHeight",
+              "workflowLanes": [
+                {
+                  "frameId": "lane-0",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_upload",
+                    "sse_notification"
+                  ],
+                  "nodeSpanPx": 97,
+                  "spaceAboveNodesPx": 77,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-1",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_parsing",
+                    "chapter_segmentation"
+                  ],
+                  "nodeSpanPx": 127,
+                  "spaceAboveNodesPx": 62,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-2",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "sliding_window_batch",
+                    "llm_distillation"
+                  ],
+                  "nodeSpanPx": 127,
+                  "spaceAboveNodesPx": 62,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-3",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "co_reference_resolution",
+                    "graph_ingestion"
+                  ],
+                  "nodeSpanPx": 97,
+                  "spaceAboveNodesPx": 77,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-4",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "budget_check",
+                    "locked_by_wip"
+                  ],
+                  "nodeSpanPx": 127,
+                  "spaceAboveNodesPx": 62,
+                  "spaceBelowNodesPx": 6
+                }
+              ],
+              "measurement": "CSS pixels; rendered node boxes geometrically contained in each lane frame; spaces include headers and routing, not guaranteed removable space"
+            }
+          },
+          {
+            "detection": "browser-measurement",
+            "subject": {
+              "viewport": {
+                "width": 1600,
+                "height": 1000,
+                "theme": "light"
+              }
+            },
+            "evidence": {
+              "scrollWidth": 1600,
+              "scrollHeight": 1943,
+              "overflowX": false,
+              "overflowY": true,
+              "overflowDisposition": "unexpected-overflow",
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 1520,
+                "cardsPx": 215,
+                "viewBoxHeight": 776
+              },
+              "pageCompositionMeasurement": "CSS pixels at this viewport; body padding, header, diagram chrome, SVG and cards stack vertically and sum to scrollHeight",
+              "workflowLanes": [
+                {
+                  "frameId": "lane-0",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_upload",
+                    "sse_notification"
+                  ],
+                  "nodeSpanPx": 102,
+                  "spaceAboveNodesPx": 80,
+                  "spaceBelowNodesPx": 22
+                },
+                {
+                  "frameId": "lane-1",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_parsing",
+                    "chapter_segmentation"
+                  ],
+                  "nodeSpanPx": 133,
+                  "spaceAboveNodesPx": 65,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-2",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "sliding_window_batch",
+                    "llm_distillation"
+                  ],
+                  "nodeSpanPx": 133,
+                  "spaceAboveNodesPx": 65,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-3",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "co_reference_resolution",
+                    "graph_ingestion"
+                  ],
+                  "nodeSpanPx": 102,
+                  "spaceAboveNodesPx": 80,
+                  "spaceBelowNodesPx": 22
+                },
+                {
+                  "frameId": "lane-4",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "budget_check",
+                    "locked_by_wip"
+                  ],
+                  "nodeSpanPx": 133,
+                  "spaceAboveNodesPx": 65,
+                  "spaceBelowNodesPx": 6
+                }
+              ],
+              "measurement": "CSS pixels; rendered node boxes geometrically contained in each lane frame; spaces include headers and routing, not guaranteed removable space"
+            }
+          },
+          {
+            "detection": "browser-measurement",
+            "subject": {
+              "viewport": {
+                "width": 1920,
+                "height": 1080,
+                "theme": "light"
+              }
+            },
+            "evidence": {
+              "scrollWidth": 1920,
+              "scrollHeight": 1943,
+              "overflowX": false,
+              "overflowY": true,
+              "overflowDisposition": "unexpected-overflow",
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 1520,
+                "cardsPx": 215,
+                "viewBoxHeight": 776
+              },
+              "pageCompositionMeasurement": "CSS pixels at this viewport; body padding, header, diagram chrome, SVG and cards stack vertically and sum to scrollHeight",
+              "workflowLanes": [
+                {
+                  "frameId": "lane-0",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_upload",
+                    "sse_notification"
+                  ],
+                  "nodeSpanPx": 102,
+                  "spaceAboveNodesPx": 80,
+                  "spaceBelowNodesPx": 22
+                },
+                {
+                  "frameId": "lane-1",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_parsing",
+                    "chapter_segmentation"
+                  ],
+                  "nodeSpanPx": 133,
+                  "spaceAboveNodesPx": 65,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-2",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "sliding_window_batch",
+                    "llm_distillation"
+                  ],
+                  "nodeSpanPx": 133,
+                  "spaceAboveNodesPx": 65,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-3",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "co_reference_resolution",
+                    "graph_ingestion"
+                  ],
+                  "nodeSpanPx": 102,
+                  "spaceAboveNodesPx": 80,
+                  "spaceBelowNodesPx": 22
+                },
+                {
+                  "frameId": "lane-4",
+                  "heightPx": 204,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "budget_check",
+                    "locked_by_wip"
+                  ],
+                  "nodeSpanPx": 133,
+                  "spaceAboveNodesPx": 65,
+                  "spaceBelowNodesPx": 6
+                }
+              ],
+              "measurement": "CSS pixels; rendered node boxes geometrically contained in each lane frame; spaces include headers and routing, not guaranteed removable space"
+            }
+          },
+          {
+            "detection": "browser-measurement",
+            "subject": {
+              "viewport": {
+                "width": 2048,
+                "height": 1320,
+                "theme": "light"
+              }
+            },
+            "evidence": {
+              "scrollWidth": 2048,
+              "scrollHeight": 1959,
+              "overflowX": false,
+              "overflowY": true,
+              "overflowDisposition": "unexpected-overflow",
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 1498,
+                "cardsPx": 235,
+                "viewBoxHeight": 776
+              },
+              "pageCompositionMeasurement": "CSS pixels at this viewport; body padding, header, diagram chrome, SVG and cards stack vertically and sum to scrollHeight",
+              "workflowLanes": [
+                {
+                  "frameId": "lane-0",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_upload",
+                    "sse_notification"
+                  ],
+                  "nodeSpanPx": 100,
+                  "spaceAboveNodesPx": 79,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-1",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_parsing",
+                    "chapter_segmentation"
+                  ],
+                  "nodeSpanPx": 131,
+                  "spaceAboveNodesPx": 64,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-2",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "sliding_window_batch",
+                    "llm_distillation"
+                  ],
+                  "nodeSpanPx": 131,
+                  "spaceAboveNodesPx": 64,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-3",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "co_reference_resolution",
+                    "graph_ingestion"
+                  ],
+                  "nodeSpanPx": 100,
+                  "spaceAboveNodesPx": 79,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-4",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "budget_check",
+                    "locked_by_wip"
+                  ],
+                  "nodeSpanPx": 131,
+                  "spaceAboveNodesPx": 64,
+                  "spaceBelowNodesPx": 6
+                }
+              ],
+              "measurement": "CSS pixels; rendered node boxes geometrically contained in each lane frame; spaces include headers and routing, not guaranteed removable space"
+            }
+          },
+          {
+            "detection": "browser-measurement",
+            "subject": {
+              "viewport": {
+                "width": 1440,
+                "height": 900,
+                "theme": "dark"
+              }
+            },
+            "evidence": {
+              "scrollWidth": 1440,
+              "scrollHeight": 1798,
+              "overflowX": false,
+              "overflowY": true,
+              "overflowDisposition": "unexpected-overflow",
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 1451,
+                "cardsPx": 205,
+                "viewBoxHeight": 776
+              },
+              "pageCompositionMeasurement": "CSS pixels at this viewport; body padding, header, diagram chrome, SVG and cards stack vertically and sum to scrollHeight",
+              "workflowLanes": [
+                {
+                  "frameId": "lane-0",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_upload",
+                    "sse_notification"
+                  ],
+                  "nodeSpanPx": 97,
+                  "spaceAboveNodesPx": 77,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-1",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_parsing",
+                    "chapter_segmentation"
+                  ],
+                  "nodeSpanPx": 127,
+                  "spaceAboveNodesPx": 62,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-2",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "sliding_window_batch",
+                    "llm_distillation"
+                  ],
+                  "nodeSpanPx": 127,
+                  "spaceAboveNodesPx": 62,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-3",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "co_reference_resolution",
+                    "graph_ingestion"
+                  ],
+                  "nodeSpanPx": 97,
+                  "spaceAboveNodesPx": 77,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-4",
+                  "heightPx": 194,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "budget_check",
+                    "locked_by_wip"
+                  ],
+                  "nodeSpanPx": 127,
+                  "spaceAboveNodesPx": 62,
+                  "spaceBelowNodesPx": 6
+                }
+              ],
+              "measurement": "CSS pixels; rendered node boxes geometrically contained in each lane frame; spaces include headers and routing, not guaranteed removable space"
+            }
+          },
+          {
+            "detection": "browser-measurement",
+            "subject": {
+              "viewport": {
+                "width": 2048,
+                "height": 1320,
+                "theme": "dark"
+              }
+            },
+            "evidence": {
+              "scrollWidth": 2048,
+              "scrollHeight": 1959,
+              "overflowX": false,
+              "overflowY": true,
+              "overflowDisposition": "unexpected-overflow",
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 1498,
+                "cardsPx": 235,
+                "viewBoxHeight": 776
+              },
+              "pageCompositionMeasurement": "CSS pixels at this viewport; body padding, header, diagram chrome, SVG and cards stack vertically and sum to scrollHeight",
+              "workflowLanes": [
+                {
+                  "frameId": "lane-0",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_upload",
+                    "sse_notification"
+                  ],
+                  "nodeSpanPx": 100,
+                  "spaceAboveNodesPx": 79,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-1",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "pdf_parsing",
+                    "chapter_segmentation"
+                  ],
+                  "nodeSpanPx": 131,
+                  "spaceAboveNodesPx": 64,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-2",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "sliding_window_batch",
+                    "llm_distillation"
+                  ],
+                  "nodeSpanPx": 131,
+                  "spaceAboveNodesPx": 64,
+                  "spaceBelowNodesPx": 6
+                },
+                {
+                  "frameId": "lane-3",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "co_reference_resolution",
+                    "graph_ingestion"
+                  ],
+                  "nodeSpanPx": 100,
+                  "spaceAboveNodesPx": 79,
+                  "spaceBelowNodesPx": 21
+                },
+                {
+                  "frameId": "lane-4",
+                  "heightPx": 201,
+                  "nodeCount": 2,
+                  "nodeIds": [
+                    "budget_check",
+                    "locked_by_wip"
+                  ],
+                  "nodeSpanPx": 131,
+                  "spaceAboveNodesPx": 64,
+                  "spaceBelowNodesPx": 6
+                }
+              ],
+              "measurement": "CSS pixels; rendered node boxes geometrically contained in each lane frame; spaces include headers and routing, not guaranteed removable space"
+            }
+          }
+        ]
+      },
+      "supportedFixes": [
+        "contain the rendered layout within 1440x900 (smallest reported viewport), then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/review-1/workflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/review-1/workflow.finalize-summary.json",
+    "browserCheckReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/review-1/workflow.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 2008,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  }
+}

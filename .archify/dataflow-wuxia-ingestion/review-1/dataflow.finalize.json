@@ -1,0 +1,433 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "standard",
+  "startedAt": "2026-10-21T18:40:12.641Z",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "6a328e6ba6462d7107efe019fcde63254e7e7328663f51bca1c6f8d48e09abc2",
+    "bytes": 4328
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "stages": {
+    "validate": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": null,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "deliver",
+        "dataflow",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "--quality",
+        "standard",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "deliver",
+        "receiptId": "8d44ac7d-7a38-4119-8a31-630f71b6f839",
+        "stage": "render",
+        "type": "dataflow",
+        "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "error": "Data-flow layout validation failed:\n- [clean-flow/endpoint-side-direction] dataflow flows[3] id \"flow-4\" \"sliding_queue\" -> \"budget_gate\" first segment 0 [530, 242] -> [525.5, 242] does not honor inferred fromSide \"top\" — it must run vertical upward; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.\n- [clean-flow/endpoint-side-direction] dataflow flows[3] id \"flow-4\" \"sliding_queue\" -> \"budget_gate\" final segment 2 [525.5, 186] -> [521, 186] does not honor inferred toSide \"bottom\" — it must run vertical upward from below; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.\n- [clean-flow/endpoint-side-direction] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" first segment 0 [539, 186] -> [534.5, 186] does not honor inferred fromSide \"bottom\" — it must run vertical downward; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.\n- [clean-flow/endpoint-side-direction] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" final segment 2 [534.5, 356] -> [530, 356] does not honor inferred toSide \"top\" — it must run vertical downward from above; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.\n- [clean-flow/edge-through-node] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" crosses node \"sliding_queue\" (unrelated to this relationship) on segment 1 [535, 186] -> [535, 356] (2px clearance) — adjust fromSide/toSide, set route/via or channelX/channelY, or move the node to another stage/row.\n- Label \"authorized\" overlaps node \"sliding_queue\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [499, 250, 71, 27]\n  node \"sliding_queue\" rect: [474, 242, 112, 58]\n  Suggested fix: set labelAt [535, 315] or set labelDx 1 with labelDy 54 (below); or set labelAt [535, 222] or set labelDx 1 with labelDy -39 (above)",
+        "diagnostics": [
+          {
+            "code": "clean-flow/endpoint-side-direction",
+            "severity": "error",
+            "message": "[clean-flow/endpoint-side-direction] dataflow flows[3] id \"flow-4\" \"sliding_queue\" -> \"budget_gate\" first segment 0 [530, 242] -> [525.5, 242] does not honor inferred fromSide \"top\" — it must run vertical upward; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+            "subject": {
+              "diagramType": "dataflow",
+              "collection": "flows",
+              "index": 3,
+              "id": "flow-4",
+              "from": "sliding_queue",
+              "to": "budget_gate"
+            },
+            "evidence": {
+              "endpoint": "source",
+              "authoredField": "fromSide",
+              "sideOrigin": "inferred",
+              "side": "top",
+              "segmentIndex": 0,
+              "from": [
+                530,
+                242
+              ],
+              "to": [
+                525.5,
+                242
+              ],
+              "expectedAxis": "vertical",
+              "expectedDirection": "upward"
+            },
+            "supportedFixes": [
+              "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+            ]
+          },
+          {
+            "code": "clean-flow/endpoint-side-direction",
+            "severity": "error",
+            "message": "[clean-flow/endpoint-side-direction] dataflow flows[3] id \"flow-4\" \"sliding_queue\" -> \"budget_gate\" final segment 2 [525.5, 186] -> [521, 186] does not honor inferred toSide \"bottom\" — it must run vertical upward from below; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+            "subject": {
+              "diagramType": "dataflow",
+              "collection": "flows",
+              "index": 3,
+              "id": "flow-4",
+              "from": "sliding_queue",
+              "to": "budget_gate"
+            },
+            "evidence": {
+              "endpoint": "target",
+              "authoredField": "toSide",
+              "sideOrigin": "inferred",
+              "side": "bottom",
+              "segmentIndex": 2,
+              "from": [
+                525.5,
+                186
+              ],
+              "to": [
+                521,
+                186
+              ],
+              "expectedAxis": "vertical",
+              "expectedDirection": "upward from below"
+            },
+            "supportedFixes": [
+              "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+            ]
+          },
+          {
+            "code": "clean-flow/endpoint-side-direction",
+            "severity": "error",
+            "message": "[clean-flow/endpoint-side-direction] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" first segment 0 [539, 186] -> [534.5, 186] does not honor inferred fromSide \"bottom\" — it must run vertical downward; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+            "subject": {
+              "diagramType": "dataflow",
+              "collection": "flows",
+              "index": 4,
+              "id": "flow-5",
+              "from": "budget_gate",
+              "to": "batch_worker"
+            },
+            "evidence": {
+              "endpoint": "source",
+              "authoredField": "fromSide",
+              "sideOrigin": "inferred",
+              "side": "bottom",
+              "segmentIndex": 0,
+              "from": [
+                539,
+                186
+              ],
+              "to": [
+                534.5,
+                186
+              ],
+              "expectedAxis": "vertical",
+              "expectedDirection": "downward"
+            },
+            "supportedFixes": [
+              "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+            ]
+          },
+          {
+            "code": "clean-flow/endpoint-side-direction",
+            "severity": "error",
+            "message": "[clean-flow/endpoint-side-direction] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" final segment 2 [534.5, 356] -> [530, 356] does not honor inferred toSide \"top\" — it must run vertical downward from above; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+            "subject": {
+              "diagramType": "dataflow",
+              "collection": "flows",
+              "index": 4,
+              "id": "flow-5",
+              "from": "budget_gate",
+              "to": "batch_worker"
+            },
+            "evidence": {
+              "endpoint": "target",
+              "authoredField": "toSide",
+              "sideOrigin": "inferred",
+              "side": "top",
+              "segmentIndex": 2,
+              "from": [
+                534.5,
+                356
+              ],
+              "to": [
+                530,
+                356
+              ],
+              "expectedAxis": "vertical",
+              "expectedDirection": "downward from above"
+            },
+            "supportedFixes": [
+              "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+            ]
+          },
+          {
+            "code": "clean-flow/edge-through-node",
+            "severity": "error",
+            "message": "[clean-flow/edge-through-node] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" crosses node \"sliding_queue\" (unrelated to this relationship) on segment 1 [535, 186] -> [535, 356] (2px clearance) — adjust fromSide/toSide, set route/via or channelX/channelY, or move the node to another stage/row.",
+            "subject": {
+              "diagramType": "dataflow",
+              "collection": "flows",
+              "index": 4,
+              "id": "flow-5",
+              "from": "budget_gate",
+              "to": "batch_worker"
+            },
+            "evidence": {
+              "obstacleKind": "node",
+              "obstacleId": "sliding_queue",
+              "segmentIndex": 1,
+              "from": [
+                534.5,
+                186
+              ],
+              "to": [
+                534.5,
+                356
+              ],
+              "clearancePx": 2
+            },
+            "supportedFixes": [
+              "adjust fromSide/toSide, set route/via or channelX/channelY, or move the node to another stage/row"
+            ]
+          },
+          {
+            "code": "layout/constraint",
+            "severity": "error",
+            "message": "Label \"authorized\" overlaps node \"sliding_queue\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [499, 250, 71, 27]\n  node \"sliding_queue\" rect: [474, 242, 112, 58]\n  Suggested fix: set labelAt [535, 315] or set labelDx 1 with labelDy 54 (below); or set labelAt [535, 222] or set labelDx 1 with labelDy -39 (above)",
+            "subject": {
+              "diagramType": "dataflow"
+            },
+            "evidence": {},
+            "supportedFixes": []
+          }
+        ],
+        "provenance": "absent",
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      },
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "not-run",
+      "execution": "blocked-by-validate"
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "clean-flow/endpoint-side-direction",
+      "severity": "error",
+      "message": "[clean-flow/endpoint-side-direction] dataflow flows[3] id \"flow-4\" \"sliding_queue\" -> \"budget_gate\" first segment 0 [530, 242] -> [525.5, 242] does not honor inferred fromSide \"top\" — it must run vertical upward; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+      "subject": {
+        "diagramType": "dataflow",
+        "collection": "flows",
+        "index": 3,
+        "id": "flow-4",
+        "from": "sliding_queue",
+        "to": "budget_gate"
+      },
+      "evidence": {
+        "endpoint": "source",
+        "authoredField": "fromSide",
+        "sideOrigin": "inferred",
+        "side": "top",
+        "segmentIndex": 0,
+        "from": [
+          530,
+          242
+        ],
+        "to": [
+          525.5,
+          242
+        ],
+        "expectedAxis": "vertical",
+        "expectedDirection": "upward"
+      },
+      "supportedFixes": [
+        "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+      ]
+    },
+    {
+      "code": "clean-flow/endpoint-side-direction",
+      "severity": "error",
+      "message": "[clean-flow/endpoint-side-direction] dataflow flows[3] id \"flow-4\" \"sliding_queue\" -> \"budget_gate\" final segment 2 [525.5, 186] -> [521, 186] does not honor inferred toSide \"bottom\" — it must run vertical upward from below; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+      "subject": {
+        "diagramType": "dataflow",
+        "collection": "flows",
+        "index": 3,
+        "id": "flow-4",
+        "from": "sliding_queue",
+        "to": "budget_gate"
+      },
+      "evidence": {
+        "endpoint": "target",
+        "authoredField": "toSide",
+        "sideOrigin": "inferred",
+        "side": "bottom",
+        "segmentIndex": 2,
+        "from": [
+          525.5,
+          186
+        ],
+        "to": [
+          521,
+          186
+        ],
+        "expectedAxis": "vertical",
+        "expectedDirection": "upward from below"
+      },
+      "supportedFixes": [
+        "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+      ]
+    },
+    {
+      "code": "clean-flow/endpoint-side-direction",
+      "severity": "error",
+      "message": "[clean-flow/endpoint-side-direction] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" first segment 0 [539, 186] -> [534.5, 186] does not honor inferred fromSide \"bottom\" — it must run vertical downward; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+      "subject": {
+        "diagramType": "dataflow",
+        "collection": "flows",
+        "index": 4,
+        "id": "flow-5",
+        "from": "budget_gate",
+        "to": "batch_worker"
+      },
+      "evidence": {
+        "endpoint": "source",
+        "authoredField": "fromSide",
+        "sideOrigin": "inferred",
+        "side": "bottom",
+        "segmentIndex": 0,
+        "from": [
+          539,
+          186
+        ],
+        "to": [
+          534.5,
+          186
+        ],
+        "expectedAxis": "vertical",
+        "expectedDirection": "downward"
+      },
+      "supportedFixes": [
+        "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+      ]
+    },
+    {
+      "code": "clean-flow/endpoint-side-direction",
+      "severity": "error",
+      "message": "[clean-flow/endpoint-side-direction] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" final segment 2 [534.5, 356] -> [530, 356] does not honor inferred toSide \"top\" — it must run vertical downward from above; keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly.",
+      "subject": {
+        "diagramType": "dataflow",
+        "collection": "flows",
+        "index": 4,
+        "id": "flow-5",
+        "from": "budget_gate",
+        "to": "batch_worker"
+      },
+      "evidence": {
+        "endpoint": "target",
+        "authoredField": "toSide",
+        "sideOrigin": "inferred",
+        "side": "top",
+        "segmentIndex": 2,
+        "from": [
+          534.5,
+          356
+        ],
+        "to": [
+          530,
+          356
+        ],
+        "expectedAxis": "vertical",
+        "expectedDirection": "downward from above"
+      },
+      "supportedFixes": [
+        "keep automatic routing, or choose fromSide/toSide and via points whose first and final segments cross node borders perpendicularly"
+      ]
+    },
+    {
+      "code": "clean-flow/edge-through-node",
+      "severity": "error",
+      "message": "[clean-flow/edge-through-node] dataflow flows[4] id \"flow-5\" \"budget_gate\" -> \"batch_worker\" crosses node \"sliding_queue\" (unrelated to this relationship) on segment 1 [535, 186] -> [535, 356] (2px clearance) — adjust fromSide/toSide, set route/via or channelX/channelY, or move the node to another stage/row.",
+      "subject": {
+        "diagramType": "dataflow",
+        "collection": "flows",
+        "index": 4,
+        "id": "flow-5",
+        "from": "budget_gate",
+        "to": "batch_worker"
+      },
+      "evidence": {
+        "obstacleKind": "node",
+        "obstacleId": "sliding_queue",
+        "segmentIndex": 1,
+        "from": [
+          534.5,
+          186
+        ],
+        "to": [
+          534.5,
+          356
+        ],
+        "clearancePx": 2
+      },
+      "supportedFixes": [
+        "adjust fromSide/toSide, set route/via or channelX/channelY, or move the node to another stage/row"
+      ]
+    },
+    {
+      "code": "layout/constraint",
+      "severity": "error",
+      "message": "Label \"authorized\" overlaps node \"sliding_queue\" — adjust labelDx/labelDy/labelSegment or set labelAt.\n  label rect: [499, 250, 71, 27]\n  node \"sliding_queue\" rect: [474, 242, 112, 58]\n  Suggested fix: set labelAt [535, 315] or set labelDx 1 with labelDy 54 (below); or set labelAt [535, 222] or set labelDx 1 with labelDy -39 (above)",
+      "subject": {
+        "diagramType": "dataflow"
+      },
+      "evidence": {},
+      "supportedFixes": []
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-1/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/review-1/dataflow.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "validate",
+  "finishedAt": "2026-10-21T18:40:12.839Z",
+  "durationMs": 198,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

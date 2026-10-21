@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "workflow",
+  "quality": "standard",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+    "sha256": "7d2b6bdc1d28e0186fa14a39c606427f1375b47bc9d9f64f08a9524ae83ed21e",
+    "bytes": 5193
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+    "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+    "bytes": 827513
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/evidence-path-conflict",
+      "severity": "error",
+      "message": "browser-check will not replace the existing unowned evidence path \"/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json\".",
+      "subject": {
+        "artifact": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+        "evidencePath": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json"
+      },
+      "evidence": {
+        "reason": {
+          "code": "ownership-artifact-mismatch"
+        }
+      },
+      "supportedFixes": [
+        "move the conflicting file aside, or choose a separate --out-dir, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.finalize-summary.json",
+    "browserCheckReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 508,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

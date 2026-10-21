@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "dataflow",
+  "quality": "showcase",
+  "startedAt": "2026-10-21T18:40:01.455Z",
+  "specification": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+    "sha256": "9943697d40428be3bc1630b4f14a38121c8ac5ab9cc88968790ff4aa2a6415be",
+    "bytes": 4331
+  },
+  "artifact": {
+    "path": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html"
+  },
+  "stages": {
+    "validate": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": null,
+      "command": [
+        "/home/sastiam/.hermes/tools/node-26.7.0-linux-x64/bin/node",
+        "/home/sastiam/.hermes/skills/archify/bin/archify.mjs",
+        "deliver",
+        "dataflow",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "deliver",
+        "receiptId": "d882d2e4-44de-4309-b6a1-e6a100b71025",
+        "stage": "render",
+        "type": "dataflow",
+        "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.json",
+        "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.html",
+        "error": "dataflow schema validation failed:\n  /stages must NOT have more than 5 items {\"limit\":5}",
+        "diagnostics": [
+          {
+            "code": "schema/maxItems",
+            "severity": "error",
+            "message": "/stages must NOT have more than 5 items",
+            "subject": {
+              "diagramType": "dataflow",
+              "path": "/stages"
+            },
+            "evidence": {
+              "keyword": "maxItems",
+              "limit": 5
+            },
+            "supportedFixes": [
+              "provide at most 5 item(s)"
+            ]
+          }
+        ],
+        "provenance": "absent",
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      },
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "not-run",
+      "execution": "blocked-by-validate"
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "schema/maxItems",
+      "severity": "error",
+      "message": "/stages must NOT have more than 5 items",
+      "subject": {
+        "diagramType": "dataflow",
+        "path": "/stages"
+      },
+      "evidence": {
+        "keyword": "maxItems",
+        "limit": 5
+      },
+      "supportedFixes": [
+        "provide at most 5 item(s)"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.finalize.json",
+    "summaryReceipt": "/home/sastiam/Workspace/WuxiaGraph/.archify/dataflow-wuxia-ingestion/dataflow.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "validate",
+  "finishedAt": "2026-10-21T18:40:01.639Z",
+  "durationMs": 183,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-21T13:52:29.584Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

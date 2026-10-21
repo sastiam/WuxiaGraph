@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "a69112a7-6533-4602-b540-a5f9e885c1e2",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.json",
+  "output": "/home/sastiam/Workspace/WuxiaGraph/.archify/workflow-wuxia-ingestion/workflow.html",
+  "specification": {
+    "sha256": "7d2b6bdc1d28e0186fa14a39c606427f1375b47bc9d9f64f08a9524ae83ed21e",
+    "bytes": 5193
+  },
+  "artifact": {
+    "sha256": "5d93a9946a01de30a63977c7e6afb8bfa6d0f118ee4094240489aae9ef512a9d",
+    "bytes": 827513
+  }
+}
