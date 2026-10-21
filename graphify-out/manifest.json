@@ -210,14 +210,14 @@
     "semantic_hash": ""
   },
   "src/infrastructure/database.ts": {
-    "mtime": 1792610180.5429103,
-    "seen": 1792610254.4785278,
+    "mtime": 1792610282.1612399,
+    "seen": 1792610490.033012,
     "ast_hash": "5d849807c08e0f1e85bceff61cc73a98",
     "semantic_hash": ""
   },
   "src/infrastructure/index.ts": {
-    "mtime": 1792610211.9073913,
-    "seen": 1792610254.4785287,
+    "mtime": 1792610282.1613226,
+    "seen": 1792610490.0330133,
     "ast_hash": "f4b26bae9c84aa9d00189b98d979795b",
     "semantic_hash": ""
   },
@@ -672,8 +672,8 @@
     "semantic_hash": ""
   },
   "src/infrastructure/schema.sql": {
-    "mtime": 1792610168.9551709,
-    "seen": 1792610254.4785361,
+    "mtime": 1792610282.1614575,
+    "seen": 1792610490.0330207,
     "ast_hash": "9118305198751e748dc5e4e9dc25680a",
     "semantic_hash": ""
   },
@@ -888,9 +888,9 @@
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/tasks.md": {
-    "mtime": 1792610250.3801057,
-    "seen": 1792610254.478644,
-    "ast_hash": "0e9782545cfac2e5491ee0cd42f881a7",
+    "mtime": 1792610485.783005,
+    "seen": 1792610490.0331373,
+    "ast_hash": "5ae0c0c88d51ed48b5269acb0180a9c0",
     "semantic_hash": ""
   },
   "openspec/specs/frontend-dashboard/spec.md": {
@@ -912,9 +912,9 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/index.ts": {
-    "mtime": 1792610157.7132957,
-    "seen": 1792610254.4785206,
-    "ast_hash": "77b807eb55e5768c5e3e9bc263aa649f",
+    "mtime": 1792610428.1040711,
+    "seen": 1792610490.033005,
+    "ast_hash": "05e7ecdbd3c19c09d40f30c2c757abd1",
     "semantic_hash": ""
   },
   "tests/domain/chapterSplitter.test.ts": {
@@ -924,27 +924,39 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/types.ts": {
-    "mtime": 1792610127.1087852,
-    "seen": 1792610254.478522,
+    "mtime": 1792610282.1602783,
+    "seen": 1792610490.0330067,
     "ast_hash": "69fcd0476c57a0b6d6ad872b71c4c4a2",
     "semantic_hash": ""
   },
   "src/domain/ingestion/workerQueue.ts": {
-    "mtime": 1792610143.927528,
-    "seen": 1792610254.4785237,
+    "mtime": 1792610282.161154,
+    "seen": 1792610490.033008,
     "ast_hash": "cb6e36e69520e0264bd04c507e9174ba",
     "semantic_hash": ""
   },
   "src/infrastructure/repositories/checkpointRepository.ts": {
-    "mtime": 1792610195.955131,
-    "seen": 1792610254.4785323,
+    "mtime": 1792610282.1613226,
+    "seen": 1792610490.0330172,
     "ast_hash": "7cd684795768c00060acaa71deccf1a9",
     "semantic_hash": ""
   },
   "tests/domain/workerQueue.test.ts": {
-    "mtime": 1792610229.493833,
-    "seen": 1792610254.4785602,
+    "mtime": 1792610282.1614575,
+    "seen": 1792610490.0330467,
     "ast_hash": "75fec57f0d460c9bd073b464d8c435e7",
+    "semantic_hash": ""
+  },
+  "src/domain/ingestion/coreference.ts": {
+    "mtime": 1792610413.3649302,
+    "seen": 1792610490.033003,
+    "ast_hash": "f0f841c73dac09dd189d6b3a0b2d4252",
+    "semantic_hash": ""
+  },
+  "tests/domain/coreference.test.ts": {
+    "mtime": 1792610472.3662784,
+    "seen": 1792610490.0330405,
+    "ast_hash": "7627c47efeb2ed31b49834e73f29d8e2",
     "semantic_hash": ""
   }
 }
