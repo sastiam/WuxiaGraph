@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import type { LoreEntity, NarrativeFact, WipGovernanceLedger } from '../domain/entities.js';
+import type { LoreEntity, NarrativeFact, WipGovernanceLedger, LoreRelationship } from '../domain/entities.js';
 import type { CanonicalEntityContext } from '../domain/context/types.js';
 
 export const SCHEMA_SQL = `-- WuxiaGraph Relational Storage Schema (SQLite WAL)
@@ -31,6 +31,19 @@ CREATE TABLE IF NOT EXISTS wip_governance_ledger (
     branches_opened_count INTEGER DEFAULT 0,
     status TEXT DEFAULT 'IN_LIMITS'
 );
+
+CREATE TABLE IF NOT EXISTS lore_relationships (
+    relationship_id TEXT PRIMARY KEY,
+    source_entity_id TEXT NOT NULL REFERENCES lore_entities(entity_id),
+    target_entity_id TEXT NOT NULL REFERENCES lore_entities(entity_id),
+    relationship_type TEXT NOT NULL,
+    affinity_weight REAL DEFAULT 0.0,
+    description TEXT,
+    last_updated_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_lore_relationships_source_target ON lore_relationships(source_entity_id, target_entity_id);
+CREATE INDEX IF NOT EXISTS idx_lore_relationships_target_source ON lore_relationships(target_entity_id, source_entity_id);
 `;
 
 export interface DatabaseOptions {
@@ -56,6 +69,16 @@ export interface NarrativeFactRow {
   fact_statement: string;
   is_canon: number;
   chapter_source: string;
+}
+
+export interface LoreRelationshipRow {
+  relationship_id: string;
+  source_entity_id: string;
+  target_entity_id: string;
+  relationship_type: string;
+  affinity_weight: number;
+  description: string | null;
+  last_updated_timestamp?: string;
 }
 
 export interface WipGovernanceLedgerRow {
@@ -223,6 +246,44 @@ export function mapNarrativeFactToRow(fact: NarrativeFact): NarrativeFactRow {
     fact_statement: fact.factStatement,
     is_canon: fact.isCanon ? 1 : 0,
     chapter_source: fact.chapterSource,
+  };
+}
+
+/**
+ * Mapea un registro relacional LoreRelationshipRow a la entidad de dominio LoreRelationship.
+ */
+export function mapRowToLoreRelationship(row: LoreRelationshipRow): LoreRelationship {
+  return {
+    relationship_id: row.relationship_id,
+    source_entity_id: row.source_entity_id,
+    target_entity_id: row.target_entity_id,
+    relationship_type: row.relationship_type,
+    affinity_weight: Number(row.affinity_weight),
+    description: row.description,
+    last_updated_timestamp: row.last_updated_timestamp,
+    relationshipId: row.relationship_id,
+    sourceEntityId: row.source_entity_id,
+    targetEntityId: row.target_entity_id,
+    relationshipType: row.relationship_type,
+    affinityWeight: Number(row.affinity_weight),
+    lastUpdatedTimestamp: row.last_updated_timestamp,
+  };
+}
+
+/**
+ * Mapea una entidad de dominio LoreRelationship al registro relacional LoreRelationshipRow.
+ */
+export function mapLoreRelationshipToRow(
+  rel: LoreRelationship
+): Omit<LoreRelationshipRow, 'last_updated_timestamp'> & { last_updated_timestamp?: string } {
+  return {
+    relationship_id: rel.relationship_id ?? rel.relationshipId,
+    source_entity_id: rel.source_entity_id ?? rel.sourceEntityId,
+    target_entity_id: rel.target_entity_id ?? rel.targetEntityId,
+    relationship_type: rel.relationship_type ?? rel.relationshipType,
+    affinity_weight: Number(rel.affinity_weight ?? rel.affinityWeight ?? 0.0),
+    description: rel.description ?? null,
+    last_updated_timestamp: rel.last_updated_timestamp ?? rel.lastUpdatedTimestamp,
   };
 }
 

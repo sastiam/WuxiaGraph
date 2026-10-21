@@ -433,13 +433,15 @@ describe('[WXG-016] Model Context Protocol (MCP) Server & Tools', () => {
   });
 
   describe('Protocolo MCP & Manejo de Casos Borde', () => {
-    it('debe exponer las 3 herramientas canónicas en listTools()', () => {
+    it('debe exponer las herramientas canónicas en listTools()', () => {
       const tools = mcpServer.listTools();
-      expect(tools).toHaveLength(3);
+      expect(tools).toHaveLength(5);
       const toolNames = tools.map((t) => t.name);
       expect(toolNames).toContain('get_canonical_entities');
       expect(toolNames).toContain('query_facts');
       expect(toolNames).toContain('check_wip_budget');
+      expect(toolNames).toContain('query_entity_graph');
+      expect(toolNames).toContain('find_relationship_path');
 
       // Validar que cada herramienta tenga esquema de entrada y descripción válidos
       for (const tool of tools) {
@@ -489,7 +491,7 @@ describe('[WXG-016] Model Context Protocol (MCP) Server & Tools', () => {
       const res = await mcpServer.handleMessage(req);
       expect(res?.id).toBe(2);
       const result = res?.result as { tools: Array<{ name: string }> };
-      expect(result.tools).toHaveLength(3);
+      expect(result.tools).toHaveLength(5);
     });
 
     it('debe procesar petición JSON-RPC tools/call', async () => {
@@ -558,7 +560,7 @@ describe('[WXG-016] Model Context Protocol (MCP) Server & Tools', () => {
       expect(rawResponse).not.toBeNull();
       const parsed = JSON.parse(rawResponse ?? '{}');
       expect(parsed.id).toBe(10);
-      expect(parsed.result.tools).toHaveLength(3);
+      expect(parsed.result.tools).toHaveLength(5);
     });
 
     it('debe retornar error de parseo -32700 ante JSON malformado', async () => {
@@ -613,7 +615,7 @@ describe('[WXG-016] Model Context Protocol (MCP) Server & Tools', () => {
         result: { tools: Array<{ name: string }> };
       };
       expect(body.id).toBe('http-1');
-      expect(body.result.tools).toHaveLength(3);
+      expect(body.result.tools).toHaveLength(5);
     });
 
     it('debe responder 400 ante cuerpo HTTP con JSON inválido', async () => {
