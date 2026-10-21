@@ -1,22 +1,22 @@
 # Graph Report - WuxiaGraph  (2026-10-21)
 
 ## Corpus Check
-- 152 files · ~117,631 words
+- 153 files · ~118,739 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 10 file(s) not represented in the graph (top: (none) 8, .css 1, .tsbuildinfo 1)
 
 ## Summary
-- 1050 nodes · 1792 edges · 76 communities (67 shown, 9 thin omitted)
+- 1054 nodes · 1831 edges · 81 communities (71 shown, 10 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `be58c554`
+- Built from commit: `df895ebf`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- ingestion/types.ts
+- SqliteCheckpointRepository
 - router.ts
 - tools/index.ts
 - frontend/package.json
@@ -49,6 +49,7 @@
 - Contract: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3
 - Contract: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3
 - Proposal: Motor de Grafos & Consultas Relacionales (WXG-002)
+- workerQueue.ts
 - devDependencies
 - Estándar Internacional de Seguridad de Paquetes y Cadena de Suministro (Supply Chain Security)
 - Technical Approach
@@ -61,7 +62,7 @@
 - Why
 - Technical Approach
 - Why
-- 2. Invariantes Implementadas
+- IWipGovernanceRepository
 - dependencies
 - OpenSpec [WXG-001]: Backend Core Architecture, Graph Engine, Circuit Breaker & MCP Server
 - SOUL.md — Principios, Identidad & Estándares de Sebastian Chota (@sastiam)
@@ -86,24 +87,30 @@
 - scripts
 - OpenSpec Change Proposal: WXG-015 Context Injector Service
 - Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3)
+- WipGovernanceLedger
 - Design: Mass PDF Ingestion Pipeline Architecture
 - Design: Frontend Dashboard (Vue 3, Pinia, Vue Flow)
 - 2026-10-21-wxg-023-024-frontend-dashboard/tasks.md
 - wxg-004-pdf-mass-ingestion/tasks.md
+- WipLimitExceededError
+- ICheckpointRepository
+- Design
 
 ## God Nodes (most connected - your core abstractions)
 1. `GraphService` - 30 edges
 2. `LoreEntity` - 27 edges
 3. `LoreRelationship` - 24 edges
-4. `WipGovernanceLedger` - 22 edges
-5. `NarrativeFact` - 20 edges
-6. `IWipGovernanceRepository` - 19 edges
-7. `compilerOptions` - 18 edges
-8. `createApp()` - 16 edges
-9. `createDatabase()` - 16 edges
-10. `SqliteDreamingRepository` - 16 edges
+4. `IWipGovernanceRepository` - 24 edges
+5. `WipGovernanceLedger` - 22 edges
+6. `NarrativeFact` - 20 edges
+7. `WipLimitExceededError` - 20 edges
+8. `compilerOptions` - 18 edges
+9. `createDatabase()` - 17 edges
+10. `SqliteWipGovernanceRepository` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `Decisions` --references--> `WipLimitExceededError`  [INFERRED]
+  openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/design.md → src/domain/governance/errors.ts
 - `What Changes` --references--> `WipLimitExceededError`  [INFERRED]
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/proposal.md → src/domain/governance/errors.ts
 - `2. Enrutador Principal, Middlewares y Servidor Central` --references--> `createApiRouter()`  [INFERRED]
@@ -112,21 +119,19 @@
   openspec/changes/archive/2026-10-21-wxg-017-http-api-hono/design.md → src/domain/context/contextInjectorService.ts
 - `2. Invariantes Implementadas` --references--> `IContextRepository`  [INFERRED]
   openspec/changes/wxg-016-mcp-server.md → src/domain/context/types.ts
-- `Context & Impact` --references--> `DreamingService`  [INFERRED]
-  openspec/changes/wxg-004-pdf-mass-ingestion/proposal.md → src/domain/dreaming/service.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (76 total, 9 thin omitted)
+## Communities (81 total, 10 thin omitted)
 
-### Community 0 - "ingestion/types.ts"
-Cohesion: 0.12
-Nodes (13): StructuredChapter, ChapterProcessItem, CheckpointStatus, ICheckpointRepository, IngestionCheckpoint, JobSummary, ProcessJobOptions, WorkerQueueOptions (+5 more)
+### Community 0 - "SqliteCheckpointRepository"
+Cohesion: 0.22
+Nodes (5): CheckpointStatus, IngestionCheckpoint, CheckpointRepository, IngestionCheckpointRow, SqliteCheckpointRepository
 
 ### Community 1 - "router.ts"
-Cohesion: 0.05
-Nodes (47): Context, Decisions, Design, Goals / Non-Goals, Risks / Trade-offs, 2. Invariantes Implementadas, ApiRouterDependencies, createDreamingRouter() (+39 more)
+Cohesion: 0.09
+Nodes (29): contextQuerySchema, createContextRouter(), createApiRouter(), createDreamingRouter(), DistillEntityDto, DistillEntitySchema, DistillFactDto, DistillFactSchema (+21 more)
 
 ### Community 2 - "tools/index.ts"
 Cohesion: 0.08
@@ -141,8 +146,8 @@ Cohesion: 0.11
 Nodes (17): availableDomains, depth, edges, fetchError, filterCanonOnly, isLoadingRels, LoreRelationship, minAffinity (+9 more)
 
 ### Community 5 - "database.ts"
-Cohesion: 0.07
-Nodes (46): 2. Invariantes Implementadas, hono, contextQuerySchema, createContextRouter(), createApiRouter(), buildImmutablePromptPrefix(), ContextInjectorService, deepFreeze() (+38 more)
+Cohesion: 0.08
+Nodes (45): 2. Invariantes Implementadas, hono, buildImmutablePromptPrefix(), ContextInjectorService, deepFreeze(), formatAttributesMarkdown(), formatEntityMarkdown(), CanonicalEntityContext (+37 more)
 
 ### Community 6 - "package.json"
 Cohesion: 0.06
@@ -248,6 +253,10 @@ Nodes (10): 🧪 Casos Borde & Verificación, Contract: [WXG-024] Panel de Gober
 Cohesion: 0.40
 Nodes (4): Contexto e Impacto, Definition of Done (DoD), Por Qué (Why), Proposal: Motor de Grafos & Consultas Relacionales (WXG-002)
 
+### Community 35 - "workerQueue.ts"
+Cohesion: 0.33
+Nodes (7): StructuredChapter, ChapterProcessItem, JobSummary, ProcessJobOptions, WorkerQueueOptions, BatchWorkerQueue, WorkerQueue
+
 ### Community 36 - "devDependencies"
 Cohesion: 0.17
 Nodes (12): devDependencies, autoprefixer, jsdom, postcss, tailwindcss, @types/node, typescript, vite (+4 more)
@@ -296,9 +305,9 @@ Nodes (9): Architecture Context, 🧪 Casos Borde & Verificación, ✅ Criterios
 Cohesion: 0.20
 Nodes (9): 🧪 Casos Borde & Verificación, ✅ Criterios de Aceptación (Definition of Done), 🤖 Herramientas MCP Obligatorias para Agentes, Impact, 🎯 Objetivo & Contexto, Proposal: [WXG-024] Panel de Gobernanza WIP & Consola de Dreaming en Vue 3, 📋 Requisitos Técnicos, What Changes (+1 more)
 
-### Community 48 - "2. Invariantes Implementadas"
-Cohesion: 0.50
-Nodes (3): 1. Contexto & Propósito, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools
+### Community 48 - "IWipGovernanceRepository"
+Cohesion: 0.13
+Nodes (9): 1. Contexto & Propósito, 2. Invariantes Implementadas, 3. Verificación & Casos Borde Cubiertos, OpenSpec Change Proposal: WXG-016 MCP Server & Tools, createGovernanceRouter(), LogWipInput, LogWipSchema, IWipGovernanceRepository (+1 more)
 
 ### Community 49 - "dependencies"
 Cohesion: 0.29
@@ -384,29 +393,41 @@ Nodes (5): scripts, build, dev, preview, test
 Cohesion: 0.40
 Nodes (4): Context & Impact, Definition of Done, Proposal: Frontend Dashboard & Graph Visualizer Integration (Vue 3), Why
 
+### Community 73 - "WipGovernanceLedger"
+Cohesion: 0.29
+Nodes (3): WipGovernanceLedger, createInitialLedger(), InMemoryWipGovernanceRepository
+
 ### Community 74 - "Design: Mass PDF Ingestion Pipeline Architecture"
 Cohesion: 0.50
 Nodes (3): Design: Mass PDF Ingestion Pipeline Architecture, Diagrama de Flujo, Pipeline Fases
 
+### Community 78 - "WipLimitExceededError"
+Cohesion: 0.40
+Nodes (5): WipLimitExceededError, DEFAULT_MAX_BUDGET_HOURS, incrementBranchInLedger(), logHoursToLedger(), validateCircuitBreaker()
+
+### Community 80 - "Design"
+Cohesion: 0.33
+Nodes (5): Context, Decisions, Design, Goals / Non-Goals, Risks / Trade-offs
+
 ## Knowledge Gaps
 - **15 isolated node(s):** `@vueuse/core`, `@types/node`, `autoprefixer`, `jsdom`, `postcss` (+10 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 557 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 558 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `GraphService` connect `GraphService` to `router.ts`, `tools/index.ts`, `database.ts`, `Requirements`, `ADDED Requirements`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
+  _High betweenness centrality (0.037) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `GraphService` (e.g. with `1. Dominio (`src/domain/graph/`)` and `Requirement: Domain Graph Service Pathfinding`) actually correct?**
   _`GraphService` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `@vueuse/core`, `@types/node`, `autoprefixer` to the rest of the system?**
   _15 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `ingestion/types.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
-- **Why does `hono` connect `database.ts` to `router.ts`, `package.json`, `GraphService`?**
-  _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **Should `router.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.05207920792079208 - nodes in this community are weakly interconnected._
-- **Why does `vue` connect `App.vue` to `frontend/package.json`, `LoreGraphVisualizer.vue`, `GovernancePanel.vue`, `DreamingConsole.vue`, `HitLAliasQueue.vue`, `App.vue`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+  _Cohesion score 0.09292929292929293 - nodes in this community are weakly interconnected._
+- **Why does `hono` connect `database.ts` to `IWipGovernanceRepository`, `router.ts`, `package.json`, `GraphService`?**
+  _High betweenness centrality (0.034) - this node is a cross-community bridge._
+- **Are the 2 inferred relationships involving `IWipGovernanceRepository` (e.g. with `Context` and `2. Invariantes Implementadas`) actually correct?**
+  _`IWipGovernanceRepository` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **Should `tools/index.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.07857142857142857 - nodes in this community are weakly interconnected._
