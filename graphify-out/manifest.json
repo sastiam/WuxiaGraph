@@ -192,8 +192,8 @@
     "semantic_hash": "8bb7a7caaf70f08bfc01cf48c0e567ae"
   },
   "src/domain/index.ts": {
-    "mtime": 1792609907.7442503,
-    "seen": 1792610004.5918262,
+    "mtime": 1792610029.354908,
+    "seen": 1792610254.478517,
     "ast_hash": "831ffa6d3375d36a9b1ed65a10a3f7ac",
     "semantic_hash": ""
   },
@@ -210,15 +210,15 @@
     "semantic_hash": ""
   },
   "src/infrastructure/database.ts": {
-    "mtime": 1792608026.1945996,
-    "seen": 1792609503.879209,
-    "ast_hash": "230e1f8c0e36c05e4e39d75658568941",
+    "mtime": 1792610180.5429103,
+    "seen": 1792610254.4785278,
+    "ast_hash": "5d849807c08e0f1e85bceff61cc73a98",
     "semantic_hash": ""
   },
   "src/infrastructure/index.ts": {
-    "mtime": 1792609591.2652915,
-    "seen": 1792610004.5918348,
-    "ast_hash": "14cc8f585c78a9b177750135e2dc0752",
+    "mtime": 1792610211.9073913,
+    "seen": 1792610254.4785287,
+    "ast_hash": "f4b26bae9c84aa9d00189b98d979795b",
     "semantic_hash": ""
   },
   "src/infrastructure/repositories/dreamingRepository.ts": {
@@ -672,9 +672,9 @@
     "semantic_hash": ""
   },
   "src/infrastructure/schema.sql": {
-    "mtime": 1792608026.1949365,
-    "seen": 1792609503.8792164,
-    "ast_hash": "f5a612ec1939c526d91555fb43985a8a",
+    "mtime": 1792610168.9551709,
+    "seen": 1792610254.4785361,
+    "ast_hash": "9118305198751e748dc5e4e9dc25680a",
     "semantic_hash": ""
   },
   "src/mcp/tools/graphTools.ts": {
@@ -816,8 +816,8 @@
     "semantic_hash": ""
   },
   "src/infrastructure/pdf/pdfParser.ts": {
-    "mtime": 1792609949.52476,
-    "seen": 1792610004.591836,
+    "mtime": 1792610029.3563213,
+    "seen": 1792610254.4785297,
     "ast_hash": "35042eba2b9ccf177547f63812ce2ad3",
     "semantic_hash": ""
   },
@@ -888,9 +888,9 @@
     "semantic_hash": ""
   },
   "openspec/changes/wxg-004-pdf-mass-ingestion/tasks.md": {
-    "mtime": 1792609998.4107406,
-    "seen": 1792610004.5919461,
-    "ast_hash": "d68c8c6fd09d37892637136e16b30648",
+    "mtime": 1792610250.3801057,
+    "seen": 1792610254.478644,
+    "ast_hash": "0e9782545cfac2e5491ee0cd42f881a7",
     "semantic_hash": ""
   },
   "openspec/specs/frontend-dashboard/spec.md": {
@@ -906,21 +906,45 @@
     "semantic_hash": ""
   },
   "src/domain/ingestion/chapterSplitter.ts": {
-    "mtime": 1792609982.6721988,
-    "seen": 1792610004.5918276,
+    "mtime": 1792610029.354908,
+    "seen": 1792610254.478519,
     "ast_hash": "1d70b421e039834ab3aaa2e28d1489c7",
     "semantic_hash": ""
   },
   "src/domain/ingestion/index.ts": {
-    "mtime": 1792609892.7651691,
-    "seen": 1792610004.5918293,
-    "ast_hash": "6d977738dd6016cbf572d71c07849e46",
+    "mtime": 1792610157.7132957,
+    "seen": 1792610254.4785206,
+    "ast_hash": "77b807eb55e5768c5e3e9bc263aa649f",
     "semantic_hash": ""
   },
   "tests/domain/chapterSplitter.test.ts": {
-    "mtime": 1792609929.900892,
-    "seen": 1792610004.5918586,
+    "mtime": 1792610029.3563213,
+    "seen": 1792610254.4785535,
     "ast_hash": "d047dbec3d41cfacbc9e8799df941a09",
+    "semantic_hash": ""
+  },
+  "src/domain/ingestion/types.ts": {
+    "mtime": 1792610127.1087852,
+    "seen": 1792610254.478522,
+    "ast_hash": "69fcd0476c57a0b6d6ad872b71c4c4a2",
+    "semantic_hash": ""
+  },
+  "src/domain/ingestion/workerQueue.ts": {
+    "mtime": 1792610143.927528,
+    "seen": 1792610254.4785237,
+    "ast_hash": "cb6e36e69520e0264bd04c507e9174ba",
+    "semantic_hash": ""
+  },
+  "src/infrastructure/repositories/checkpointRepository.ts": {
+    "mtime": 1792610195.955131,
+    "seen": 1792610254.4785323,
+    "ast_hash": "7cd684795768c00060acaa71deccf1a9",
+    "semantic_hash": ""
+  },
+  "tests/domain/workerQueue.test.ts": {
+    "mtime": 1792610229.493833,
+    "seen": 1792610254.4785602,
+    "ast_hash": "75fec57f0d460c9bd073b464d8c435e7",
     "semantic_hash": ""
   }
 }
