@@ -26,16 +26,24 @@ export class SqliteGraphRepository implements IGraphRepository {
           relationship_type,
           affinity_weight,
           description,
-          last_updated_timestamp
+          last_updated_timestamp,
+          valid_from_chapter,
+          valid_to_chapter,
+          recorded_at,
+          superseded_by
         )
-        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?, COALESCE(?, CURRENT_TIMESTAMP), ?)
         ON CONFLICT(relationship_id) DO UPDATE SET
           source_entity_id = excluded.source_entity_id,
           target_entity_id = excluded.target_entity_id,
           relationship_type = excluded.relationship_type,
           affinity_weight = excluded.affinity_weight,
           description = excluded.description,
-          last_updated_timestamp = CURRENT_TIMESTAMP
+          last_updated_timestamp = CURRENT_TIMESTAMP,
+          valid_from_chapter = excluded.valid_from_chapter,
+          valid_to_chapter = excluded.valid_to_chapter,
+          recorded_at = excluded.recorded_at,
+          superseded_by = excluded.superseded_by
       `);
       stmt.run(
         row.relationship_id,
@@ -43,7 +51,11 @@ export class SqliteGraphRepository implements IGraphRepository {
         row.target_entity_id,
         row.relationship_type,
         row.affinity_weight,
-        row.description
+        row.description,
+        row.valid_from_chapter ?? 1,
+        row.valid_to_chapter ?? null,
+        row.recorded_at ?? null,
+        row.superseded_by ?? null
       );
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
@@ -59,7 +71,7 @@ export class SqliteGraphRepository implements IGraphRepository {
 
   async getRelationshipsByEntity(entityId: string): Promise<LoreRelationship[]> {
     const stmt = this.db.prepare(`
-      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp
+      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp, valid_from_chapter, valid_to_chapter, recorded_at, superseded_by
       FROM lore_relationships
       WHERE source_entity_id = ? OR target_entity_id = ?
       ORDER BY last_updated_timestamp DESC, relationship_id ASC
@@ -70,11 +82,22 @@ export class SqliteGraphRepository implements IGraphRepository {
 
   async getAllRelationships(): Promise<LoreRelationship[]> {
     const stmt = this.db.prepare(`
-      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp
+      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp, valid_from_chapter, valid_to_chapter, recorded_at, superseded_by
       FROM lore_relationships
       ORDER BY last_updated_timestamp DESC, relationship_id ASC
     `);
     const rows = stmt.all() as unknown as LoreRelationshipRow[];
+    return rows.map(mapRowToLoreRelationship);
+  }
+
+  async getRelationshipsAsOf(chapterId: number): Promise<LoreRelationship[]> {
+    const stmt = this.db.prepare(`
+      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp, valid_from_chapter, valid_to_chapter, recorded_at, superseded_by
+      FROM lore_relationships
+      WHERE valid_from_chapter <= ? AND (valid_to_chapter IS NULL OR valid_to_chapter > ?)
+      ORDER BY last_updated_timestamp DESC, relationship_id ASC
+    `);
+    const rows = stmt.all(chapterId, chapterId) as unknown as LoreRelationshipRow[];
     return rows.map(mapRowToLoreRelationship);
   }
 
@@ -88,7 +111,7 @@ export class SqliteGraphRepository implements IGraphRepository {
 
   async getRelationshipById(relationshipId: string): Promise<LoreRelationship | null> {
     const stmt = this.db.prepare(`
-      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp
+      SELECT relationship_id, source_entity_id, target_entity_id, relationship_type, affinity_weight, description, last_updated_timestamp, valid_from_chapter, valid_to_chapter, recorded_at, superseded_by
       FROM lore_relationships
       WHERE relationship_id = ?
     `);

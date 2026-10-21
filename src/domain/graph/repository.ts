@@ -10,6 +10,7 @@ export interface IGraphRepository {
   getAllRelationships(): Promise<LoreRelationship[]>;
   deleteRelationship(relationshipId: string): Promise<void>;
   getRelationshipById?(relationshipId: string): Promise<LoreRelationship | null>;
+  getRelationshipsAsOf(chapterId: number): Promise<LoreRelationship[]>;
 }
 
 export type GraphRepository = IGraphRepository;
