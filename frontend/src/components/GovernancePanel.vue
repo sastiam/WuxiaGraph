@@ -36,6 +36,8 @@ const wipStatus = ref<WipStatus>({
 });
 
 const isWipLoading = ref(false);
+const hoursToLog = ref(0.5);
+const logSuccessMessage = ref<string | null>(null);
 const error = ref<string | null>(null);
 
 // Proposals state
@@ -107,46 +109,98 @@ async function fetchWipStatus(): Promise<void> {
   error.value = null;
 
   try {
-    const response = await fetch('/api/v1/mcp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        jsonrpc: '2.0',
-        id: 'wip-query',
-        method: 'tools/call',
-        params: {
-          name: 'check_wip_budget',
-          arguments: {},
-        },
-      }),
-    });
-
+    const response = await fetch('/api/v1/wip/status');
     if (!response.ok) {
-      throw new Error(`Error en servidor MCP: ${response.status} ${response.statusText}`);
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
     const json = (await response.json()) as {
-      result?: {
-        content?: Array<{ type: string; text: string }>;
-        isError?: boolean;
+      success: boolean;
+      data: {
+        weekStartDate: string;
+        totalHoursLogged: number;
+        maxBudgetHours: number;
+        remainingHours: number;
+        branchesOpenedCount: number;
+        status: 'IN_LIMITS' | 'LOCKED_BY_WIP';
       };
-      error?: { message: string };
     };
 
-    if (json.error) {
-      throw new Error(json.error.message);
-    }
-
-    const textContent = json.result?.content?.[0]?.text;
-    if (textContent) {
-      const parsedData = JSON.parse(textContent) as WipStatus;
-      wipStatus.value = parsedData;
+    if (json.data) {
+      const data = json.data;
+      const isLocked = data.status === 'LOCKED_BY_WIP' || data.totalHoursLogged >= (data.maxBudgetHours ?? 4.0);
+      wipStatus.value = {
+        weekStartDate: data.weekStartDate,
+        totalHoursLogged: data.totalHoursLogged,
+        maxBudgetHours: data.maxBudgetHours ?? 4.0,
+        remainingHours: data.remainingHours ?? Math.max(0, (data.maxBudgetHours ?? 4.0) - data.totalHoursLogged),
+        branchesOpenedCount: data.branchesOpenedCount,
+        status: isLocked ? 'LOCKED_BY_WIP' : data.status,
+        isLocked,
+      };
     }
   } catch (err: unknown) {
-    // Si la conexión falla o el backend no está corriendo, mantén valores seguros predeterminados
-    const message = err instanceof Error ? err.message : 'Error desconocido al consultar gobernanza WIP';
+    const message = err instanceof Error ? err.message : 'Error al consultar estado WIP';
     error.value = message;
-    console.warn('WIP check notice:', message);
+  } finally {
+    isWipLoading.value = false;
+  }
+}
+
+async function handleLogHours(): Promise<void> {
+  if (hoursToLog.value <= 0) return;
+
+  isWipLoading.value = true;
+  error.value = null;
+  logSuccessMessage.value = null;
+
+  try {
+    const response = await fetch('/api/v1/wip/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hours: Number(hoursToLog.value) }),
+    });
+
+    if (response.status === 423) {
+      const errJson = (await response.json().catch(() => ({}))) as { message?: string };
+      wipStatus.value.isLocked = true;
+      wipStatus.value.status = 'LOCKED_BY_WIP';
+      error.value = `HTTP 423 Locked: ${errJson.message ?? 'Límite de 4.0h excedido. Circuit breaker activado.'}`;
+      return;
+    }
+
+    if (!response.ok) {
+      const errJson = (await response.json().catch(() => ({}))) as { message?: string };
+      throw new Error(errJson.message || `Error del servidor: HTTP ${response.status}`);
+    }
+
+    const json = (await response.json()) as {
+      success: boolean;
+      data: {
+        weekStartDate: string;
+        totalHoursLogged: number;
+        maxBudgetHours: number;
+        remainingHours: number;
+        branchesOpenedCount: number;
+        status: 'IN_LIMITS' | 'LOCKED_BY_WIP';
+      };
+    };
+
+    const data = json.data;
+    const isLocked = data.status === 'LOCKED_BY_WIP' || data.totalHoursLogged >= (data.maxBudgetHours ?? 4.0);
+    wipStatus.value = {
+      weekStartDate: data.weekStartDate,
+      totalHoursLogged: data.totalHoursLogged,
+      maxBudgetHours: data.maxBudgetHours ?? 4.0,
+      remainingHours: data.remainingHours ?? Math.max(0, (data.maxBudgetHours ?? 4.0) - data.totalHoursLogged),
+      branchesOpenedCount: data.branchesOpenedCount,
+      status: isLocked ? 'LOCKED_BY_WIP' : data.status,
+      isLocked,
+    };
+
+    logSuccessMessage.value = `Se registraron ${hoursToLog.value}h exitosamente en /api/v1/wip/log.`;
+  } catch (err: unknown) {
+    error.value = err instanceof Error ? err.message : 'Error al registrar horas WIP';
   } finally {
     isWipLoading.value = false;
   }
@@ -236,12 +290,32 @@ onMounted(() => {
             Presupuesto WIP (Work-In-Progress)
           </h2>
           <p class="text-xs text-slate-400 max-w-xl leading-relaxed">
-            Monitoreo estricto del límite de 4.0 horas semanales. Al superar el umbral, el sistema rechaza mutaciones
-            narrativas con <code class="text-amber-300 font-mono">HTTP 423 Locked</code> para proteger el ancho de banda del proyecto.
+            Monitoreo estricto del límite de 4.0 horas semanales. Al superar el umbral, la API responde con
+            <code class="text-amber-300 font-mono">HTTP 423 Locked</code> para proteger el ancho de banda del proyecto.
           </p>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Direct Log WIP hours control -->
+          <form @submit.prevent="handleLogHours" class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-lg border border-slate-800">
+            <input
+              v-model.number="hoursToLog"
+              type="number"
+              step="0.1"
+              min="0.1"
+              max="4.0"
+              :disabled="wipStatus.isLocked || isWipLoading"
+              class="w-20 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-50"
+            />
+            <button
+              type="submit"
+              :disabled="wipStatus.isLocked || isWipLoading"
+              class="px-3 py-1 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 text-xs font-bold rounded transition"
+            >
+              + Registrar /api/v1/wip/log
+            </button>
+          </form>
+
           <button
             type="button"
             :disabled="isWipLoading"
@@ -259,6 +333,14 @@ onMounted(() => {
             + Nueva Propuesta
           </button>
         </div>
+      </div>
+
+      <!-- Feedback messages -->
+      <div v-if="logSuccessMessage" class="mt-4 p-2.5 bg-emerald-950/80 border border-emerald-800 rounded text-xs text-emerald-300">
+        ✓ {{ logSuccessMessage }}
+      </div>
+      <div v-if="error" class="mt-4 p-2.5 bg-rose-950/80 border border-rose-800 rounded text-xs text-rose-300 font-medium">
+        ⚠️ {{ error }}
       </div>
 
       <!-- Progress Meter -->
@@ -292,12 +374,12 @@ onMounted(() => {
       <!-- Warning Alert if locked -->
       <div
         v-if="wipStatus.isLocked"
-        class="mt-4 p-3 bg-rose-950/60 border border-rose-800 rounded-lg text-rose-300 text-xs flex items-center gap-3"
+        class="mt-4 p-3 bg-rose-950/80 border border-rose-700 rounded-lg text-rose-200 text-xs flex items-center gap-3 shadow-lg animate-pulse"
       >
-        <span class="text-lg">⚠️</span>
+        <span class="text-2xl">🚨</span>
         <div>
-          <span class="font-bold">Límite semanal alcanzado:</span> Todas las peticiones de síntesis y creación de entidades
-          están suspendidas hasta el próximo ciclo semanal o resolución del ledger.
+          <span class="font-bold text-rose-100">LÍMITE DE CUOTA ALCANZADO (HTTP 423 LOCKED):</span> Se ha alcanzado o superado
+          el límite de 4.0 horas semanales. Todas las operaciones de mutación, log y síntesis están bloqueadas.
         </div>
       </div>
     </section>
@@ -416,11 +498,11 @@ onMounted(() => {
             </span>
           </div>
 
-          <!-- Vote Actions (Only enabled if pending) -->
+          <!-- Vote Actions (Only enabled if pending & not locked) -->
           <div class="flex items-center gap-2">
             <button
               type="button"
-              :disabled="prop.status !== 'PENDING'"
+              :disabled="prop.status !== 'PENDING' || wipStatus.isLocked"
               @click="castVote(prop.id, 'FOR')"
               class="px-3 py-1.5 rounded-lg border font-semibold flex items-center gap-1.5 transition disabled:opacity-40 disabled:cursor-not-allowed"
               :class="prop.userVote === 'FOR'
@@ -431,7 +513,7 @@ onMounted(() => {
             </button>
             <button
               type="button"
-              :disabled="prop.status !== 'PENDING'"
+              :disabled="prop.status !== 'PENDING' || wipStatus.isLocked"
               @click="castVote(prop.id, 'AGAINST')"
               class="px-3 py-1.5 rounded-lg border font-semibold flex items-center gap-1.5 transition disabled:opacity-40 disabled:cursor-not-allowed"
               :class="prop.userVote === 'AGAINST'
