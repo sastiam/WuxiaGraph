@@ -95,3 +95,12 @@ WuxiaGraph implementa un Circuit Breaker para proteger el ancho de banda del pro
 - **Límite de tiempo:** Máximo 4.0 horas de trabajo activo por semana.
 - **Límite de alcance:** Un único proyecto/flujo a la vez (1 proyecto activo).
 - Si el ledger de gobernanza excede las 4.0 horas, la API y las herramientas MCP bloquearán las operaciones de modificación (`LOCKED_BY_WIP`). Respeta este principio tanto en el código como en la cadencia de desarrollo.
+
+---
+
+## 6. Consulta de Patrones de Diseño & Arquitectura Limpia con Context7 MCP
+
+Todo agente (Antigravity, Hermes, Orca workers, Codex, Claude) debe consultar de forma predeterminada las herramientas del MCP de **Context7** (`mcp__context7__query_docs` / `mcp__context7__resolve_library_id`) antes y durante la generación de código para alinearse con los estándares y mejores prácticas de la industria:
+- **Clean Architecture & DDD:** Consultar patrones para desacoplamiento estricto de capas (`domain`, `infrastructure`, `api`, `mcp`).
+- **Vue 3 + Composition API + Pinia:** Consultar guías idiomáticas para Vue 3 (`<script setup>`, composables, `@vue-flow/core`).
+- **Hono + Node.js ESM + SQLite WAL:** Consultar patrones para validación Zod, gestión de errores HTTP y persistencia WAL inmutable.
