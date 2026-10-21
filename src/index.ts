@@ -10,9 +10,7 @@ import { SqliteGraphRepository } from './infrastructure/repositories/graphReposi
 import { ContextInjectorService } from './domain/context/index.js';
 import { DreamingService } from './domain/dreaming/index.js';
 import { GraphService } from './domain/graph/graphService.js';
-import { createContextRouter } from './api/context.router.js';
-import { createDreamingRouter } from './api/routes/dreaming.js';
-import { createGraphRouter } from './api/routes/graph.js';
+import { createApiRouter } from './api/router.js';
 import { createMcpServer, McpServer } from './mcp/index.js';
 
 export interface AppOptions {
@@ -20,18 +18,17 @@ export interface AppOptions {
   contextService?: ContextInjectorService;
   dreamingService?: DreamingService;
   graphService?: GraphService;
+  govRepo?: SqliteWipGovernanceRepository;
   mcpServer?: McpServer;
 }
 
 export function createApp(options?: AppOptions): Hono {
-  const app = new Hono();
-
   // Configuración de infraestructura y servicios de dominio
   const db = options?.db ?? createDatabase();
   const contextRepo = new SqliteContextRepository(db);
   const contextService = options?.contextService ?? new ContextInjectorService(contextRepo);
   const dreamingRepo = new SqliteDreamingRepository(db);
-  const govRepo = new SqliteWipGovernanceRepository(db);
+  const govRepo = options?.govRepo ?? new SqliteWipGovernanceRepository(db);
   const dreamingService = options?.dreamingService ?? new DreamingService(dreamingRepo, govRepo);
   const graphRepo = new SqliteGraphRepository(db);
   const graphService = options?.graphService ?? new GraphService(graphRepo);
@@ -45,22 +42,18 @@ export function createApp(options?: AppOptions): Hono {
       graphService,
     });
 
+  // Creamos el router central de API (con CORS, onError centralizado y rutas v1)
+  const app = createApiRouter({
+    contextService,
+    dreamingService,
+    govRepo,
+    graphService,
+  });
+
   // Health check endpoint
   app.get('/health', (c) => {
     return c.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
-
-  // Montaje de rutas de contexto canónico (WXG-015)
-  const contextRouter = createContextRouter(contextService);
-  app.route('/api/v1/context', contextRouter);
-
-  // Montaje de rutas del Servicio Dreaming (WXG-014)
-  const dreamingRouter = createDreamingRouter(dreamingService);
-  app.route('/api/v1/dreaming', dreamingRouter);
-
-  // Montaje de rutas del Motor de Grafos (WXG-021)
-  const graphRouter = createGraphRouter(graphService);
-  app.route('/api/v1/graph', graphRouter);
 
   // Montaje de endpoint JSON-RPC para MCP Server (WXG-016)
   app.post('/api/v1/mcp', async (c) => {
