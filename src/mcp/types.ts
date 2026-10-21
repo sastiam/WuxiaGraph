@@ -1,6 +1,8 @@
 import type { IDreamingRepository } from '../domain/dreaming/repository.js';
 import type { IWipGovernanceRepository } from '../domain/governance/repository.js';
 import type { IContextRepository } from '../domain/context/types.js';
+import type { IGraphRepository } from '../domain/graph/repository.js';
+import type { GraphService } from '../domain/graph/graphService.js';
 
 /**
  * Dependencias necesarias para la ejecución de herramientas MCP.
@@ -10,6 +12,8 @@ export interface McpServerDependencies {
   dreamingRepo: IDreamingRepository;
   govRepo: IWipGovernanceRepository;
   contextRepo?: IContextRepository;
+  graphRepo?: IGraphRepository;
+  graphService?: GraphService;
 }
 
 /**

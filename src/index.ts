@@ -6,8 +6,10 @@ import { createDatabase } from './infrastructure/database.js';
 import { SqliteContextRepository } from './infrastructure/sqlite-context.repository.js';
 import { SqliteDreamingRepository } from './infrastructure/repositories/dreamingRepository.js';
 import { SqliteWipGovernanceRepository } from './infrastructure/sqlite-wip-governance.repository.js';
+import { SqliteGraphRepository } from './infrastructure/repositories/graphRepository.js';
 import { ContextInjectorService } from './domain/context/index.js';
 import { DreamingService } from './domain/dreaming/index.js';
+import { GraphService } from './domain/graph/graphService.js';
 import { createApiRouter } from './api/router.js';
 import { createMcpServer, McpServer } from './mcp/index.js';
 
@@ -15,6 +17,7 @@ export interface AppOptions {
   db?: DatabaseSync;
   contextService?: ContextInjectorService;
   dreamingService?: DreamingService;
+  graphService?: GraphService;
   govRepo?: SqliteWipGovernanceRepository;
   mcpServer?: McpServer;
 }
@@ -27,12 +30,16 @@ export function createApp(options?: AppOptions): Hono {
   const dreamingRepo = new SqliteDreamingRepository(db);
   const govRepo = options?.govRepo ?? new SqliteWipGovernanceRepository(db);
   const dreamingService = options?.dreamingService ?? new DreamingService(dreamingRepo, govRepo);
+  const graphRepo = new SqliteGraphRepository(db);
+  const graphService = options?.graphService ?? new GraphService(graphRepo);
   const mcpServer =
     options?.mcpServer ??
     createMcpServer({
       dreamingRepo,
       govRepo,
       contextRepo,
+      graphRepo,
+      graphService,
     });
 
   // Creamos el router central de API (con CORS, onError centralizado y rutas v1)
@@ -40,6 +47,7 @@ export function createApp(options?: AppOptions): Hono {
     contextService,
     dreamingService,
     govRepo,
+    graphService,
   });
 
   // Health check endpoint

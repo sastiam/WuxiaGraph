@@ -22,6 +22,16 @@ import {
   CheckWipBudgetInputSchema,
   type CheckWipBudgetInput,
 } from './checkWipBudget.js';
+import {
+  queryEntityGraphDefinition,
+  handleQueryEntityGraph,
+  QueryEntityGraphInputSchema,
+  type QueryEntityGraphInput,
+  findRelationshipPathDefinition,
+  handleFindRelationshipPath,
+  FindRelationshipPathInputSchema,
+  type FindRelationshipPathInput,
+} from './graphTools.js';
 
 export {
   getCanonicalEntitiesDefinition,
@@ -36,6 +46,14 @@ export {
   handleCheckWipBudget,
   CheckWipBudgetInputSchema,
   type CheckWipBudgetInput,
+  queryEntityGraphDefinition,
+  handleQueryEntityGraph,
+  QueryEntityGraphInputSchema,
+  type QueryEntityGraphInput,
+  findRelationshipPathDefinition,
+  handleFindRelationshipPath,
+  FindRelationshipPathInputSchema,
+  type FindRelationshipPathInput,
 };
 
 interface ToolEntry {
@@ -55,6 +73,14 @@ const TOOLS_REGISTRY: Record<string, ToolEntry> = {
   check_wip_budget: {
     definition: checkWipBudgetDefinition,
     handler: handleCheckWipBudget,
+  },
+  query_entity_graph: {
+    definition: queryEntityGraphDefinition,
+    handler: handleQueryEntityGraph,
+  },
+  find_relationship_path: {
+    definition: findRelationshipPathDefinition,
+    handler: handleFindRelationshipPath,
   },
 };
 

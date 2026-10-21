@@ -14,11 +14,14 @@ import {
 import { createContextRouter } from './context.router.js';
 import { createDreamingRouter } from './routes/dreaming.js';
 import { createGovernanceRouter } from './routes/governance.js';
+import { createGraphRouter } from './routes/graph.js';
+import type { GraphService } from '../domain/graph/graphService.js';
 
 export interface ApiRouterDependencies {
   contextService: ContextInjectorService;
   dreamingService: DreamingService;
   govRepo: IWipGovernanceRepository;
+  graphService?: GraphService;
 }
 
 export function createApiRouter(deps: ApiRouterDependencies): Hono {
@@ -89,6 +92,11 @@ export function createApiRouter(deps: ApiRouterDependencies): Hono {
   app.route('/api/v1/context', contextRouter);
   app.route('/api/v1/dreaming', dreamingRouter);
   app.route('/api/v1/wip', governanceRouter);
+
+  if (deps.graphService) {
+    const graphRouter = createGraphRouter(deps.graphService);
+    app.route('/api/v1/graph', graphRouter);
+  }
 
   return app;
 }
