@@ -1,6 +1,8 @@
 import type { StructuredChapter } from './chapterSplitter.js';
+import type { IWipGovernanceRepository } from '../governance/repository.js';
+import type { WipLimitExceededError } from '../governance/errors.js';
 
-export type CheckpointStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED';
+export type CheckpointStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED' | 'PAUSED';
 
 export interface IngestionCheckpoint {
   jobId: string;
@@ -17,6 +19,7 @@ export interface ICheckpointRepository {
   getCheckpointsByJob(jobId: string): Promise<IngestionCheckpoint[]>;
   getCompletedChapterIndices(jobId: string): Promise<number[]>;
   getLatestCheckpoint(jobId: string): Promise<IngestionCheckpoint | null>;
+  getLastCompletedCheckpoint?(jobId: string): Promise<IngestionCheckpoint | null>;
   deleteCheckpointsByJob(jobId: string): Promise<void>;
 }
 
@@ -28,9 +31,13 @@ export interface ChapterProcessItem {
 
 export interface WorkerQueueOptions {
   checkpointRepository: ICheckpointRepository;
+  governanceRepository?: IWipGovernanceRepository;
   overlapChars?: number;
+  hoursPerChapter?: number;
+  pauseOnWipLimit?: boolean;
   onChapterSuccess?: (jobId: string, chapter: StructuredChapter) => Promise<void> | void;
   onChapterError?: (jobId: string, chapter: StructuredChapter, error: Error) => Promise<void> | void;
+  onWipLimitReached?: (jobId: string, chapter: StructuredChapter, error: WipLimitExceededError) => Promise<void> | void;
 }
 
 export interface ProcessJobOptions {
@@ -40,6 +47,9 @@ export interface ProcessJobOptions {
   processor?: (item: ChapterProcessItem) => Promise<void>;
   overlapChars?: number;
   resumeFromCheckpoint?: boolean;
+  governanceRepository?: IWipGovernanceRepository;
+  hoursPerChapter?: number;
+  pauseOnWipLimit?: boolean;
 }
 
 export interface JobSummary {
@@ -49,6 +59,9 @@ export interface JobSummary {
   processedChapters: number;
   skippedChapters: number;
   failedChapters: number;
-  status: 'COMPLETED' | 'FAILED' | 'PARTIAL';
+  status: 'COMPLETED' | 'FAILED' | 'PARTIAL' | 'LOCKED_BY_WIP' | 'PAUSED';
   completedChapterIndices: number[];
+  lastProcessedChapterIndex?: number;
+  lastProcessedChapterId?: string;
+  lockedReason?: string;
 }

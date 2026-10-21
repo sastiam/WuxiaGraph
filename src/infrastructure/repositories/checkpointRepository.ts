@@ -121,6 +121,23 @@ export class SqliteCheckpointRepository implements ICheckpointRepository {
     return this.mapRowToCheckpoint(row);
   }
 
+  async getLastCompletedCheckpoint(jobId: string): Promise<IngestionCheckpoint | null> {
+    const stmt = this.db.prepare(`
+      SELECT job_id, book_title, chapter_index, status, processed_at, error_message
+      FROM ingestion_checkpoints
+      WHERE job_id = ? AND status = 'COMPLETED'
+      ORDER BY chapter_index DESC
+      LIMIT 1
+    `);
+
+    const row = stmt.get(jobId) as unknown as IngestionCheckpointRow | undefined;
+    if (!row) {
+      return null;
+    }
+
+    return this.mapRowToCheckpoint(row);
+  }
+
   async deleteCheckpointsByJob(jobId: string): Promise<void> {
     const stmt = this.db.prepare(`
       DELETE FROM ingestion_checkpoints
