@@ -16,12 +16,15 @@ import { createDreamingRouter } from './routes/dreaming.js';
 import { createGovernanceRouter } from './routes/governance.js';
 import { createGraphRouter } from './routes/graph.js';
 import type { GraphService } from '../domain/graph/graphService.js';
+import type { HitLService } from '../domain/ingestion/hitlService.js';
+import { createAliasesRouter } from './routes/aliases.js';
 
 export interface ApiRouterDependencies {
   contextService: ContextInjectorService;
   dreamingService: DreamingService;
   govRepo: IWipGovernanceRepository;
   graphService?: GraphService;
+  hitlService?: HitLService;
 }
 
 export function createApiRouter(deps: ApiRouterDependencies): Hono {
@@ -89,6 +92,11 @@ export function createApiRouter(deps: ApiRouterDependencies): Hono {
   const dreamingRouter = createDreamingRouter(deps.dreamingService);
   const governanceRouter = createGovernanceRouter(deps.govRepo);
 
+  // Health check endpoint
+  app.get('/health', (c) => {
+    return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
   app.route('/api/v1/context', contextRouter);
   app.route('/api/v1/dreaming', dreamingRouter);
   app.route('/api/v1/wip', governanceRouter);
@@ -96,6 +104,11 @@ export function createApiRouter(deps: ApiRouterDependencies): Hono {
   if (deps.graphService) {
     const graphRouter = createGraphRouter(deps.graphService);
     app.route('/api/v1/graph', graphRouter);
+  }
+
+  if (deps.hitlService) {
+    const aliasesRouter = createAliasesRouter(deps.hitlService);
+    app.route('/api/v1/aliases', aliasesRouter);
   }
 
   return app;

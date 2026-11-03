@@ -30,6 +30,19 @@ class InMemoryGraphRepository implements IGraphRepository {
   async getRelationshipById(relationshipId: string): Promise<LoreRelationship | null> {
     return this.relationships.get(relationshipId) ?? null;
   }
+
+  async getRelationshipsAsOf(chapterId: number): Promise<LoreRelationship[]> {
+    return Array.from(this.relationships.values()).filter((r) => {
+      const fromChapter = r.valid_from_chapter ?? r.validFromChapter ?? 1;
+      const toChapter =
+        r.valid_to_chapter !== undefined
+          ? r.valid_to_chapter
+          : r.validToChapter !== undefined
+          ? r.validToChapter
+          : null;
+      return fromChapter <= chapterId && (toChapter === null || toChapter > chapterId);
+    });
+  }
 }
 
 describe('GraphService Domain Tests (WXG-020)', () => {

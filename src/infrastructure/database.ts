@@ -39,11 +39,16 @@ CREATE TABLE IF NOT EXISTS lore_relationships (
     relationship_type TEXT NOT NULL,
     affinity_weight REAL DEFAULT 0.0,
     description TEXT,
-    last_updated_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    last_updated_timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    valid_from_chapter INTEGER DEFAULT 1,
+    valid_to_chapter INTEGER,
+    recorded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    superseded_by TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_lore_relationships_source_target ON lore_relationships(source_entity_id, target_entity_id);
 CREATE INDEX IF NOT EXISTS idx_lore_relationships_target_source ON lore_relationships(target_entity_id, source_entity_id);
+CREATE INDEX IF NOT EXISTS idx_lore_relationships_temporal ON lore_relationships(valid_from_chapter, valid_to_chapter);
 
 CREATE TABLE IF NOT EXISTS ingestion_checkpoints (
     job_id TEXT NOT NULL,
@@ -91,6 +96,10 @@ export interface LoreRelationshipRow {
   affinity_weight: number;
   description: string | null;
   last_updated_timestamp?: string;
+  valid_from_chapter?: number;
+  valid_to_chapter?: number | null;
+  recorded_at?: string;
+  superseded_by?: string | null;
 }
 
 export interface WipGovernanceLedgerRow {
@@ -130,6 +139,33 @@ export function loadSchemaSql(): string {
 }
 
 /**
+ * Asegura que las columnas bi-temporales existan en la tabla lore_relationships (migración dinámica).
+ */
+export function ensureTemporalColumns(db: DatabaseSync): void {
+  try {
+    const tableInfo = db.prepare("PRAGMA table_info(lore_relationships);").all() as Array<{ name: string }>;
+    const columnNames = new Set(tableInfo.map((col) => col.name));
+
+    if (!columnNames.has('valid_from_chapter')) {
+      db.exec('ALTER TABLE lore_relationships ADD COLUMN valid_from_chapter INTEGER DEFAULT 1;');
+    }
+    if (!columnNames.has('valid_to_chapter')) {
+      db.exec('ALTER TABLE lore_relationships ADD COLUMN valid_to_chapter INTEGER;');
+    }
+    if (!columnNames.has('recorded_at')) {
+      db.exec('ALTER TABLE lore_relationships ADD COLUMN recorded_at DATETIME DEFAULT CURRENT_TIMESTAMP;');
+    }
+    if (!columnNames.has('superseded_by')) {
+      db.exec('ALTER TABLE lore_relationships ADD COLUMN superseded_by TEXT;');
+    }
+
+    db.exec('CREATE INDEX IF NOT EXISTS idx_lore_relationships_temporal ON lore_relationships(valid_from_chapter, valid_to_chapter);');
+  } catch {
+    // Si la tabla no existe o error en introspección, continuar
+  }
+}
+
+/**
  * Inicializa y configura la conexión nativa a SQLite con PRAGMA journal_mode=WAL y PRAGMA foreign_keys=ON.
  */
 export function createDatabase(optionsOrPath: string | DatabaseOptions = ':memory:'): DatabaseSync {
@@ -156,6 +192,8 @@ export function createDatabase(optionsOrPath: string | DatabaseOptions = ':memor
     const ddl = options.schemaSql ?? loadSchemaSql();
     db.exec(ddl);
   }
+
+  ensureTemporalColumns(db);
 
   return db;
 }
@@ -273,12 +311,20 @@ export function mapRowToLoreRelationship(row: LoreRelationshipRow): LoreRelation
     affinity_weight: Number(row.affinity_weight),
     description: row.description,
     last_updated_timestamp: row.last_updated_timestamp,
+    valid_from_chapter: row.valid_from_chapter !== undefined ? Number(row.valid_from_chapter) : 1,
+    valid_to_chapter: row.valid_to_chapter !== undefined && row.valid_to_chapter !== null ? Number(row.valid_to_chapter) : null,
+    recorded_at: row.recorded_at,
+    superseded_by: row.superseded_by ?? null,
     relationshipId: row.relationship_id,
     sourceEntityId: row.source_entity_id,
     targetEntityId: row.target_entity_id,
     relationshipType: row.relationship_type,
     affinityWeight: Number(row.affinity_weight),
     lastUpdatedTimestamp: row.last_updated_timestamp,
+    validFromChapter: row.valid_from_chapter !== undefined ? Number(row.valid_from_chapter) : 1,
+    validToChapter: row.valid_to_chapter !== undefined && row.valid_to_chapter !== null ? Number(row.valid_to_chapter) : null,
+    recordedAt: row.recorded_at,
+    supersededBy: row.superseded_by ?? null,
   };
 }
 
@@ -287,7 +333,10 @@ export function mapRowToLoreRelationship(row: LoreRelationshipRow): LoreRelation
  */
 export function mapLoreRelationshipToRow(
   rel: LoreRelationship
-): Omit<LoreRelationshipRow, 'last_updated_timestamp'> & { last_updated_timestamp?: string } {
+): Omit<LoreRelationshipRow, 'last_updated_timestamp' | 'recorded_at'> & {
+  last_updated_timestamp?: string;
+  recorded_at?: string;
+} {
   return {
     relationship_id: rel.relationship_id ?? rel.relationshipId,
     source_entity_id: rel.source_entity_id ?? rel.sourceEntityId,
@@ -296,6 +345,20 @@ export function mapLoreRelationshipToRow(
     affinity_weight: Number(rel.affinity_weight ?? rel.affinityWeight ?? 0.0),
     description: rel.description ?? null,
     last_updated_timestamp: rel.last_updated_timestamp ?? rel.lastUpdatedTimestamp,
+    valid_from_chapter: Number(rel.valid_from_chapter ?? rel.validFromChapter ?? 1),
+    valid_to_chapter:
+      rel.valid_to_chapter !== undefined
+        ? (rel.valid_to_chapter !== null ? Number(rel.valid_to_chapter) : null)
+        : rel.validToChapter !== undefined
+        ? (rel.validToChapter !== null ? Number(rel.validToChapter) : null)
+        : null,
+    recorded_at: rel.recorded_at ?? rel.recordedAt,
+    superseded_by:
+      rel.superseded_by !== undefined && rel.superseded_by !== null
+        ? String(rel.superseded_by)
+        : rel.supersededBy !== undefined && rel.supersededBy !== null
+        ? String(rel.supersededBy)
+        : null,
   };
 }
 

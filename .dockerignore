@@ -1,0 +1,11 @@
+node_modules
+.pnpm-store
+dist
+frontend/dist
+frontend/node_modules
+.git
+.github
+tests
+docs
+*.sqlite*
+*.db*

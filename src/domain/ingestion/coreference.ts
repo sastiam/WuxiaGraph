@@ -33,7 +33,7 @@ export interface HitLProposalRecord {
   targetEntityId: string;
   targetCanonicalName: string;
   confidenceScore: number;
-  isCanon: false;
+  isCanon: boolean;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   domain: string;
   context?: string;

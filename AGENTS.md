@@ -104,6 +104,19 @@ Todo agente (Antigravity, Hermes, Orca workers, Codex, Claude) debe consultar de
 - **Clean Architecture & DDD:** Consultar patrones para desacoplamiento estricto de capas (`domain`, `infrastructure`, `api`, `mcp`).
 - **Vue 3 + Composition API + Pinia:** Consultar guías idiomáticas para Vue 3 (`<script setup>`, composables, `@vue-flow/core`).
 - **Hono + Node.js ESM + SQLite WAL:** Consultar patrones para validación Zod, gestión de errores HTTP y persistencia WAL inmutable.
+
+---
+
+## 7. OpenSpec Engine v2: Btrfs CoW Snapshots & Circuito de Auto-Healing
+
+1. **Aislamiento Btrfs CoW (Rollback Buffer):**
+   - Antes de ejecutar subagentes constructores o cambios extensos, se verifica/crea un snapshot Btrfs en `/home/sastiam/Workspace/.snapshots/pre-<change-id>` ejecutando `scripts/btrfs-snapshot.sh create pre-<change-id>`.
+   - Si un subagente falla los test gates o rompe invariantes de arquitectura, se restaura atómicamente el estado previo en <100ms ejecutando `scripts/btrfs-snapshot.sh rollback pre-<change-id>`.
+
+2. **Circuito de Auto-Healing (3 Strikes):**
+   - Cuando un subagente ejecute tareas de construcción y falle `pnpm test` o `pnpm run typecheck`:
+     - **Intentos 1 & 2:** El subagente analiza los errores de compilación o fallos de assertions en Vitest, localiza las líneas exactas en el código y aplica correcciones dirigidas.
+     - **Intento 3:** Si la suite continúa fallando tras 3 intentos, el subagente se detiene de inmediato, restaura el snapshot CoW y escala la alerta a Hermes Master Orchestrator para revisión de arquitectura.
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.

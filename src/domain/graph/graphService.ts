@@ -79,6 +79,20 @@ export class GraphService {
   }
 
   /**
+   * Obtiene las relaciones activas a la altura de un capítulo determinado (filtro bi-temporal).
+   */
+  async getRelationshipsAsOf(chapterId: number): Promise<LoreRelationship[]> {
+    return this.graphRepo.getRelationshipsAsOf(chapterId);
+  }
+
+  /**
+   * Obtiene el estado del grafo en un capítulo determinado (alias/convenio de WXG-046).
+   */
+  async getGraphAsOfChapter(chapterId: number): Promise<LoreRelationship[]> {
+    return this.getRelationshipsAsOf(chapterId);
+  }
+
+  /**
    * Registra o actualiza una relación en el grafo.
    */
   async addRelationship(relationship: LoreRelationship): Promise<void> {
